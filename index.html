@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Portfolio de Proyectos HTML</title>
+    
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <!-- AOS (Animate On Scroll) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --dark-gradient: linear-gradient(135deg, #434343 0%, #000000 100%);
+        }
+
+        body {
+            background: var(--primary-gradient);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .main-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin: 2rem 0;
+        }
+
+        .header-section {
+            background: var(--primary-gradient);
+            color: white;
+            border-radius: 20px 20px 0 0;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .header-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .stats-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--success-gradient);
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .project-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-path {
+            font-family: 'Courier New', monospace;
+            background: #e9ecef;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .project-body {
+            padding: 1.5rem;
+        }
+
+        .btn-gradient {
+            background: var(--success-gradient);
+            border: none;
+            color: white;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+
+        .btn-outline-gradient {
+            border: 2px solid transparent;
+            background: linear-gradient(white, white) padding-box, var(--primary-gradient) border-box;
+            color: #667eea;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-outline-gradient:hover {
+            background: var(--primary-gradient);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 2rem;
+            height: 2rem;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .detection-methods {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .method-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .method-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .github-info {
+            background: var(--dark-gradient);
+            color: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-success {
+            background: var(--success-gradient);
+            color: white;
+        }
+
+        .status-error {
+            background: var(--secondary-gradient);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .header-title {
+                font-size: 2rem;
+            }
+            
+            .main-container {
+                margin: 1rem;
+                border-radius: 15px;
+            }
+            
+            .header-section {
+                border-radius: 15px 15px 0 0;
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-10 col-xl-8">
+                <div class="main-container animate__animated animate__fadeInUp">
+                    
+                    <!-- Header Section -->
+                    <div class="header-section" data-aos="fade-down">
+                        <div class="floating">
+                            <i class="fas fa-rocket fa-3x mb-3"></i>
+                        </div>
+                        <h1 class="header-title">Portfolio de Proyectos</h1>
+                        <p class="header-subtitle">
+                            <i class="fas fa-code"></i> Descubrimiento automático de proyectos HTML
+                        </p>
+                        <div class="d-flex justify-content-center gap-3 flex-wrap">
+                            <button class="btn btn-light btn-lg" onclick="projectExplorer.detectProjects()" id="detectBtn">
+                                <i class="fas fa-search"></i> Detectar Proyectos
+                            </button>
+                            <button class="btn btn-outline-light btn-lg" onclick="projectExplorer.refreshProjects()">
+                                <i class="fas fa-sync-alt"></i> Actualizar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Stats Section -->
+                    <div class="container-fluid p-4">
+                        <div class="row" data-aos="fade-up" data-aos-delay="100">
+                            <div class="col-md-4">
+                                <div class="stats-card text-center">
+                                    <i class="fas fa-folder-open fa-2x text-primary mb-2"></i>
+                                    <h3 class="mb-1" id="folderCount">0</h3>
+                                    <p class="text-muted mb-0">Carpetas Detectadas</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="stats-card text-center">
+                                    <i class="fas fa-file-code fa-2x text-success mb-2"></i>
+                                    <h3 class="mb-1" id="projectCount">0</h3>
+                                    <p class="text-muted mb-0">Proyectos HTML</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="stats-card text-center">
+                                    <i class="fas fa-clock fa-2x text-info mb-2"></i>
+                                    <h3 class="mb-1" id="lastUpdate">--:--</h3>
+                                    <p class="text-muted mb-0">Última Actualización</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Detection Status -->
+                        <div class="alert alert-info d-none" id="detectionStatus" data-aos="fade-up" data-aos-delay="200">
+                            <div class="d-flex align-items-center">
+                                <div class="loading-spinner me-3"></div>
+                                <div>
+                                    <strong>Detectando proyectos...</strong>
+                                    <div class="small">Explorando repositorio en busca de archivos HTML</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Projects Grid -->
+                        <div class="row" id="projectsGrid" data-aos="fade-up" data-aos-delay="300">
+                            <!-- Los proyectos se cargarán aquí -->
+                        </div>
+
+                        <!-- Detection Methods Info -->
+                        <div class="detection-methods" data-aos="fade-up" data-aos-delay="400">
+                            <h4 class="mb-4">
+                                <i class="fas fa-info-circle text-primary"></i> 
+                                Métodos de Detección
+                            </h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="method-card">
+                                        <h6><i class="fab fa-github text-dark"></i> GitHub API</h6>
+                                        <p class="small text-muted mb-0">
+                                            Detecta automáticamente si estás en GitHub Pages y usa la API para listar carpetas
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="method-card">
+                                        <h6><i class="fas fa-search text-primary"></i> Búsqueda Heurística</h6>
+                                        <p class="small text-muted mb-0">
+                                            Busca patrones comunes de nombres de carpetas y archivos HTML
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- GitHub Info -->
+                        <div class="github-info" data-aos="fade-up" data-aos-delay="500">
+                            <i class="fab fa-github fa-3x mb-3"></i>
+                            <h5>Repositorio GitHub</h5>
+                            <p class="mb-3">Este portfolio está hospedado en GitHub Pages</p>
+                            <a href="#" id="repoLink" class="btn btn-light btn-lg" target="_blank">
+                                <i class="fas fa-external-link-alt"></i> Ver Repositorio
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="successToast" class="toast" role="alert">
+            <div class="toast-header bg-success text-white">
+                <i class="fas fa-check-circle me-2"></i>
+                <strong class="me-auto">Éxito</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body" id="successToastBody">
+                Proyectos detectados correctamente
+            </div>
+        </div>
+        
+        <div id="errorToast" class="toast" role="alert">
+            <div class="toast-header bg-danger text-white">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <strong class="me-auto">Error</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body" id="errorToastBody">
+                Error al detectar proyectos
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Particles.js -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+    <script>
+        class ProjectExplorer {
+            constructor() {
+                this.projects = [];
+                this.isGitHubPages = false;
+                this.repoInfo = null;
+                this.init();
+            }
+
+            async init() {
+                // Inicializar AOS
+                AOS.init({
+                    duration: 800,
+                    easing: 'ease-in-out',
+                    once: true
+                });
+
+                // Detectar si estamos en GitHub Pages
+                this.detectGitHubPages();
+                
+                // Actualizar enlace del repositorio
+                this.updateRepoLink();
+                
+                // Detectar proyectos automáticamente
+                await this.detectProjects();
+                
+                // Auto-refresh cada 5 minutos
+                setInterval(() => this.refreshProjects(), 300000);
+            }
+
+            detectGitHubPages() {
+                const hostname = window.location.hostname;
+                if (hostname.includes('github.io')) {
+                    this.isGitHubPages = true;
+                    const parts = hostname.split('.');
+                    const username = parts[0];
+                    const pathname = window.location.pathname;
+                    const repoName = pathname.split('/')[1] || username;
+                    
+                    this.repoInfo = {
+                        username: username,
+                        repo: repoName,
+                        apiUrl: `https://api.github.com/repos/${username}/${repoName}/contents`
+                    };
+                }
+            }
+
+            async detectProjects() {
+                this.showDetectionStatus(true);
+                this.updateDetectButton(true);
+                
+                try {
+                    if (this.isGitHubPages && this.repoInfo) {
+                        await this.detectViaGitHubAPI();
+                    } else {
+                        await this.detectViaHeuristic();
+                    }
+                    
+                    this.renderProjects();
+                    this.updateStats();
+                    this.showToast('success', `¡${this.projects.length} proyectos detectados!`);
+                    
+                } catch (error) {
+                    console.error('Error detecting projects:', error);
+                    this.showToast('error', 'Error al detectar proyectos. Intentando método alternativo...');
+                    await this.detectViaHeuristic();
+                    this.renderProjects();
+                    this.updateStats();
+                } finally {
+                    this.showDetectionStatus(false);
+                    this.updateDetectButton(false);
+                }
+            }
+
+            async detectViaGitHubAPI() {
+                try {
+                    const response = await fetch(this.repoInfo.apiUrl);
+                    if (!response.ok) throw new Error('GitHub API request failed');
+                    
+                    const contents = await response.json();
+                    const folders = contents.filter(item => item.type === 'dir');
+                    
+                    document.getElementById('folderCount').textContent = folders.length;
+                    
+                    const projectPromises = folders.map(folder => this.checkFolderForHTML(folder.name));
+                    const results = await Promise.allSettled(projectPromises);
+                    
+                    this.projects = results
+                        .filter(result => result.status === 'fulfilled' && result.value)
+                        .map(result => result.value);
+                        
+                } catch (error) {
+                    throw new Error('GitHub API detection failed');
+                }
+            }
+
+            async detectViaHeuristic() {
+                const commonFolders = [
+                    // Proyectos comunes
+                    'calculadora', 'calculator', 'calc',
+                    'juego', 'game', 'snake', 'tetris', 'pong',
+                    'portfolio', 'portafolio', 'cv', 'resume',
+                    'landing', 'homepage', 'website',
+                    'dashboard', 'admin', 'panel',
+                    'blog', 'news', 'articles',
+                    'ecommerce', 'shop', 'store', 'tienda',
+                    'todo', 'tasks', 'tareas', 'notes',
+                    'weather', 'clima', 'forecast',
+                    'quiz', 'trivia', 'questions',
+                    'gallery', 'galeria', 'photos',
+                    'chat', 'messenger', 'social',
+                    'calendar', 'calendario', 'events',
+                    'music', 'player', 'audio',
+                    'video', 'streaming', 'media',
+                    
+                    // Patrones numerados
+                    ...Array.from({length: 20}, (_, i) => `proyecto${i + 1}`),
+                    ...Array.from({length: 20}, (_, i) => `project${i + 1}`),
+                    ...Array.from({length: 20}, (_, i) => `ejercicio${i + 1}`),
+                    ...Array.from({length: 20}, (_, i) => `exercise${i + 1}`),
+                    ...Array.from({length: 20}, (_, i) => `practica${i + 1}`),
+                    ...Array.from({length: 20}, (_, i) => `practice${i + 1}`),
+                    ...Array.from({length: 20}, (_, i) => `tarea${i + 1}`),
+                    ...Array.from({length: 20}, (_, i) => `homework${i + 1}`),
+                    ...Array.from({length: 10}, (_, i) => `p${i + 1}`),
+                    ...Array.from({length: 10}, (_, i) => `t${i + 1}`),
+                    
+                    // Patrones de fechas
+                    ...Array.from({length: 12}, (_, i) => `proyecto-${2024}-${String(i + 1).padStart(2, '0')}`),
+                    ...Array.from({length: 12}, (_, i) => `project-${2024}-${String(i + 1).padStart(2, '0')}`),
+                ];
+
+                document.getElementById('folderCount').textContent = commonFolders.length;
+                
+                const projectPromises = commonFolders.map(folder => this.checkFolderForHTML(folder));
+                const results = await Promise.allSettled(projectPromises);
+                
+                this.projects = results
+                    .filter(result => result.status === 'fulfilled' && result.value)
+                    .map(result => result.value);
+            }
+
+            async checkFolderForHTML(folderName) {
+                const htmlFiles = ['index.html', 'main.html', 'app.html', `${folderName}.html`, 'home.html'];
+                
+                for (const htmlFile of htmlFiles) {
+                    try {
+                        const url = `${window.location.origin}${window.location.pathname.replace('index.html', '')}${folderName}/${htmlFile}`;
+                        const response = await fetch(url, { method: 'HEAD' });
+                        
+                        if (response.ok) {
+                            return {
+                                name: this.formatProjectName(folderName),
+                                folder: folderName,
+                                file: htmlFile,
+                                url: url,
+                                status: 'success',
+                                lastModified: response.headers.get('last-modified') || new Date().toISOString(),
+                                size: response.headers.get('content-length') || 'Unknown'
+                            };
+                        }
+                    } catch (error) {
+                        // Continuar con el siguiente archivo
+                    }
+                }
+                return null;
+            }
+
+            formatProjectName(folderName) {
+                return folderName
+                    .replace(/[-_]/g, ' ')
+                    .replace(/\b\w/g, l => l.toUpperCase())
+                    .replace(/(\d+)/g, ' $1')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+            }
+
+            renderProjects() {
+                const grid = document.getElementById('projectsGrid');
+                
+                if (this.projects.length === 0) {
+                    grid.innerHTML = `
+                        <div class="col-12">
+                            <div class="text-center py-5" data-aos="fade-up">
+                                <i class="fas fa-folder-open fa-4x text-muted mb-3"></i>
+                                <h4 class="text-muted">No se encontraron proyectos</h4>
+                                <p class="text-muted mb-4">
+                                    Crea una carpeta con un archivo HTML para que aparezca automáticamente
+                                </p>
+                                <div class="alert alert-info text-start">
+                                    <h6><i class="fas fa-lightbulb"></i> Estructura recomendada:</h6>
+                                    <pre class="mb-0"><code>📁 tu-repositorio/
+├── 📄 index.html (este archivo)
+├── 📁 mi-calculadora/
+│   └── 📄 index.html
+├── 📁 juego-snake/
+│   └── 📄 index.html
+└── 📁 portfolio/
+    └── 📄 index.html</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                grid.innerHTML = this.projects.map((project, index) => `
+                    <div class="col-lg-6 col-xl-4" data-aos="fade-up" data-aos-delay="${index * 100}">
+                        <div class="project-card">
+                            <div class="status-badge status-${project.status}">
+                                <i class="fas fa-${project.status === 'success' ? 'check' : 'times'}"></i>
+                                ${project.status === 'success' ? 'Activo' : 'Error'}
+                            </div>
+                            
+                            <div class="project-header">
+                                <h5 class="project-title">
+                                    <i class="fas fa-code text-primary me-2"></i>
+                                    ${project.name}
+                                </h5>
+                                <div class="project-path">
+                                    <i class="fas fa-folder me-1"></i>
+                                    ${project.folder}/${project.file}
+                                </div>
+                            </div>
+                            
+                            <div class="project-body">
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        <small class="text-muted">
+                                            <i class="fas fa-calendar-alt"></i>
+                                            ${new Date(project.lastModified).toLocaleDateString('es-ES')}
+                                        </small>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <small class="text-muted">
+                                            <i class="fas fa-file-alt"></i>
+                                            ${project.size !== 'Unknown' ? this.formatBytes(project.size) : 'N/A'}
+                                        </small>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-grid gap-2">
+                                    <a href="${project.url}" class="btn-gradient text-center" target="_blank">
+                                        <i class="fas fa-external-link-alt me-2"></i>
+                                        Ver Proyecto
+                                    </a>
+                                    <a href="${project.url}" class="btn-outline-gradient text-center" target="_blank">
+                                        <i class="fas fa-code me-2"></i>
+                                        Ver Código
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            formatBytes(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+
+            updateStats() {
+                document.getElementById('projectCount').textContent = this.projects.length;
+                document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString('es-ES', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
+
+            updateRepoLink() {
+                const repoLink = document.getElementById('repoLink');
+                if (this.isGitHubPages && this.repoInfo) {
+                    repoLink.href = `https://github.com/${this.repoInfo.username}/${this.repoInfo.repo}`;
+                    repoLink.innerHTML = `<i class="fas fa-external-link-alt"></i> ${this.repoInfo.username}/${this.repoInfo.repo}`;
+                } else {
+                    repoLink.href = '#';
+                    repoLink.innerHTML = '<i class="fas fa-question-circle"></i> Repositorio no detectado';
+                }
+            }
+
+            showDetectionStatus(show) {
+                const statusElement = document.getElementById('detectionStatus');
+                if (show) {
+                    statusElement.classList.remove('d-none');
+                } else {
+                    statusElement.classList.add('d-none');
+                }
+            }
+
+            updateDetectButton(loading) {
+                const btn = document.getElementById('detectBtn');
+                if (loading) {
+                    btn.innerHTML = '<div class="loading-spinner me-2"></div> Detectando...';
+                    btn.disabled = true;
+                } else {
+                    btn.innerHTML = '<i class="fas fa-search"></i> Detectar Proyectos';
+                    btn.disabled = false;
+                }
+            }
+
+            showToast(type, message) {
+                const toastElement = document.getElementById(`${type}Toast`);
+                const toastBody = document.getElementById(`${type}ToastBody`);
+                toastBody.textContent = message;
+                
+                const toast = new bootstrap.Toast(toastElement);
+                toast.show();
+            }
+
+            async refreshProjects() {
+                await this.detectProjects();
+                
+                // Mostrar SweetAlert de confirmación
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Actualizado!',
+                    text: `Se encontraron ${this.projects.length} proyectos`,
+                    timer: 2000,
+                    showConfirmButton: false,
+                    toast: true,
+                    position: 'top-end'
+                });
+            }
+
+            // Método para agregar proyecto manualmente
+            async addManualProject() {
+                const { value: formValues } = await Swal.fire({
+                    title: 'Agregar Proyecto Manualmente',
+                    html: `
+                        <div class="text-start">
+                            <div class="mb-3">
+                                <label for="swal-input1" class="form-label">Nombre del Proyecto</label>
+                                <input id="swal-input1" class="form-control" placeholder="Mi Proyecto Genial">
+                            </div>
+                            <div class="mb-3">
+                                <label for="swal-input2" class="form-label">Carpeta</label>
+                                <input id="swal-input2" class="form-control" placeholder="mi-proyecto">
+                            </div>
+                            <div class="mb-3">
+                                <label for="swal-input3" class="form-label">Archivo HTML</label>
+                                <input id="swal-input3" class="form-control" placeholder="index.html" value="index.html">
+                            </div>
+                        </div>
+                    `,
+                    focusConfirm: false,
+                    showCancelButton: true,
+                    confirmButtonText: 'Agregar',
+                    cancelButtonText: 'Cancelar',
+                    preConfirm: () => {
+                        return [
+                            document.getElementById('swal-input1').value,
+                            document.getElementById('swal-input2').value,
+                            document.getElementById('swal-input3').value
+                        ]
+                    }
+                });
+
+                if (formValues) {
+                    const [name, folder, file] = formValues;
+                    if (name && folder && file) {
+                        const url = `${window.location.origin}${window.location.pathname.replace('index.html', '')}${folder}/${file}`;
+                        
+                        const project = {
+                            name: name,
+                            folder: folder,
+                            file: file,
+                            url: url,
+                            status: 'success',
+                            lastModified: new Date().toISOString(),
+                            size: 'Unknown'
+                        };
+                        
+                        this.projects.push(project);
+                        this.renderProjects();
+                        this.updateStats();
+                        
+                        this.showToast('success', 'Proyecto agregado manualmente');
+                    }
+                }
+            }
+
+            // Método para exportar lista de proyectos
+            exportProjects() {
+                const data = {
+                    exportDate: new Date().toISOString(),
+                    projectCount: this.projects.length,
+                    projects: this.projects
+                };
+                
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `proyectos-${new Date().toISOString().split('T')[0]}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+                
+                this.showToast('success', 'Lista de proyectos exportada');
+            }
+
+            // Método para mostrar estadísticas detalladas
+            showDetailedStats() {
+                const stats = {
+                    totalProjects: this.projects.length,
+                    folders: [...new Set(this.projects.map(p => p.folder))].length,
+                    fileTypes: this.projects.reduce((acc, p) => {
+                        acc[p.file] = (acc[p.file] || 0) + 1;
+                        return acc;
+                    }, {}),
+                    lastDetection: new Date().toLocaleString('es-ES')
+                };
+
+                Swal.fire({
+                    title: 'Estadísticas Detalladas',
+                    html: `
+                        <div class="text-start">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="card">
+                                        <div class="card-body text-center">
+                                            <h3 class="text-primary">${stats.totalProjects}</h3>
+                                            <small>Proyectos Total</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="card">
+                                        <div class="card-body text-center">
+                                            <h3 class="text-success">${stats.folders}</h3>
+                                            <small>Carpetas Únicas</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <h6>Tipos de Archivos:</h6>
+                                <ul class="list-unstyled">
+                                    ${Object.entries(stats.fileTypes).map(([file, count]) => 
+                                        `<li><code>${file}</code>: ${count} proyecto${count > 1 ? 's' : ''}</li>`
+                                    ).join('')}
+                                </ul>
+                            </div>
+                            <div class="mt-3">
+                                <small class="text-muted">Última detección: ${stats.lastDetection}</small>
+                            </div>
+                        </div>
+                    `,
+                    width: 600,
+                    confirmButtonText: 'Cerrar'
+                });
+            }
+        }
+
+        // Instancia global
+        let projectExplorer;
+
+        // Inicializar cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', function() {
+            projectExplorer = new ProjectExplorer();
+            
+            // Agregar partículas de fondo
+            if (typeof particlesJS !== 'undefined') {
+                particlesJS('particles-js', {
+                    particles: {
+                        number: { value: 50 },
+                        color: { value: '#ffffff' },
+                        shape: { type: 'circle' },
+                        opacity: { value: 0.1 },
+                        size: { value: 3 },
+                        move: {
+                            enable: true,
+                            speed: 1,
+                            direction: 'none',
+                            random: true,
+                            out_mode: 'out'
+                        }
+                    }
+                });
+            }
+        });
+
+        // Funciones globales para los botones
+        function detectProjects() {
+            projectExplorer.detectProjects();
+        }
+
+        function refreshProjects() {
+            projectExplorer.refreshProjects();
+        }
+
+        function addManualProject() {
+            projectExplorer.addManualProject();
+        }
+
+        function exportProjects() {
+            projectExplorer.exportProjects();
+        }
+
+        function showStats() {
+            projectExplorer.showDetailedStats();
+        }
+
+        // Atajos de teclado
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case 'r':
+                        e.preventDefault();
+                        refreshProjects();
+                        break;
+                    case 'd':
+                        e.preventDefault();
+                        detectProjects();
+                        break;
+                    case 'n':
+                        e.preventDefault();
+                        addManualProject();
+                        break;
+                }
+            }
+        });
+
+        // Service Worker para cache (opcional)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js').then(function(registration) {
+                    console.log('SW registered: ', registration);
+                }).catch(function(registrationError) {
+                    console.log('SW registration failed: ', registrationError);
+                });
+            });
+        }
+    </script>
+
+    <!-- Floating Action Button -->
+    <div class="position-fixed bottom-0 end-0 p-4" style="z-index: 1050;">
+        <div class="btn-group-vertical" role="group">
+            <button type="button" class="btn btn-primary btn-lg rounded-circle mb-2" 
+                    onclick="addManualProject()" 
+                    data-bs-toggle="tooltip" 
+                    data-bs-placement="left" 
+                    title="Agregar Proyecto Manual (Ctrl+N)">
+                <i class="fas fa-plus"></i>
+            </button>
+            <button type="button" class="btn btn-info btn-lg rounded-circle mb-2" 
+                    onclick="showStats()" 
+                    data-bs-toggle="tooltip" 
+                    data-bs-placement="left" 
+                    title="Ver Estadísticas">
+                <i class="fas fa-chart-bar"></i>
+            </button>
+            <button type="button" class="btn btn-success btn-lg rounded-circle" 
+                    onclick="exportProjects()" 
+                    data-bs-toggle="tooltip" 
+                    data-bs-placement="left" 
+                    title="Exportar Lista">
+                <i class="fas fa-download"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Initialize tooltips -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+</body>
+</html>
+
+
