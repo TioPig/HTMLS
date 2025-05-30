@@ -163,24 +163,6 @@
             color: white;
         }
 
-        .btn-outline-gradient {
-            border: 2px solid transparent;
-            background: linear-gradient(white, white) padding-box, var(--primary-gradient) border-box;
-            color: #667eea;
-            font-weight: 500;
-            padding: 0.75rem 1.5rem;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-outline-gradient:hover {
-            background: var(--primary-gradient);
-            color: white;
-            transform: translateY(-2px);
-        }
-
         .loading-spinner {
             display: inline-block;
             width: 2rem;
@@ -225,16 +207,6 @@
             text-align: center;
         }
 
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
         .floating {
             animation: floating 3s ease-in-out infinite;
         }
@@ -254,7 +226,7 @@
             font-weight: 600;
         }
 
-        .status-success {
+        .status-online {
             background: var(--success-gradient);
             color: white;
         }
@@ -422,9 +394,6 @@
     
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
-    <!-- Particles.js -->
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
     <script>
         class ProjectExplorer {
@@ -582,7 +551,7 @@
                                 folder: folderName,
                                 file: htmlFile,
                                 url: url,
-                                status: 'success',
+                                status: 'online',
                                 lastModified: response.headers.get('last-modified') || new Date().toISOString(),
                                 size: response.headers.get('content-length') || 'Unknown'
                             };
@@ -636,8 +605,8 @@
                     <div class="col-lg-6 col-xl-4" data-aos="fade-up" data-aos-delay="${index * 100}">
                         <div class="project-card">
                             <div class="status-badge status-${project.status}">
-                                <i class="fas fa-${project.status === 'success' ? 'check' : 'times'}"></i>
-                                ${project.status === 'success' ? 'Activo' : 'Error'}
+                                <i class="fas fa-${project.status === 'online' ? 'globe' : 'times'}"></i>
+                                ${project.status === 'online' ? 'En línea' : 'Error'}
                             </div>
                             
                             <div class="project-header">
@@ -667,14 +636,10 @@
                                     </div>
                                 </div>
                                 
-                                <div class="d-grid gap-2">
+                                <div class="d-grid">
                                     <a href="${project.url}" class="btn-gradient text-center" target="_blank">
                                         <i class="fas fa-external-link-alt me-2"></i>
                                         Ver Proyecto
-                                    </a>
-                                    <a href="${project.url}" class="btn-outline-gradient text-center" target="_blank">
-                                        <i class="fas fa-code me-2"></i>
-                                        Ver Código
                                     </a>
                                 </div>
                             </div>
@@ -753,134 +718,6 @@
                     position: 'top-end'
                 });
             }
-
-            // Método para agregar proyecto manualmente
-            async addManualProject() {
-                const { value: formValues } = await Swal.fire({
-                    title: 'Agregar Proyecto Manualmente',
-                    html: `
-                        <div class="text-start">
-                            <div class="mb-3">
-                                <label for="swal-input1" class="form-label">Nombre del Proyecto</label>
-                                <input id="swal-input1" class="form-control" placeholder="Mi Proyecto Genial">
-                            </div>
-                            <div class="mb-3">
-                                <label for="swal-input2" class="form-label">Carpeta</label>
-                                <input id="swal-input2" class="form-control" placeholder="mi-proyecto">
-                            </div>
-                            <div class="mb-3">
-                                <label for="swal-input3" class="form-label">Archivo HTML</label>
-                                <input id="swal-input3" class="form-control" placeholder="index.html" value="index.html">
-                            </div>
-                        </div>
-                    `,
-                    focusConfirm: false,
-                    showCancelButton: true,
-                    confirmButtonText: 'Agregar',
-                    cancelButtonText: 'Cancelar',
-                    preConfirm: () => {
-                        return [
-                            document.getElementById('swal-input1').value,
-                            document.getElementById('swal-input2').value,
-                            document.getElementById('swal-input3').value
-                        ]
-                    }
-                });
-
-                if (formValues) {
-                    const [name, folder, file] = formValues;
-                    if (name && folder && file) {
-                        const url = `${window.location.origin}${window.location.pathname.replace('index.html', '')}${folder}/${file}`;
-                        
-                        const project = {
-                            name: name,
-                            folder: folder,
-                            file: file,
-                            url: url,
-                            status: 'success',
-                            lastModified: new Date().toISOString(),
-                            size: 'Unknown'
-                        };
-                        
-                        this.projects.push(project);
-                        this.renderProjects();
-                        this.updateStats();
-                        
-                        this.showToast('success', 'Proyecto agregado manualmente');
-                    }
-                }
-            }
-
-            // Método para exportar lista de proyectos
-            exportProjects() {
-                const data = {
-                    exportDate: new Date().toISOString(),
-                    projectCount: this.projects.length,
-                    projects: this.projects
-                };
-                
-                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `proyectos-${new Date().toISOString().split('T')[0]}.json`;
-                a.click();
-                URL.revokeObjectURL(url);
-                
-                this.showToast('success', 'Lista de proyectos exportada');
-            }
-
-            // Método para mostrar estadísticas detalladas
-            showDetailedStats() {
-                const stats = {
-                    totalProjects: this.projects.length,
-                    folders: [...new Set(this.projects.map(p => p.folder))].length,
-                    fileTypes: this.projects.reduce((acc, p) => {
-                        acc[p.file] = (acc[p.file] || 0) + 1;
-                        return acc;
-                    }, {}),
-                    lastDetection: new Date().toLocaleString('es-ES')
-                };
-
-                Swal.fire({
-                    title: 'Estadísticas Detalladas',
-                    html: `
-                        <div class="text-start">
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="card">
-                                        <div class="card-body text-center">
-                                            <h3 class="text-primary">${stats.totalProjects}</h3>
-                                            <small>Proyectos Total</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="card">
-                                        <div class="card-body text-center">
-                                            <h3 class="text-success">${stats.folders}</h3>
-                                            <small>Carpetas Únicas</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mt-3">
-                                <h6>Tipos de Archivos:</h6>
-                                <ul class="list-unstyled">
-                                    ${Object.entries(stats.fileTypes).map(([file, count]) => 
-                                        `<li><code>${file}</code>: ${count} proyecto${count > 1 ? 's' : ''}</li>`
-                                    ).join('')}
-                                </ul>
-                            </div>
-                            <div class="mt-3">
-                                <small class="text-muted">Última detección: ${stats.lastDetection}</small>
-                            </div>
-                        </div>
-                    `,
-                    width: 600,
-                    confirmButtonText: 'Cerrar'
-                });
-            }
         }
 
         // Instancia global
@@ -889,26 +726,6 @@
         // Inicializar cuando el DOM esté listo
         document.addEventListener('DOMContentLoaded', function() {
             projectExplorer = new ProjectExplorer();
-            
-            // Agregar partículas de fondo
-            if (typeof particlesJS !== 'undefined') {
-                particlesJS('particles-js', {
-                    particles: {
-                        number: { value: 50 },
-                        color: { value: '#ffffff' },
-                        shape: { type: 'circle' },
-                        opacity: { value: 0.1 },
-                        size: { value: 3 },
-                        move: {
-                            enable: true,
-                            speed: 1,
-                            direction: 'none',
-                            random: true,
-                            out_mode: 'out'
-                        }
-                    }
-                });
-            }
         });
 
         // Funciones globales para los botones
@@ -918,18 +735,6 @@
 
         function refreshProjects() {
             projectExplorer.refreshProjects();
-        }
-
-        function addManualProject() {
-            projectExplorer.addManualProject();
-        }
-
-        function exportProjects() {
-            projectExplorer.exportProjects();
-        }
-
-        function showStats() {
-            projectExplorer.showDetailedStats();
         }
 
         // Atajos de teclado
@@ -943,10 +748,6 @@
                     case 'd':
                         e.preventDefault();
                         detectProjects();
-                        break;
-                    case 'n':
-                        e.preventDefault();
-                        addManualProject();
                         break;
                 }
             }
@@ -964,33 +765,6 @@
         }
     </script>
 
-    <!-- Floating Action Button -->
-    <div class="position-fixed bottom-0 end-0 p-4" style="z-index: 1050;">
-        <div class="btn-group-vertical" role="group">
-            <button type="button" class="btn btn-primary btn-lg rounded-circle mb-2" 
-                    onclick="addManualProject()" 
-                    data-bs-toggle="tooltip" 
-                    data-bs-placement="left" 
-                    title="Agregar Proyecto Manual (Ctrl+N)">
-                <i class="fas fa-plus"></i>
-            </button>
-            <button type="button" class="btn btn-info btn-lg rounded-circle mb-2" 
-                    onclick="showStats()" 
-                    data-bs-toggle="tooltip" 
-                    data-bs-placement="left" 
-                    title="Ver Estadísticas">
-                <i class="fas fa-chart-bar"></i>
-            </button>
-            <button type="button" class="btn btn-success btn-lg rounded-circle" 
-                    onclick="exportProjects()" 
-                    data-bs-toggle="tooltip" 
-                    data-bs-placement="left" 
-                    title="Exportar Lista">
-                <i class="fas fa-download"></i>
-            </button>
-        </div>
-    </div>
-
     <!-- Initialize tooltips -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -1002,5 +776,4 @@
     </script>
 </body>
 </html>
-
 
