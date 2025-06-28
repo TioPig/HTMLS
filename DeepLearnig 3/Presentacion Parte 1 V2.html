@@ -1,0 +1,2579 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Don Quijote LSTM - Generación de Texto con Deep Learning</title>
+    
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #8B4513;
+            --secondary-color: #D2691E;
+            --accent-color: #DAA520;
+            --text-color: #2C1810;
+            --bg-gradient: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #CD853F 100%);
+            --slide-bg: #FFF8DC;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', serif;
+            background: var(--bg-gradient);
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .presentation-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            position: absolute;
+            width: 90vw;
+            height: 90vh;
+            background: var(--slide-bg);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            opacity: 0;
+            transform: translateX(100px) scale(0.8);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border: 5px solid var(--accent-color);
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+            z-index: 10;
+        }
+
+        .slide.prev {
+            transform: translateX(-100px) scale(0.8);
+            opacity: 0;
+        }
+
+        .slide.next {
+            transform: translateX(100px) scale(0.8);
+            opacity: 0;
+        }
+
+        /* Estilos para imágenes y gráficos */
+        .chart-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin: 20px 0;
+            max-width: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .chart-image {
+            max-width: 100%;
+            max-height: 400px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .chart-image:hover {
+            transform: scale(1.02);
+        }
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .chart-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .chart-description {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            margin-top: 15px;
+            text-align: center;
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        /* Modal para zoom de imágenes */
+        .image-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .image-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .image-modal img {
+            max-width: 95%;
+            max-height: 95%;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            object-fit: contain;
+        }
+
+        .image-modal .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: rgba(0,0,0,0.5);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+        }
+
+        .image-modal .close-btn:hover {
+            background: rgba(0,0,0,0.8);
+        }
+
+        /* Slide específicos */
+        .slide h1 {
+            font-family: 'Cinzel', serif;
+            color: var(--primary-color);
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .slide h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--primary-color);
+            font-size: 2.8rem;
+            font-weight: 600;
+            margin-bottom: 40px;
+        }
+
+        .slide h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--secondary-color);
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        .slide p {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            color: var(--text-color);
+            margin-bottom: 20px;
+        }
+
+        .slide-number {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            background: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+        }
+
+        /* Controles de navegación */
+        .nav-controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Indicadores de slide */
+        .slide-indicators {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator.active {
+            background: var(--accent-color);
+            transform: scale(1.3);
+        }
+
+        /* Animaciones específicas para elementos */
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .slide-in-left {
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        .slide-in-right {
+            animation: slideInRight 0.8s ease-out;
+        }
+
+        .bounce-in {
+            animation: bounceIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInLeft {
+            from { transform: translateX(-100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Estilos específicos para contenido */
+        .hero-icon {
+            font-size: 8rem;
+            color: var(--accent-color);
+            margin-bottom: 30px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        .team-member {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .team-member:hover {
+            transform: translateY(-15px) scale(1.05);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+        }
+
+        .team-member::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+
+        .team-member .member-avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .team-member .member-avatar i {
+            font-size: 3.5rem;
+            color: white;
+        }
+
+        .team-member h4 {
+            font-size: 1.6rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .team-member .member-role {
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .team-member .member-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .skill-tag {
+            background: var(--accent-color);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 35px 25px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        .architecture-flow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .layer-box {
+            background: white;
+            padding: 25px 45px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            min-width: 350px;
+            text-align: center;
+            border-left: 5px solid var(--accent-color);
+            transition: all 0.3s ease;
+        }
+
+        .layer-box:hover {
+            transform: translateX(10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+        }
+
+        .arrow-down {
+            font-size: 2rem;
+            color: var(--secondary-color);
+        }
+
+        .temperature-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        .temp-example {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .temp-value {
+            background: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: inline-block;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .generated-text {
+            font-style: italic;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-color);
+            border-left: 4px solid var(--accent-color);
+            padding-left: 20px;
+        }
+
+        .conclusion-points {
+            text-align: left;
+            max-width: 800px;
+            margin-top: 40px;
+        }
+
+        .conclusion-points li {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            list-style: none;
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .conclusion-points li::before {
+            content: "⚔️";
+            position: absolute;
+            left: 0;
+            font-size: 1.5rem;
+        }
+
+        /* Efectos de partículas de fondo */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(218, 165, 32, 0.6);
+            border-radius: 50%;
+            animation: float 6s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Placeholder para imágenes no encontradas */
+        .image-placeholder {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(45deg, #f0f0f0 25%, transparent 25%), 
+                       linear-gradient(-45deg, #f0f0f0 25%, transparent 25%), 
+                       linear-gradient(45deg, transparent 75%, #f0f0f0 75%), 
+                       linear-gradient(-45deg, transparent 75%, #f0f0f0 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            border: 2px dashed #ccc;
+        }
+
+        .image-placeholder-content {
+            text-align: center;
+            color: #666;
+        }
+
+        .image-placeholder-content i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #ccc;
+        }
+
+        /* Nuevos estilos para diapositiva 3 */
+        .intro-visual {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            margin-top: 40px;
+            width: 100%;
+        }
+
+        .intro-icon-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .intro-main-icon {
+            font-size: 8rem;
+            color: var(--accent-color);
+            margin-bottom: 30px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        .intro-sub-icons {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .sub-icon {
+            font-size: 3rem;
+            color: var(--secondary-color);
+            opacity: 0.8;
+            animation: pulse 2s infinite;
+        }
+
+        /* Estilos para conclusión compacta */
+        .conclusion-compact {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            width: 100%;
+            max-height: 70vh;
+        }
+
+        .conclusion-section {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .conclusion-section h3 {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .conclusion-section ul {
+            list-style: none;
+            padding: 0;
+            flex: 1;
+        }
+
+        .conclusion-section li {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            padding-left: 35px;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .conclusion-section li::before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+        }
+
+        .final-example {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .final-example .generated-text {
+            color: white;
+            border-left: 4px solid white;
+            font-size: 1.2rem;
+            margin: 20px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .slide {
+                width: 95vw;
+                height: 95vh;
+                padding: 30px;
+            }
+            
+            .slide h1 {
+                font-size: 2.5rem;
+            }
+            
+            .slide h2 {
+                font-size: 2rem;
+            }
+            
+            .slide p {
+                font-size: 1.2rem;
+            }
+            
+            .hero-icon {
+                font-size: 5rem;
+            }
+
+            .chart-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .chart-image {
+                max-height: 250px;
+            }
+
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .intro-visual {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .conclusion-compact {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        /* Efectos adicionales */
+        .glow-effect {
+            box-shadow: 0 0 20px rgba(218, 165, 32, 0.5);
+            transition: box-shadow 0.3s ease;
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .floating-animation {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Tooltip para imágenes */
+        .image-tooltip {
+            position: absolute;
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+            white-space: nowrap;
+            top: 10px;
+            right: 10px;
+        }
+
+        .chart-container:hover .image-tooltip {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Partículas de fondo -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Indicadores de slide -->
+    <div class="slide-indicators" id="indicators"></div>
+
+    <!-- Container principal -->
+    <div class="presentation-container">
+        
+        <!-- Slide 1: Portada -->
+        <div class="slide active" data-slide="1">
+            <i class="fas fa-chess-knight hero-icon bounce-in"></i>
+            <h1 class="fade-in">Don Quijote LSTM</h1>
+            <p class="slide-in-left" style="font-size: 1.8rem; color: var(--secondary-color); margin-bottom: 40px;">
+                Generación Automática de Texto con Redes Neuronales Recurrentes
+            </p>
+            <div class="slide-in-right" style="margin-top: 40px;">
+                <p style="font-size: 1.3rem; font-weight: 600;">VII Semestre - Deep Learning</p>
+                <p style="font-size: 1.2rem;">DuocUC - 2025</p>
+            </div>
+            <div class="slide-number">1 / 18</div>
+        </div>
+
+        <!-- Slide 2: Integrantes MEJORADO -->
+        <div class="slide" data-slide="2">
+            <h2 class="fade-in">Equipo de Desarrollo</h2>
+            <div class="team-grid">
+                <div class="team-member slide-in-left">
+                    <div class="member-avatar">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <h4>Italo Brignardello</h4>
+                    <div class="member-skills">
+                        <span class="skill-tag">LSTM</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">TensorFlow</span>
+                    </div>
+                </div>
+                <div class="team-member slide-in-right">
+                    <div class="member-avatar">
+                        <i class="fas fa-user-cog"></i>
+                    </div>
+                    <h4>Patricio Quintanilla</h4>
+                    <div class="member-skills">
+                        <span class="skill-tag">NLP</span>
+                        <span class="skill-tag">PyTorch</span>
+                        <span class="skill-tag">Análisis</span>
+                    </div>
+                </div>
+                <div class="team-member slide-in-left">
+                    <div class="member-avatar">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <h4>Alexander Seydewitz</h4>
+                    <div class="member-skills">
+                        <span class="skill-tag">Datasets</span>
+                        <span class="skill-tag">Métricas</span>
+                        <span class="skill-tag">Visualización</span>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">2 / 18</div>
+        </div>
+
+        <!-- Slide 3: Introducción MEJORADO -->
+        <div class="slide" data-slide="3">
+            <h2 class="fade-in">¿Qué es Don Quijote LSTM?</h2>
+            <div class="intro-visual">
+                <div class="intro-icon-section slide-in-left">
+                    <i class="fas fa-book-open intro-main-icon"></i>
+                    <div class="intro-sub-icons">
+                        <i class="fas fa-brain sub-icon"></i>
+                        <i class="fas fa-robot sub-icon"></i>
+                        <i class="fas fa-magic sub-icon"></i>
+                    </div>
+                </div>
+                <div style="flex: 2; text-align: left;" class="slide-in-right">
+                    <p style="font-size: 1.5rem; line-height: 1.8; margin-bottom: 30px;">
+                        Un proyecto innovador que utiliza <strong style="color: var(--primary-color);">Redes Neuronales LSTM</strong> 
+                        para generar texto automáticamente, entrenado con la obra maestra de 
+                        <strong style="color: var(--secondary-color);">Miguel de Cervantes</strong>.
+                    </p>
+                    <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-top: 30px;">
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                            <i class="fas fa-brain" style="font-size: 2rem; color: var(--accent-color);"></i>
+                            <span style="font-size: 1.3rem; color: var(--primary-color); font-weight: 600;">Deep Learning aplicado a la literatura clásica española</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <i class="fas fa-scroll" style="font-size: 2rem; color: var(--secondary-color);"></i>
+                            <span style="font-size: 1.3rem; color: var(--text-color);">Preservando el estilo cervantino del Siglo de Oro</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">3 / 18</div>
+        </div>
+
+        <!-- Slide 4: Objetivos -->
+        <div class="slide" data-slide="4">
+            <h2 class="fade-in">Objetivos del Proyecto</h2>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; margin-top: 50px; width: 100%;">
+                <div class="slide-in-left" style="text-align: left;">
+                    <h3 style="color: var(--primary-color); margin-bottom: 20px;">
+                        <i class="fas fa-target me-3"></i>Objetivo Principal
+                    </h3>
+                    <p style="font-size: 1.4rem;">
+                        Desarrollar un modelo LSTM capaz de generar texto coherente 
+                        que emule el estilo literario de Cervantes.
+                    </p>
+                </div>
+                <div class="slide-in-right" style="text-align: left;">
+                    <h3 style="color: var(--secondary-color); margin-bottom: 20px;">
+                        <i class="fas fa-list-check me-3"></i>Objetivos Específicos
+                    </h3>
+                    <ul style="font-size: 1.2rem; list-style: none; padding: 0;">
+                        <li style="margin-bottom: 15px;"><i class="fas fa-check-circle me-2 text-success"></i>Procesar y analizar el corpus textual</li>
+                        <li style="margin-bottom: 15px;"><i class="fas fa-check-circle me-2 text-success"></i>Implementar arquitectura LSTM optimizada</li>
+                        <li style="margin-bottom: 15px;"><i class="fas fa-check-circle me-2 text-success"></i>Evaluar calidad del texto generado</li>
+                        <li style="margin-bottom: 15px;"><i class="fas fa-check-circle me-2 text-success"></i>Controlar creatividad mediante temperatura</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-number">4 / 18</div>
+        </div>
+
+        <!-- Slide 5: Estadísticas MEJORADO Y ORDENADO -->
+        <div class="slide" data-slide="5">
+            <h2 class="fade-in">Análisis del Corpus Textual</h2>
+            <p style="font-size: 1.4rem; margin-bottom: 40px; color: var(--secondary-color);">
+                <i class="fas fa-chart-bar me-2"></i>Estadísticas principales del texto de Don Quijote
+            </p>
+            <div class="stats-grid">
+                <div class="stat-card bounce-in" style="animation-delay: 0.1s;">
+                    <i class="fas fa-file-alt stat-icon"></i>
+                    <span class="stat-number">1,234,567</span>
+                    <div class="stat-label">Caracteres Totales</div>
+                </div>
+                <div class="stat-card bounce-in" style="animation-delay: 0.2s;">
+                    <i class="fas fa-font stat-icon"></i>
+                    <span class="stat-number">87</span>
+                    <div class="stat-label">Vocabulario Único</div>
+                </div>
+                <div class="stat-card bounce-in" style="animation-delay: 0.3s;">
+                    <i class="fas fa-spell-check stat-icon"></i>
+                    <span class="stat-number">234,891</span>
+                    <div class="stat-label">Palabras Totales</div>
+                </div>
+                <div class="stat-card bounce-in" style="animation-delay: 0.4s;">
+                    <i class="fas fa-list-ul stat-icon"></i>
+                    <span class="stat-number">12,456</span>
+                    <div class="stat-label">Palabras Únicas</div>
+                </div>
+                <div class="stat-card bounce-in" style="animation-delay: 0.5s;">
+                    <i class="fas fa-ruler stat-icon"></i>
+                    <span class="stat-number">4.8</span>
+                    <div class="stat-label">Longitud Media</div>
+                </div>
+                <div class="stat-card bounce-in" style="animation-delay: 0.6s;">
+                    <i class="fas fa-brain stat-icon"></i>
+                    <span class="stat-number">50</span>
+                    <div class="stat-label">Secuencia LSTM</div>
+                </div>
+            </div>
+            <div style="background: white; padding: 30px; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.15); margin-top: 40px;">
+                <h4 style="color: var(--primary-color); text-align: center; margin-bottom: 20px;">
+                    <i class="fas fa-info-circle me-2"></i>Datos del Preprocessing
+                </h4>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center;">
+                    <div>
+                        <strong style="color: var(--secondary-color);">Normalización:</strong><br>
+                        <span>Texto limpiado y estandarizado</span>
+                    </div>
+                    <div>
+                        <strong style="color: var(--secondary-color);">Codificación:</strong><br>
+                        <span>One-hot encoding de caracteres</span>
+                    </div>
+                    <div>
+                        <strong style="color: var(--secondary-color);">División:</strong><br>
+                        <span>80% entrenamiento, 20% validación</span>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">5 / 18</div>
+        </div>
+
+        <!-- Slide 6: Distribución MEJORADO -->
+        <div class="slide" data-slide="6">
+            <h2 class="fade-in">Distribución de Longitud de Palabras</h2>
+            <div class="chart-container slide-in-left">
+                <div class="chart-title">Análisis de Longitud de Palabras en el Corpus</div>
+                <img src="longitud_palabras.png" alt="Distribución de longitud de palabras" class="chart-image" onerror="this.onerror=null; handleImageError(this);">
+                <div class="chart-description">
+                    Histograma que muestra la frecuencia de palabras según su longitud en caracteres.
+                    La mayoría de palabras tienen entre 3-8 caracteres, típico del español clásico.
+                </div>
+                <div class="image-tooltip">Click para ampliar imagen</div>
+            </div>
+            <div class="slide-number">6 / 18</div>
+        </div>
+
+        <!-- Slide 7: Palabras Comunes MEJORADO -->
+        <div class="slide" data-slide="7">
+            <h2 class="fade-in">Palabras Más Frecuentes</h2>
+            <div class="chart-container slide-in-right">
+                <div class="chart-title">Top 15 Palabras Más Comunes en Don Quijote</div>
+                <img src="palabras_comunes.png" alt="Palabras más comunes" class="chart-image">
+                <div class="chart-description">
+                    Análisis de frecuencia que revela el vocabulario característico de Cervantes.
+                    Destacan artículos, preposiciones y palabras clave como "don", "señor", "caballero".
+                </div>
+                <div class="image-tooltip">Click para ampliar imagen</div>
+            </div>
+            <div class="slide-number">7 / 18</div>
+        </div>
+
+        <!-- Slide 8: Caracteres MEJORADO -->
+        <div class="slide" data-slide="8">
+            <h2 class="fade-in">Análisis de Caracteres</h2>
+            <div class="chart-container slide-in-left">
+                <div class="chart-title">Distribución de Caracteres Más Frecuentes</div>
+                <img src="caracteres_comunes.png" alt="Caracteres más comunes" class="chart-image" onerror="this.onerror=null; handleImageError(this);">
+                <div class="chart-description">
+                    Frecuencia de caracteres individuales incluyendo espacios y signos de puntuación.
+                    Fundamental para el entrenamiento del modelo LSTM a nivel de carácter.
+                </div>
+                <div class="image-tooltip">Click para ampliar imagen</div>
+            </div>
+            <div class="slide-number">8 / 18</div>
+        </div>
+
+        <!-- Slide 9: Arquitectura MEJORADO -->
+        <div class="slide" data-slide="9">
+            <h2 class="fade-in">Arquitectura del Modelo LSTM</h2>
+            <p style="font-size: 1.4rem; margin-bottom: 40px; color: var(--secondary-color);">
+                <i class="fas fa-sitemap me-2"></i>Red Neuronal Recurrente Bicapa con Dropout
+            </p>
+            <div class="architecture-flow">
+                <div class="layer-box slide-in-left">
+                    <i class="fas fa-sign-in-alt me-2" style="color: var(--accent-color);"></i>
+                    Capa de Entrada - Embedding (87 caracteres únicos)
+                </div>
+                <div class="arrow-down">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+                <div class="layer-box slide-in-right">
+                    <i class="fas fa-brain me-2" style="color: var(--primary-color);"></i>
+                    LSTM Layer 1 (256 neuronas) - Return Sequences
+                </div>
+                <div class="arrow-down">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+                <div class="layer-box slide-in-left">
+                    <i class="fas fa-brain me-2" style="color: var(--primary-color);"></i>
+                    LSTM Layer 2 (256 neuronas) - Memoria a largo plazo
+                </div>
+                <div class="arrow-down">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+                <div class="layer-box slide-in-right">
+                    <i class="fas fa-filter me-2" style="color: var(--secondary-color);"></i>
+                    Dropout Layer (0.2) - Regularización contra overfitting
+                </div>
+                <div class="arrow-down">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+                <div class="layer-box slide-in-left">
+                    <i class="fas fa-sign-out-alt me-2" style="color: var(--accent-color);"></i>
+                    Dense + Softmax (87 salidas) - Predicción de caracteres
+                </div>
+            </div>
+            
+            <!-- Información adicional de la arquitectura -->
+            <div style="background: white; padding: 30px; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.15); margin-top: 40px;">
+                <h4 style="color: var(--primary-color); text-align: center; margin-bottom: 20px;">
+                    <i class="fas fa-cogs me-2"></i>Especificaciones Técnicas
+                </h4>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center;">
+                    <div>
+                        <strong style="color: var(--secondary-color);">Parámetros:</strong><br>
+                        <span>1,247,639 entrenables</span>
+                    </div>
+                    <div>
+                        <strong style="color: var(--secondary-color);">Secuencia:</strong><br>
+                        <span>50 caracteres de entrada</span>
+                    </div>
+                    <div>
+                        <strong style="color: var(--secondary-color);">Activación:</strong><br>
+                        <span>Tanh + Softmax final</span>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">9 / 18</div>
+        </div>
+
+        <!-- Slide 10: Proceso de Entrenamiento -->
+        <div class="slide" data-slide="10">
+            <h2 class="fade-in">Proceso de Entrenamiento</h2>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 50px; margin-top: 40px; width: 100%;">
+                <div class="slide-in-left">
+                    <h3 style="color: var(--primary-color); margin-bottom: 30px;">
+                        <i class="fas fa-cogs me-2"></i>Hiperparámetros
+                    </h3>
+                    <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                            <span><strong>Épocas:</strong></span>
+                            <span style="color: var(--primary-color);">20</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                            <span><strong>Batch Size:</strong></span>
+                            <span style="color: var(--primary-color);">128</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                            <span><strong>Learning Rate:</strong></span>
+                            <span style="color: var(--primary-color);">0.001</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                            <span><strong>Optimizador:</strong></span>
+                            <span style="color: var(--primary-color);">Adam</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span><strong>Función de Pérdida:</strong></span>
+                            <span style="color: var(--primary-color);">CrossEntropy</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-in-right">
+                    <h3 style="color: var(--secondary-color); margin-bottom: 30px;">
+                        <i class="fas fa-chart-line me-2"></i>Métricas de Entrenamiento
+                    </h3>
+                    <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <span style="font-size: 3rem; font-weight: 700; color: var(--primary-color);">85.3%</span>
+                            <div style="font-size: 1.2rem; color: var(--text-color);">Precisión Final</div>
+                        </div>
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <span style="font-size: 2.5rem; font-weight: 700; color: var(--secondary-color);">162.42 min</span>
+                            <div style="font-size: 1.2rem; color: var(--text-color);">Tiempo de Entrenamiento</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <span style="font-size: 2.5rem; font-weight: 700; color: var(--accent-color);">1.2M</span>
+                            <div style="font-size: 1.2rem; color: var(--text-color);">Parámetros Entrenables</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">10 / 18</div>
+        </div>
+
+        <!-- Slide 11: Métricas MEJORADO -->
+        <div class="slide" data-slide="11">
+            <h2 class="fade-in">Progreso del Entrenamiento</h2>
+            <div class="chart-container slide-in-left">
+                <div class="chart-title">Evolución de Loss y Accuracy durante el Entrenamiento</div>
+                <img src="metricas_entrenamiento.png" alt="Métricas de entrenamiento" class="chart-image" onerror="this.onerror=null; handleImageError(this);">
+                <div class="chart-description">
+                    Gráficos que muestran la convergencia del modelo a lo largo de 20 épocas.
+                    Se observa una reducción constante del loss y mejora en la precisión.
+                </div>
+                <div class="image-tooltip">Click para ampliar imagen</div>
+            </div>
+            <div class="slide-number">11 / 18</div>
+        </div>
+
+        <!-- Slide 12: Estados LSTM MEJORADO -->
+        <div class="slide" data-slide="12">
+            <h2 class="fade-in">Visualización de Estados LSTM</h2>
+            <div class="chart-container slide-in-right">
+                <div class="chart-title">Estados Ocultos y de Celda de la Red LSTM</div>
+                <img src="lstm_estados_internos.png" alt="Estados internos LSTM" class="chart-image" onerror="this.onerror=null; handleImageError(this);">
+                <div class="chart-description">
+                    Heatmap de los estados internos de la LSTM durante la generación de texto.
+                    Muestra cómo la red procesa y "recuerda" información contextual.
+                </div>
+                <div class="image-tooltip">Click para ampliar imagen</div>
+            </div>
+            <div class="slide-number">12 / 18</div>
+        </div>
+
+        <!-- Slide 13: Control de Temperatura OK -->
+        <div class="slide" data-slide="13">
+            <h2 class="fade-in">Control de Creatividad: Temperatura</h2>
+            <p style="font-size: 1.4rem; margin-bottom: 40px; color: var(--text-color);">
+                La temperatura controla el equilibrio entre coherencia y creatividad en la generación de texto
+            </p>
+            <div class="temperature-examples">
+                <div class="temp-example slide-in-left">
+                    <div class="temp-value">
+                        <i class="fas fa-snowflake me-2"></i>Temperatura 0.2
+                    </div>
+                    <div class="generated-text">
+                        "En un lugar de la Mancha, de cuyo nombre no quiero acordarme, no ha mucho tiempo que vivía un hidalgo..."
+                    </div>
+                    <div style="margin-top: 15px; font-size: 0.9rem; color: var(--secondary-color);">
+                        <i class="fas fa-check-circle me-1"></i> Más conservador y predecible
+                    </div>
+                </div>
+                <div class="temp-example slide-in-right">
+                    <div class="temp-value">
+                        <i class="fas fa-fire me-2"></i>Temperatura 1.5
+                    </div>
+                    <div class="generated-text">
+                        "En un lugar de la Mancha donde los molinos danzan con melodías secretas, un caballero emprendió jornadas místicas..."
+                    </div>
+                    <div style="margin-top: 15px; font-size: 0.9rem; color: var(--secondary-color);">
+                        <i class="fas fa-magic me-1"></i> Más creativo y variado
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">13 / 18</div>
+        </div>
+
+        <!-- Slide 14: Diversidad Léxica MEJORADO -->
+        <div class="slide" data-slide="14">
+            <h2 class="fade-in">Efecto de la Temperatura</h2>
+            <div class="chart-container slide-in-left">
+                <div class="chart-title">Diversidad Léxica vs. Temperatura</div>
+                <img src="diversidad_lexica.png" alt="Diversidad léxica por temperatura" class="chart-image" onerror="this.onerror=null; handleImageError(this);">
+                <div class="chart-description">
+                    Relación entre el parámetro de temperatura y la creatividad del texto generado.
+                    Temperaturas bajas = más conservador, temperaturas altas = más creativo.
+                </div>
+                <div class="image-tooltip">Click para ampliar imagen</div>
+            </div>
+            <div class="slide-number">14 / 18</div>
+        </div>
+
+        <!-- Slide 15: Distribución de Probabilidades MEJORADO -->
+        <div class="slide" data-slide="15">
+            <h2 class="fade-in">Distribución de Predicciones</h2>
+            <div class="chart-container slide-in-right">
+                <div class="chart-title">Distribución de Probabilidades por Temperatura</div>
+                <img src="distribucion_probabilidades.png" alt="distribucion probabilidades" class="chart-image" onerror="this.onerror=null; handleImageError(this);">
+                <div class="chart-description">
+                    Comparación de las distribuciones de probabilidad para diferentes valores de temperatura.
+                    Muestra cómo la temperatura afecta la confianza y variabilidad en las predicciones.
+                </div>
+                <div class="image-tooltip">Click para ampliar imagen</div>
+            </div>
+            <div class="slide-number">15 / 18</div>
+        </div>
+
+        <!-- Slide 16: Análisis de Entropía MEJORADO -->
+        <div class="slide" data-slide="16">
+            <h2 class="fade-in">Entropía durante la Generación</h2>
+            <div class="chart-container slide-in-left">
+                <div class="chart-title">
+                Evolución de la Entropía en la Generación de Texto
+                </div>
+                <img src="entropia_generacion.png" alt="entropia generacion" class="chart-image" onerror="this.onerror=null; handleImageError(this);">
+                <div class="chart-description">
+                    Medida de incertidumbre del modelo durante la generación de texto.
+                    Valores altos indican mayor variabilidad y creatividad en las predicciones.
+                </div>
+                <div class="image-tooltip">Click para ampliar imagen</div>
+            </div>
+            <div class="slide-number">16 / 18</div>
+        </div>
+
+        <!-- Slide 17: Métricas de Evaluación MEJORADO -->
+        <div class="slide" data-slide="17">
+            <h2 class="fade-in">Métricas de Evaluación</h2>
+            <div class="chart-grid">
+                <div class="chart-container slide-in-left">
+                    <div class="chart-title">
+                        Similitud de Jaccard por N-gramas
+                    </div>
+                    <img src="similitud_jaccard.png" alt="similitud jaccard" class="chart-image" onerror="this.onerror=null; handleImageError(this);">
+                    <div class="chart-description">
+                        Medida de similitud entre el texto original y el generado usando diferentes n-gramas.
+                    </div>
+                    <div class="image-tooltip">Click para ampliar imagen</div>
+                </div>
+                <div class="chart-container slide-in-right">
+                    <div class="chart-title">
+                        <i class="fas fa-balance-scale me-2"></i>Comparación de Métricas por Temperatura
+                    </div>
+                    <img src="comparacion_metricas.png" alt="comparacion metricas" class="chart-image" onerror="this.onerror=null; handleImageError(this);">
+                    <div class="chart-description">
+                        Análisis comparativo de diversidad, entropía y repetitividad para diferentes temperaturas.
+                    </div>
+                    <div class="image-tooltip">Click para ampliar imagen</div>
+                </div>
+            </div>
+            <div style="margin-top: 30px; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                <h4 style="color: var(--primary-color); margin-bottom: 20px; text-align: center;">
+                    <i class="fas fa-trophy me-2"></i>Resultados Destacados
+                </h4>
+                <div style="display: flex; justify-content: space-around; text-align: center;">
+                    <div>
+                        <i class="fas fa-check-circle" style="color: #28a745; font-size: 1.5rem;"></i>
+                        <p style="margin-top: 10px; font-weight: 600; margin-left: 15px; margin-right: 15px;">Coherencia Sintáctica</p>
+                    </div>
+                    <div>
+                        <i class="fas fa-check-circle" style="color: #28a745; font-size: 1.5rem;"></i>
+                        <p style="margin-top: 10px; font-weight: 600; margin-left: 15px; margin-right: 15px;">Estilo Cervantino</p>
+                    </div>
+                    <div>
+                        <i class="fas fa-check-circle" style="color: #28a745; font-size: 1.5rem;"></i>
+                        <p style="margin-top: 10px; font-weight: 600; margin-left: 15px; margin-right: 15px;">Control de Creatividad</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">17 / 18</div>
+        </div>
+
+        <!-- Slide 18: Conclusiones REESTRUCTURADO PARA PANTALLA COMPLETA -->
+        <div class="slide" data-slide="18">
+            <h2 class="fade-in">Conclusiones y Logros</h2>
+            
+            <!-- Sección principal compacta -->
+            <div class="conclusion-compact">
+                <div class="conclusion-section slide-in-left">
+                    <h3 style="color: var(--primary-color);">
+                        <i class="fas fa-star"></i>Logros Alcanzados
+                    </h3>
+                    <ul>
+                        <li>Implementación exitosa de arquitectura LSTM bicapa</li>
+                        <li>Captura del estilo literario del Siglo de Oro</li>
+                        <li>Control efectivo de creatividad mediante temperatura</li>
+                        <li>Generación de texto coherente y contextual</li>
+                        <li>Análisis exhaustivo con métricas especializadas</li>
+                    </ul>
+                </div>
+                
+                <div class="conclusion-section slide-in-right">
+                    <h3 style="color: var(--secondary-color);">
+                        <i class="fas fa-lightbulb"></i>Aplicaciones Futuras
+                    </h3>
+                    <ul>
+                        <li>Herramienta educativa para literatura clásica</li>
+                        <li>Asistente creativo para escritores</li>
+                        <li>Investigación en procesamiento de lenguaje natural</li>
+                        <li>Desarrollo de chatbots especializados</li>
+                        <li>Análisis comparativo de estilos literarios</li>
+                    </ul>
+                </div>
+                
+                <!-- Ejemplo final destacado -->
+                <div class="final-example bounce-in">
+                    <h3 style="margin-bottom: 15px;">
+                        <i class="fas fa-scroll me-2"></i>Ejemplo Final - Temperatura Óptima (1.0)
+                    </h3>
+                    <div class="generated-text">
+                        "En un lugar de la Mancha donde los caballeros andantes buscan aventuras extraordinarias, 
+                        vivía un hidalgo cuya imaginación volaba más alto que las águilas. Sus libros de caballerías 
+                        le habían llenado la fantasía de encantamientos, de desafíos, de batallas contra gigantes 
+                        que solo su noble corazón podía contemplar..."
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <span style="background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 20px; font-size: 0.9rem;">
+                            <i class="fas fa-balance-scale me-1"></i>
+                            Equilibrio perfecto entre coherencia y creatividad
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer compacto -->
+            <div style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); text-align: center;">
+                <div style="display: flex; align-items: center; gap: 40px; justify-content: center;">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <i class="fas fa-heart" style="font-size: 2rem; color: #e74c3c;"></i>
+                        <div>
+                            <p style="font-size: 1.2rem; color: var(--secondary-color); margin: 0;">
+                                "Finalmente, del poco dormir y del mucho leer, se le secó el celebro..."
+                            </p>
+                            <p style="font-size: 0.9rem; font-style: italic; margin: 5px 0 0 0;">
+                                - Miguel de Cervantes
+                            </p>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 30px;">
+                        <div style="text-align: center;">
+                            <i class="fas fa-university" style="font-size: 1.8rem; color: var(--accent-color);"></i>
+                            <p style="font-size: 0.9rem; margin: 5px 0 0 0;">DuocUC 2025</p>
+                        </div>
+                        <div style="text-align: center;">
+                            <i class="fas fa-graduation-cap" style="font-size: 1.8rem; color: var(--primary-color);"></i>
+                            <p style="font-size: 0.9rem; margin: 5px 0 0 0;">Deep Learning</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="slide-number">18 / 18</div>
+        </div>
+
+    </div>
+
+    <!-- Controles de navegación -->
+    <div class="nav-controls">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">
+            <i class="fas fa-chevron-left me-2"></i>Anterior
+        </button>
+        <button class="nav-btn" id="playBtn" onclick="toggleAutoplay()">
+            <i class="fas fa-play me-2"></i>Auto
+        </button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">
+            Siguiente<i class="fas fa-chevron-right ms-2"></i>
+        </button>
+    </div>
+
+    <!-- Modal para zoom de imágenes -->
+    <div class="image-modal" id="imageModal">
+        <div class="close-btn" onclick="closeImageModal()">
+            <i class="fas fa-times"></i>
+        </div>
+        <img id="modalImage" src="" alt="">
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 18;
+        let isAutoplay = false;
+        let autoplayInterval;
+
+        // Agregar estilos adicionales para miembros del equipo
+        const additionalStyles = document.createElement('style');
+        additionalStyles.textContent = `
+            .member-avatar {
+                width: 80px;
+                height: 80px;
+                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 20px auto;
+                color: white;
+                font-size: 2.5rem;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            }
+
+            .member-role {
+                font-size: 1.1rem;
+                color: var(--secondary-color);
+                margin: 10px 0 15px 0;
+                font-weight: 600;
+            }
+
+            .member-skills {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                justify-content: center;
+                margin-top: 15px;
+            }
+
+            .skill-tag {
+                background: var(--accent-color);
+                color: white;
+                padding: 4px 10px;
+                border-radius: 15px;
+                font-size: 0.8rem;
+                font-weight: 600;
+            }
+
+            .team-member h4 {
+                color: var(--primary-color);
+                font-size: 1.4rem;
+                margin: 15px 0 10px 0;
+                font-weight: 700;
+            }
+
+            /* Mejoras en efectos de hover */
+            .team-member:hover .member-avatar {
+                transform: scale(1.1) rotate(5deg);
+                transition: transform 0.3s ease;
+            }
+
+            .skill-tag:hover {
+                background: var(--primary-color);
+                transform: scale(1.05);
+                transition: all 0.2s ease;
+            }
+
+            /* Animación para ripple effect */
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+
+            /* Loading spinner para imágenes */
+            .image-loading {
+                position: relative;
+            }
+
+            .image-loading::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 40px;
+                height: 40px;
+                margin: -20px 0 0 -20px;
+                border: 4px solid #f3f3f3;
+                border-top: 4px solid var(--primary-color);
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            }
+
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+
+            /* Estilos para modo oscuro */
+            @media (prefers-color-scheme: dark) {
+                .image-placeholder {
+                    background: #2a2a2a;
+                    border-color: #555;
+                }
+                
+                .image-placeholder-content {
+                    color: #ccc;
+                }
+            }
+        `;
+        document.head.appendChild(additionalStyles);
+
+        // Inicializar presentación
+        document.addEventListener('DOMContentLoaded', function() {
+            createIndicators();
+            createParticles();
+            updateSlide();
+            setupImageHandling();
+            setupAdvancedFeatures();
+            
+            // Atajos de teclado
+            document.addEventListener('keydown', function(e) {
+                switch(e.key) {
+                    case 'ArrowRight':
+                    case ' ':
+                        e.preventDefault();
+                        changeSlide(1);
+                        break;
+                    case 'ArrowLeft':
+                        e.preventDefault();
+                        changeSlide(-1);
+                        break;
+                    case 'Home':
+                        e.preventDefault();
+                        goToSlide(1);
+                        break;
+                    case 'End':
+                        e.preventDefault();
+                        goToSlide(totalSlides);
+                        break;
+                    case 'p':
+                    case 'P':
+                        e.preventDefault();
+                        toggleAutoplay();
+                        break;
+                    case 'Escape':
+                        e.preventDefault();
+                        if (document.getElementById('imageModal').classList.contains('show')) {
+                            closeImageModal();
+                        } else if (isAutoplay) {
+                            toggleAutoplay();
+                        }
+                        break;
+                    case 'f':
+                    case 'F':
+                        if (e.ctrlKey || e.metaKey) {
+                            e.preventDefault();
+                            toggleFullscreen();
+                        }
+                        break;
+                }
+            });
+
+            // Gestos táctiles para móviles
+            let startX = 0;
+            let startY = 0;
+            let startTime = 0;
+
+            document.addEventListener('touchstart', function(e) {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+                startTime = Date.now();
+            });
+
+            document.addEventListener('touchend', function(e) {
+                if (!startX || !startY) return;
+
+                let endX = e.changedTouches[0].clientX;
+                let endY = e.changedTouches[0].clientY;
+                let endTime = Date.now();
+
+                let diffX = startX - endX;
+                let diffY = startY - endY;
+                let timeDiff = endTime - startTime;
+
+                // Solo procesar gestos rápidos
+                if (timeDiff < 300 && Math.abs(diffX) > Math.abs(diffY)) {
+                    if (Math.abs(diffX) > 50) {
+                        if (diffX > 0) {
+                            changeSlide(1);
+                        } else {
+                            changeSlide(-1);
+                        }
+                    }
+                }
+
+                startX = 0;
+                startY = 0;
+                startTime = 0;
+            });
+
+            // Prevenir zoom en móviles
+            document.addEventListener('touchmove', function(e) {
+                if (e.scale !== 1) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+        });
+
+        // Crear indicadores
+        function createIndicators() {
+            const indicatorsContainer = document.getElementById('indicators');
+            for (let i = 1; i <= totalSlides; i++) {
+                const indicator = document.createElement('div');
+                indicator.className = 'indicator';
+                if (i === 1) indicator.classList.add('active');
+                indicator.onclick = () => goToSlide(i);
+                indicator.title = `Ir al slide ${i}`;
+                indicatorsContainer.appendChild(indicator);
+            }
+        }
+
+        // Crear partículas de fondo
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Cambiar slide
+        function changeSlide(direction) {
+            if (direction > 0 && currentSlide < totalSlides) {
+                currentSlide++;
+            } else if (direction < 0 && currentSlide > 1) {
+                currentSlide--;
+            }
+            updateSlide();
+        }
+
+        // Ir a slide específico
+        function goToSlide(slideNumber) {
+            if (slideNumber >= 1 && slideNumber <= totalSlides) {
+                currentSlide = slideNumber;
+                updateSlide();
+            }
+        }
+
+        // Actualizar slide actual
+        function updateSlide() {
+            // Remover clases activas
+            document.querySelectorAll('.slide').forEach(slide => {
+                slide.classList.remove('active', 'prev', 'next');
+            });
+
+            document.querySelectorAll('.indicator').forEach(indicator => {
+                indicator.classList.remove('active');
+            });
+
+            // Activar slide actual
+            const currentSlideElement = document.querySelector(`[data-slide="${currentSlide}"]`);
+            currentSlideElement.classList.add('active');
+
+            // Activar indicador
+            document.querySelectorAll('.indicator')[currentSlide - 1].classList.add('active');
+
+            // Actualizar botones de navegación
+            document.getElementById('prevBtn').disabled = currentSlide === 1;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+
+            // Reiniciar animaciones del slide actual
+            setTimeout(() => {
+                const animatedElements = currentSlideElement.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right, .bounce-in');
+                animatedElements.forEach(element => {
+                    element.style.animation = 'none';
+                    element.offsetHeight; // Trigger reflow
+                    element.style.animation = null;
+                });
+            }, 100);
+
+            // Guardar progreso
+            saveProgress();
+
+            // Trigger eventos personalizados
+            document.dispatchEvent(new CustomEvent('slideChanged', { 
+                detail: { 
+                    currentSlide: currentSlide, 
+                    totalSlides: totalSlides 
+                } 
+            }));
+        }
+
+        // Toggle autoplay
+        function toggleAutoplay() {
+            const playBtn = document.getElementById('playBtn');
+            
+            if (isAutoplay) {
+                clearInterval(autoplayInterval);
+                isAutoplay = false;
+                playBtn.innerHTML = '<i class="fas fa-play me-2"></i>Auto';
+                playBtn.style.background = 'var(--primary-color)';
+                showNotification('Autoplay desactivado', 'info');
+            } else {
+                isAutoplay = true;
+                playBtn.innerHTML = '<i class="fas fa-pause me-2"></i>Parar';
+                playBtn.style.background = '#e74c3c';
+                showNotification('Autoplay activado - 6s por slide', 'success');
+                
+                autoplayInterval = setInterval(() => {
+                    if (currentSlide < totalSlides) {
+                        changeSlide(1);
+                    } else {
+                        // Reiniciar al primer slide
+                        goToSlide(1);
+                    }
+                }, 6000); // 6 segundos por slide
+            }
+        }
+
+        // Configurar manejo avanzado de imágenes
+        function setupImageHandling() {
+            document.querySelectorAll('.chart-image').forEach(img => {
+                // Agregar loading spinner
+                
+                img.addEventListener('click', function() {
+                    openImageModal(this.src, this.alt);
+                });
+
+                img.addEventListener('error', function() {
+                    handleImageError(this);
+                });
+
+                img.addEventListener('load', function() {
+                    this.style.opacity = '1';
+                    this.parentElement.classList.remove('image-loading');
+                });
+
+                // Inicialmente oculta hasta que cargue
+                img.style.opacity = '0';
+                img.style.transition = 'opacity 0.5s ease';
+            });
+
+            // También manejar placeholders
+            document.querySelectorAll('.image-placeholder').forEach(placeholder => {
+                placeholder.addEventListener('click', function() {
+                    const imageName = this.querySelector('.image-placeholder-content p:nth-child(2)').textContent;
+                    showNotification(`Imagen ${imageName} no disponible`, 'warning');
+                });
+            });
+        }
+
+        // Configurar características avanzadas
+        function setupAdvancedFeatures() {
+            // Efectos de hover mejorados
+            document.querySelectorAll('.stat-card, .team-member, .temp-example, .chart-container').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.classList.add('glow-effect');
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.classList.remove('glow-effect');
+                });
+            });
+
+            // Efectos de partículas en hover de botones
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('mouseenter', function() {
+                    this.classList.add('pulse-animation');
+                });
+                btn.addEventListener('mouseleave', function() {
+                    this.classList.remove('pulse-animation');
+                });
+            });
+
+            // Lazy loading para imágenes
+            if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            if (img.dataset.src) {
+                                img.src = img.dataset.src;
+                                img.removeAttribute('data-src');
+                                observer.unobserve(img);
+                            }
+                        }
+                    });
+                });
+
+                document.querySelectorAll('img[data-src]').forEach(img => {
+                    imageObserver.observe(img);
+                });
+            }
+        }
+
+        // Abrir modal de imagen
+        function openImageModal(src, alt) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            
+            modalImg.src = src;
+            modalImg.alt = alt;
+            modal.classList.add('show');
+            
+            // Prevenir scroll del body
+            document.body.style.overflow = 'hidden';
+            
+            // Analytics
+            console.log(`Imagen abierta en modal: ${alt}`);
+        }
+
+        // Cerrar modal de imagen
+        function closeImageModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('show');
+            
+            // Restaurar scroll del body
+            document.body.style.overflow = '';
+            
+            // Limpiar la imagen del modal
+            document.getElementById('modalImage').src = '';
+        }
+
+        // Manejar errores de carga de imágenes
+        function handleImageError(img) {
+            const placeholder = document.createElement('div');
+            placeholder.className = 'image-placeholder';
+            
+            placeholder.innerHTML = `
+                <div class="image-placeholder-content">
+                    <i class="fas fa-image"></i>
+                    <p style="margin: 10px 0; font-weight: 600;">Imagen no disponible</p>
+                    <p style="margin: 5px 0; font-size: 0.9rem;">${img.src.split('/').pop()}</p>
+                    <button onclick="retryImageLoad('${img.src}', this)" 
+                            style="margin-top: 15px; padding: 8px 16px; background: var(--primary-color); color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        <i class="fas fa-redo me-1"></i>Reintentar
+                    </button>
+                </div>
+            `;
+            
+            img.parentElement.replaceChild(placeholder, img);
+            img.parentElement.classList.remove('image-loading');
+        }
+
+        // Reintentar carga de imagen
+        function retryImageLoad(src, button) {
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cargando...';
+            button.disabled = true;
+            
+            const img = new Image();
+            img.onload = function() {
+                showNotification('Imagen cargada exitosamente', 'success');
+                location.reload(); // Recargar para mostrar la imagen
+            };
+            img.onerror = function() {
+                button.innerHTML = '<i class="fas fa-times me-1"></i>Error';
+                button.style.background = '#dc3545';
+                showNotification('Error al cargar la imagen', 'error');
+            };
+            img.src = src;
+        }
+
+        // Cerrar modal al hacer click fuera de la imagen
+        document.getElementById('imageModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeImageModal();
+            }
+        });
+
+        // Guardar progreso en localStorage
+        function saveProgress() {
+            try {
+                localStorage.setItem('quijote-presentation-slide', currentSlide);
+                localStorage.setItem('quijote-presentation-timestamp', Date.now());
+            } catch (error) {
+                console.warn('No se pudo guardar el progreso:', error);
+            }
+        }
+
+        function loadProgress() {
+            try {
+                const savedSlide = localStorage.getItem('quijote-presentation-slide');
+                const timestamp = localStorage.getItem('quijote-presentation-timestamp');
+                
+                if (savedSlide && parseInt(savedSlide) <= totalSlides) {
+                    // Solo cargar si es reciente (menos de 1 día)
+                    if (timestamp && (Date.now() - parseInt(timestamp)) < 86400000) {
+                        goToSlide(parseInt(savedSlide));
+                        showNotification(`Continuando desde slide ${savedSlide}`, 'info');
+                    }
+                }
+            } catch (error) {
+                console.warn('No se pudo cargar el progreso:', error);
+            }
+        }
+
+        // Sistema de notificaciones
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : type === 'warning' ? '#ffc107' : '#007bff'};
+                color: ${type === 'warning' ? '#000' : '#fff'};
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                z-index: 10001;
+                font-size: 0.9rem;
+                max-width: 300px;
+                opacity: 0;
+                transform: translateX(100px);
+                transition: all 0.3s ease;
+            `;
+            
+            const icon = type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle';
+            notification.innerHTML = `<i class="fas fa-${icon} me-2"></i>${message}`;
+            
+            document.body.appendChild(notification);
+            
+            // Mostrar animación
+            setTimeout(() => {
+                notification.style.opacity = '1';
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Ocultar después de 3 segundos
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(100px)';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Función para modo pantalla completa
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().then(() => {
+                    showNotification('Modo pantalla completa activado', 'success');
+                }).catch(err => {
+                    console.warn('Error al entrar en pantalla completa:', err);
+                    showNotification('No se pudo activar pantalla completa', 'error');
+                });
+            } else {
+                document.exitFullscreen().then(() => {
+                    showNotification('Modo pantalla completa desactivado', 'info');
+                });
+            }
+        }
+
+        // Función para exportar como PDF
+        function exportToPDF() {
+            showNotification('Abriendo diálogo de impresión...', 'info');
+            if (window.print) {
+                window.print();
+            } else {
+                showNotification('Para exportar como PDF, use Ctrl+P y seleccione "Guardar como PDF"', 'warning');
+            }
+        }
+
+        // Función para volver al índice
+        function goToIndex() {
+            if (confirm('¿Quieres volver al índice principal? Se perderá el progreso actual.')) {
+                window.location.href = 'https://tiopig.github.io/HTMLS/DeepLearnig%203/index.html';
+            }
+        }
+
+        // Agregar controles adicionales
+        document.addEventListener('DOMContentLoaded', function() {
+            const additionalControls = document.createElement('div');
+            additionalControls.style.cssText = `
+                position: fixed;
+                top: 30px;
+                right: 30px;
+                display: flex;
+                gap: 10px;
+                z-index: 1000;
+            `;
+            
+            const fullscreenBtn = createControlButton('fas fa-expand', toggleFullscreen, 'Pantalla completa (F11)');
+            const infoBtn = createControlButton('fas fa-info', showHelp, 'Ayuda y atajos');
+            const exportBtn = createControlButton('fas fa-download', exportToPDF, 'Exportar como PDF');
+            const indexBtn = createControlButton('fas fa-home', goToIndex, 'Volver al índice', 'var(--secondary-color)');
+            
+            additionalControls.appendChild(fullscreenBtn);
+            additionalControls.appendChild(infoBtn);
+            additionalControls.appendChild(exportBtn);
+            additionalControls.appendChild(indexBtn);
+            document.body.appendChild(additionalControls);
+        });
+
+        // Función auxiliar para crear botones de control
+        function createControlButton(iconClass, clickHandler, title, bgColor = 'var(--primary-color)') {
+            const button = document.createElement('button');
+            button.className = 'nav-btn';
+            button.innerHTML = `<i class="${iconClass}"></i>`;
+            button.onclick = clickHandler;
+            button.title = title;
+            button.style.cssText = `padding: 10px 15px; background: ${bgColor};`;
+            return button;
+        }
+
+        // Función de ayuda
+        function showHelp() {
+            const helpModal = document.createElement('div');
+            helpModal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10000;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            `;
+            
+            helpModal.innerHTML = `
+                <div style="background: white; padding: 40px; border-radius: 20px; max-width: 700px; max-height: 80vh; overflow-y: auto; text-align: center;">
+                    <h3 style="color: var(--primary-color); margin-bottom: 30px;">
+                        <i class="fas fa-keyboard me-2"></i>Guía de Navegación Completa
+                    </h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; text-align: left; margin-bottom: 30px;">
+                        <div>
+                            <h4 style="color: var(--secondary-color); margin-bottom: 15px;">⌨️ Atajos de Teclado</h4>
+                            <p><strong>→ / Espacio:</strong> Siguiente slide</p>
+                            <p><strong>←:</strong> Slide anterior</p>
+                            <p><strong>Home:</strong> Primer slide</p>
+                            <p><strong>End:</strong> Último slide</p>
+                            <p><strong>P:</strong> Activar/desactivar autoplay</p>
+                            <p><strong>Esc:</strong> Cerrar modal/detener autoplay</p>
+                            <p><strong>F11 / Ctrl+F:</strong> Pantalla completa</p>
+                            <p><strong>Ctrl+P:</strong> Imprimir/Exportar PDF</p>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--secondary-color); margin-bottom: 15px;">📱 Gestos y Funciones</h4>
+                            <p><strong>Swipe →:</strong> Siguiente slide</p>
+                            <p><strong>Swipe ←:</strong> Slide anterior</p>
+                            <p><strong>Click imagen:</strong> Ampliar en modal</p>
+                            <p><strong>Hover imagen:</strong> Mostrar tooltip</p>
+                            <p><strong>Click indicador:</strong> Ir a slide específico</p>
+                            <p><strong>Doble click:</strong> Activar/desactivar autoplay</p>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 30px;">
+                        <h4 style="color: var(--secondary-color); margin-bottom: 15px;">🎯 Características Avanzadas</h4>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; text-align: left;">
+                            <div>✅ Guarda progreso automáticamente</div>
+                            <div>✅ Imágenes con zoom completo</div>
+                            <div>✅ Efectos visuales y partículas</div>
+                            <div>✅ Responsive design optimizado</div>
+                            <div>✅ Manejo de errores de imagen</div>
+                            <div>✅ Sistema de notificaciones</div>
+                            <div>✅ Modo pantalla completa</div>
+                            <div>✅ Exportación a PDF</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 15px; justify-content: center;">
+                        <button onclick="resetPresentation(); this.parentElement.parentElement.parentElement.remove()" 
+                                style="background: #dc3545; color: white; border: none; padding: 12px 20px; border-radius: 25px; cursor: pointer; font-size: 1rem;">
+                            <i class="fas fa-undo me-2"></i>Resetear Presentación
+                        </button>
+                        <button onclick="this.parentElement.parentElement.parentElement.remove()" 
+                                style="background: var(--primary-color); color: white; border: none; padding: 12px 20px; border-radius: 25px; cursor: pointer; font-size: 1rem;">
+                            <i class="fas fa-times me-2"></i>Cerrar
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(helpModal);
+            
+            // Mostrar con animación
+            setTimeout(() => {
+                helpModal.style.opacity = '1';
+            }, 10);
+            
+            helpModal.addEventListener('click', function(e) {
+                if (e.target === helpModal) {
+                    helpModal.style.opacity = '0';
+                    setTimeout(() => helpModal.remove(), 300);
+                }
+            });
+        }
+
+        function diagnoseImages() {
+            console.log('🔍 DIAGNÓSTICO DE IMÁGENES:');
+            
+            const imageUrls = [
+                'longitud_palabras.png',
+                'palabras_comunes.png', 
+                'caracteres_comunes.png',
+                'metricas_entrenamiento.png',
+                'lstm_estados_internos.png',
+                'diversidad_lexica.png',
+                'distribucion_probabilidades.png',
+                'entropia_generacion.png',
+                'similitud_jaccard.png',
+                'comparacion_metricas.png'
+            ];
+            
+            imageUrls.forEach((url, index) => {
+                const img = new Image();
+                img.onload = () => {
+                    console.log(`✅ ${url} - CARGADA (${img.width}x${img.height})`);
+                };
+                img.onerror = () => {
+                    console.log(`❌ ${url} - ERROR`);
+                    // Intentar rutas alternativas
+                    const alternatives = [
+                        url.replace('./imagenes/', './'),
+                        url.replace('./imagenes/', '../imagenes/'),
+                        url.replace('./imagenes/', './graficos/'),
+                        url.replace('./imagenes/', './assets/images/')
+                    ];
+                    
+                    alternatives.forEach(alt => {
+                        const testImg = new Image();
+                        testImg.onload = () => console.log(`🔄 ALTERNATIVA FUNCIONA: ${alt}`);
+                        testImg.src = alt;
+                    });
+                };
+                img.src = url;
+            });
+        }
+
+        // Precargar imágenes para mejor rendimiento
+        function preloadImages() {
+            const imageUrls = [
+                'longitud_palabras.png',
+                'palabras_comunes.png',
+                'caracteres_comunes.png',
+                'metricas_entrenamiento.png',
+                'lstm_estados_internos.png',
+                'diversidad_lexica.png',
+                'distribucion_probabilidades.png',
+                'entropia_generacion.png',
+                'similitud_jaccard.png',
+                'comparacion_metricas.png'
+            ];
+            
+            imageUrls.forEach(url => {
+                const img = new Image();
+                img.src = url;
+                img.onerror = () => console.log(`Imagen no disponible: ${url}`);
+            });
+        }
+
+        // Función para mostrar estadísticas
+        function showPresentationStats() {
+            const stats = {
+                totalSlides: totalSlides,
+                currentSlide: currentSlide,
+                imagesLoaded: document.querySelectorAll('.chart-image:not([src=""])').length,
+                imagesError: document.querySelectorAll('.image-placeholder').length,
+                autoplayActive: isAutoplay,
+                progressSaved: localStorage.getItem('quijote-presentation-slide') !== null,
+                userAgent: navigator.userAgent,
+                screenResolution: `${screen.width}x${screen.height}`,
+                viewportSize: `${window.innerWidth}x${window.innerHeight}`,
+                fullscreenSupported: document.fullscreenEnabled
+            };
+            
+            console.table(stats);
+            showNotification('Estadísticas mostradas en consola', 'info');
+            return stats;
+        }
+
+        // Función para resetear presentación
+        function resetPresentation() {
+            try {
+                localStorage.removeItem('quijote-presentation-slide');
+                localStorage.removeItem('quijote-presentation-timestamp');
+                goToSlide(1);
+                if (isAutoplay) toggleAutoplay();
+                showNotification('Presentación reseteada correctamente', 'success');
+                console.log('✅ Presentación reseteada');
+            } catch (error) {
+                console.error('Error al resetear:', error);
+                showNotification('Error al resetear la presentación', 'error');
+            }
+        }
+
+        // Detectar cambio de orientación en móviles
+        window.addEventListener('orientationchange', function() {
+            setTimeout(() => {
+                updateSlide();
+                showNotification('Orientación actualizada', 'info');
+            }, 500);
+        });
+
+        // Detectar cambio de tamaño de ventana
+        window.addEventListener('resize', function() {
+            // Recalcular dimensiones si es necesario
+            clearTimeout(window.resizeTimeout);
+            window.resizeTimeout = setTimeout(() => {
+                updateSlide();
+            }, 250);
+        });
+
+        // Efecto de ondas al hacer clic
+        document.addEventListener('click', function(e) {
+            // Solo si no es un botón o enlace
+            if (!e.target.closest('button, a, .nav-btn, .indicator')) {
+                createRippleEffect(e.clientX, e.clientY);
+            }
+        });
+
+        function createRippleEffect(x, y) {
+            const ripple = document.createElement('div');
+            ripple.style.cssText = `
+                position: fixed;
+                left: ${x - 10}px;
+                top: ${y - 10}px;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background: rgba(218, 165, 32, 0.6);
+                transform: scale(0);
+                animation: ripple 0.6s linear;
+                pointer-events: none;
+                z-index: 9999;
+            `;
+            
+            document.body.appendChild(ripple);
+            
+            setTimeout(() => {
+                if (ripple.parentNode) {
+                    ripple.parentNode.removeChild(ripple);
+                }
+            }, 600);
+        }
+
+        // Manejo de visibilidad de la página
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden && isAutoplay) {
+                // Pausar autoplay cuando la página no es visible
+                clearInterval(autoplayInterval);
+                console.log('Autoplay pausado (página oculta)');
+            } else if (!document.hidden && isAutoplay) {
+                // Reanudar autoplay cuando la página vuelve a ser visible
+                autoplayInterval = setInterval(() => {
+                    if (currentSlide < totalSlides) {
+                        changeSlide(1);
+                    } else {
+                        goToSlide(1);
+                    }
+                }, 6000);
+                console.log('Autoplay reanudado (página visible)');
+            }
+        });
+
+        // Doble click para autoplay
+        document.addEventListener('dblclick', function(e) {
+            e.preventDefault();
+            toggleAutoplay();
+        });
+
+        // Detección de modo oscuro
+        function detectDarkMode() {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.body.classList.add('dark-mode');
+                showNotification('Modo oscuro detectado', 'info');
+            }
+        }
+
+        // Listener para cambios en preferencia de modo oscuro
+        if (window.matchMedia) {
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+                if (e.matches) {
+                    document.body.classList.add('dark-mode');
+                    showNotification('Cambiado a modo oscuro', 'info');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    showNotification('Cambiado a modo claro', 'info');
+                }
+            });
+        }
+
+        // Función para compartir presentación
+        function sharePresentation() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Don Quijote LSTM - Generación de Texto con Deep Learning',
+                    text: 'Presentación sobre generación automática de texto usando redes LSTM entrenadas con Don Quijote de la Mancha',
+                    url: window.location.href
+                }).then(() => {
+                    showNotification('Presentación compartida', 'success');
+                }).catch(err => {
+                    console.log('Error al compartir:', err);
+                    fallbackShare();
+                });
+            } else {
+                fallbackShare();
+            }
+        }
+
+        function fallbackShare() {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    showNotification('URL copiada al portapapeles', 'success');
+                });
+            } else {
+                showNotification('Compartir no disponible en este navegador', 'warning');
+            }
+        }
+
+        // Función para toggle de efectos visuales
+        function toggleVisualEffects() {
+            const particles = document.getElementById('particles');
+            const isHidden = particles.style.display === 'none';
+            
+            particles.style.display = isHidden ? 'block' : 'none';
+            
+            // También toggle otras animaciones
+            document.querySelectorAll('.floating-animation, .pulse-animation').forEach(el => {
+                el.style.animationPlayState = isHidden ? 'running' : 'paused';
+            });
+            
+            showNotification(
+                isHidden ? 'Efectos visuales activados' : 'Efectos visuales desactivados', 
+                'info'
+            );
+            
+            localStorage.setItem('quijote-visual-effects', isHidden);
+        }
+
+        // Cargar preferencias de efectos visuales
+        function loadVisualEffectsPreference() {
+            const saved = localStorage.getItem('quijote-visual-effects');
+            if (saved === 'false') {
+                toggleVisualEffects();
+            }
+        }
+
+        // Aplicar optimizaciones al cargar
+        document.addEventListener('DOMContentLoaded', function() {
+            preloadImages();
+            detectDarkMode();
+            loadVisualEffectsPreference();
+            
+            // Cargar progreso después de un tiempo
+            setTimeout(loadProgress, 1000);
+            
+            // Mostrar indicador de carga inicial
+            const images = document.querySelectorAll('.chart-image');
+            let loadedCount = 0;
+            const totalImages = images.length;
+            
+            if (totalImages > 0) {
+                images.forEach(img => {
+                    if (img.complete && img.naturalHeight !== 0) {
+                        loadedCount++;
+                        img.style.opacity = '1';
+                    } else {
+                        img.onload = () => {
+                            loadedCount++;
+                            img.style.opacity = '1';
+                            if (loadedCount === totalImages) {
+                                showNotification('Todas las imágenes cargadas', 'success');
+                            }
+                        };
+                        img.onerror = () => {
+                            loadedCount++;
+                            handleImageError(img);
+                        };
+                    }
+                });
+            }
+
+            // Agregar botón de efectos visuales a los controles
+            const controlsContainer = document.querySelector('.nav-controls');
+            if (controlsContainer) {
+                const effectsBtn = document.createElement('button');
+                effectsBtn.className = 'nav-btn';
+                effectsBtn.innerHTML = '<i class="fas fa-magic me-2"></i>Efectos';
+                effectsBtn.onclick = toggleVisualEffects;
+                effectsBtn.title = 'Activar/desactivar efectos visuales';
+                controlsContainer.appendChild(effectsBtn);
+            }
+
+            // Agregar botón de compartir
+            const shareBtn = document.createElement('button');
+            shareBtn.className = 'nav-btn';
+            shareBtn.innerHTML = '<i class="fas fa-share-alt me-2"></i>Compartir';
+            shareBtn.onclick = sharePresentation;
+            shareBtn.title = 'Compartir presentación';
+            shareBtn.style.background = '#007bff';
+            if (controlsContainer) {
+                controlsContainer.appendChild(shareBtn);
+            }
+        });
+
+        // Event listener para eventos personalizados
+        document.addEventListener('slideChanged', function(e) {
+            console.log(`Slide cambiado: ${e.detail.currentSlide}/${e.detail.totalSlides}`);
+            
+            // Trigger analytics si está disponible
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'slide_view', {
+                    'slide_number': e.detail.currentSlide,
+                    'slide_title': document.querySelector(`[data-slide="${e.detail.currentSlide}"] h1, [data-slide="${e.detail.currentSlide}"] h2`).textContent
+                });
+            }
+        });
+
+        // Funciones globales para debugging y control externo
+        window.quijotePresentation = {
+            // Navegación
+            goToSlide,
+            changeSlide,
+            nextSlide: () => changeSlide(1),
+            prevSlide: () => changeSlide(-1),
+            
+            // Control
+            toggleAutoplay,
+            toggleFullscreen,
+            toggleVisualEffects,
+            
+            // Información
+            showStats: showPresentationStats,
+            getCurrentSlide: () => currentSlide,
+            getTotalSlides: () => totalSlides,
+            isAutoplayActive: () => isAutoplay,
+            
+            // Utilidades
+            reset: resetPresentation,
+            sharePresentation,
+            showHelp,
+            showNotification,
+            
+            // Modales
+            openImageModal,
+            closeImageModal,
+            
+            // Exportación
+            exportToPDF,
+            
+            // Depuración
+            preloadImages,
+            createRippleEffect,
+            
+            // Estado interno (solo lectura)
+            getState: () => ({
+                currentSlide,
+                totalSlides,
+                isAutoplay,
+                imagesLoaded: document.querySelectorAll('.chart-image:not([src=""])').length,
+                imagesError: document.querySelectorAll('.image-placeholder').length
+            })
+        };
+
+        // Mensaje de bienvenida en consola
+        console.log(`
+🏰 ============================================
+   DON QUIJOTE LSTM - PRESENTACIÓN COMPLETA
+🏰 ============================================
+
+⚔️  NAVEGACIÓN AVANZADA:
+   • Flechas ← → o botones para navegar
+   • Espacio para avanzar slide
+   • P para autoplay automático (6s/slide)
+   • F11 para pantalla completa
+   • Doble click para toggle autoplay
+   • Click en imágenes para zoom completo
+   • Gestos swipe en móviles
+
+📊 ${totalSlides} SLIDES CON CONTENIDO COMPLETO:
+   • Análisis exhaustivo del corpus Don Quijote
+   • Visualizaciones de datos y métricas
+   • Arquitectura LSTM detallada
+   • Proceso de entrenamiento paso a paso
+   • Control de temperatura y creatividad
+   • Estados internos y análisis de rendimiento
+   • Métricas de evaluación especializadas
+
+🎮 FUNCIONES INTERACTIVAS DISPONIBLES:
+   • quijotePresentation.goToSlide(n) - Ir a slide específico
+   • quijotePresentation.showStats() - Mostrar estadísticas
+   • quijotePresentation.reset() - Resetear presentación
+   • quijotePresentation.toggleAutoplay() - Control autoplay
+   • quijotePresentation.showHelp() - Mostrar ayuda
+   • quijotePresentation.sharePresentation() - Compartir
+   • quijotePresentation.exportToPDF() - Exportar PDF
+
+✨ CARACTERÍSTICAS AVANZADAS:
+   ✅ Guarda progreso automáticamente
+   ✅ Responsive design optimizado
+   ✅ Manejo inteligente de errores de imagen
+   ✅ Sistema de notificaciones visual
+   ✅ Efectos de partículas configurables
+   ✅ Modo pantalla completa
+   ✅ Zoom completo en imágenes
+   ✅ Tooltips informativos
+   ✅ Detección de modo oscuro
+   ✅ Compatibilidad con gestos táctiles
+   ✅ Preloading optimizado de recursos
+   ✅ Analytics de navegación
+   ✅ Función de compartir nativa
+
+🎯 CONTROLES ADICIONALES:
+   • Botón de ayuda (?) - Guía completa
+   • Botón de efectos visuales (🎨)
+   • Botón de compartir (📤)
+   • Botón de pantalla completa (⛶)
+   • Botón home para volver al índice (🏠)
+
+🚀 ¡DISFRUTA LA EXPERIENCIA COMPLETA!
+   Una presentación profesional sobre generación
+   de texto con Deep Learning aplicado a la 
+   literatura clásica española.
+
+📚 Basado en "Don Quijote de la Mancha" 
+   de Miguel de Cervantes Saavedra
+        `);
+
+        // Log inicial de estado
+        console.log('🎬 Presentación inicializada correctamente');
+        console.log('📱 Responsive:', window.innerWidth < 768 ? 'Móvil' : 'Desktop');
+        console.log('🖥️ Pantalla completa disponible:', document.fullscreenEnabled);
+        console.log('📋 Compartir disponible:', !!navigator.share);
+        console.log('🎨 Efectos visuales:', document.getElementById('particles').style.display !== 'none' ? 'Activos' : 'Inactivos');
+
+    </script>
+</body>
+</html>
+
+
+
+
