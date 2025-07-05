@@ -1,0 +1,3895 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen Transversal, Quijote + chatbots (mejoras) - Julio 2025</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <!-- <link rel="stylesheet" href="assets/styles.css"> -->
+     
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+    <style>
+        /* ========== VARIABLES ========== */
+:root {
+    --primary: #4d6a9a;       /* Azul oscuro profesional */
+    --secondary: #e27d60;     /* Coral complementario */
+    --light: #f5f5f5;         /* Fondo claro */
+    --dark: #1c2541;          /* Azul muy oscuro para textos */
+    --accent1: #41b3a3;       /* Verde azulado para acentos */
+    --accent2: #c38d9e;       /* Rosa suave para detalles */
+    --gray: #8d8d8d;          /* Gris medio */
+    --text-primary: #333;     /* Color principal para textos */
+    --gradient-primary: linear-gradient(135deg, var(--primary) 0%, #2a4a7f 100%);
+    --gradient-secondary: linear-gradient(135deg, var(--secondary) 0%, #d8553e 100%);
+    --quijote-bg: #f9f4e8;    /* Fondo beige claro para secciones de Quijote */
+    --chatbot-bg: #edf2f7;    /* Fondo azul muy claro para secciones de Chatbot */
+    --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    --border-radius: 8px;
+    --transition: all 0.3s ease;
+}
+
+/* ========== RESET & BASE STYLES ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+    background-color: var(--light);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+/* Sobreescribir colores de Bootstrap */
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-secondary {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+}
+
+.text-primary {
+    color: var(--primary) !important;
+}
+
+.text-secondary {
+    color: var(--secondary) !important;
+}
+
+.bg-primary {
+    background-color: var(--primary) !important;
+}
+
+.bg-secondary {
+    background-color: var(--secondary) !important;
+}
+
+/* ========== SLIDE LAYOUT ========== */
+.slide {
+    min-height: 100vh;
+    padding: 80px 0;
+    position: relative;
+}
+
+.slide:nth-child(odd) {
+    background-color: var(--light);
+}
+
+.slide:nth-child(even) {
+    background-color: #f0f0f0;
+}
+
+.quijote-section {
+    background-color: var(--quijote-bg);
+}
+
+.chatbot-section {
+    background-color: var(--chatbot-bg);
+}
+
+.section-title {
+    color: var(--dark);
+    margin-bottom: 30px;
+    position: relative;
+    padding-bottom: 15px;
+    font-weight: 700;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 3px;
+    width: 80px;
+    background: var(--secondary);
+}
+
+.section-description {
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    margin-bottom: 40px;
+}
+
+/* ========== COVER SLIDE ========== */
+#cover {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.duoc-logo {
+    height: 60px;
+    filter: brightness(0) invert(1);
+    margin-bottom: 20px;
+}
+
+.logo-container {
+    margin-bottom: 30px;
+}
+
+.scroll-indicator {
+    margin-top: 50px;
+    animation: bounce 2s infinite;
+}
+
+.scroll-indicator .material-icons {
+    font-size: 36px;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-20px);
+    }
+    60% {
+        transform: translateY(-10px);
+    }
+}
+
+/* ========== INTRODUCTION ========== */
+.intro-card {
+    background: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.intro-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.intro-card .material-icons {
+    font-size: 36px;
+    color: var(--primary);
+    margin-bottom: 15px;
+}
+
+.intro-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+/* ========== QUIJOTE SECTION ========== */
+.quijote-card {
+    background: white;
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.quijote-card h3 {
+    display: flex;
+    align-items: center;
+    color: var(--primary);
+}
+
+.quijote-card h3 .material-icons {
+    margin-right: 10px;
+}
+
+.quijote-quote {
+    background: white;
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--dark);
+    position: relative;
+}
+
+.quijote-quote::before {
+    content: """;
+    font-size: 80px;
+    position: absolute;
+    top: -20px;
+    left: 10px;
+    color: rgba(0, 0, 0, 0.1);
+}
+
+.quijote-quote footer {
+    text-align: right;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+/* Stats Cards */
+.stats-card, .frequency-card {
+    background: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    height: 100%;
+}
+
+.stats-card h3 {
+    display: flex;
+    align-items: center;
+    color: var(--primary);
+    margin-bottom: 20px;
+}
+
+.stats-card h3 .material-icons {
+    margin-right: 10px;
+}
+
+.stats-list {
+    list-style: none;
+}
+
+.stats-list li {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.frequency-card h4 {
+    color: var(--secondary);
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.frequency-card ul {
+    list-style: none;
+}
+
+.frequency-card li {
+    margin-bottom: 8px;
+}
+
+/* Model Architecture */
+.model-card {
+    background: white;
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.model-card h3 {
+    display: flex;
+    align-items: center;
+    color: var(--primary);
+}
+
+.model-card h3 .material-icons {
+    margin-right: 10px;
+}
+
+.model-flow {
+    background: #f5f5f5;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 15px 0;
+    font-family: monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.model-params {
+    list-style: none;
+}
+
+.model-params li {
+    margin-bottom: 8px;
+}
+
+/* Training Process */
+.process-card, .metrics-card {
+    background: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    height: 100%;
+}
+
+.process-card h3, .metrics-card h3 {
+    display: flex;
+    align-items: center;
+    color: var(--primary);
+    margin-bottom: 15px;
+}
+
+.process-card h3 .material-icons, .metrics-card h3 .material-icons {
+    margin-right: 10px;
+}
+
+.loss-chart {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 200px;
+    margin: 20px 0;
+    padding: 0 10px;
+}
+
+.loss-bar {
+    width: 18%;
+    background: var(--gradient-secondary);
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    transition: var(--transition);
+}
+
+.loss-label {
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+
+/* Text Generation Results */
+.generation-intro {
+    font-size: 1.2rem;
+}
+
+.generation-card {
+    background: white;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    height: 100%;
+    transition: var(--transition);
+}
+
+.generation-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.generation-card h4 {
+    display: flex;
+    align-items: center;
+    color: var(--primary);
+    margin-bottom: 15px;
+}
+
+.generation-card h4 .material-icons {
+    margin-right: 10px;
+}
+
+.generation-sample {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 5px;
+    font-style: italic;
+}
+
+/* Temperature Effect */
+.temperature-card, .stats-comparison {
+    background: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    height: 100%;
+}
+
+.temperature-card h3, .stats-comparison h3 {
+    display: flex;
+    align-items: center;
+    color: var(--primary);
+    margin-bottom: 20px;
+}
+
+.temperature-card h3 .material-icons, .stats-comparison h3 .material-icons {
+    margin-right: 10px;
+}
+
+.table-temperature {
+    font-size: 0.9rem;
+}
+
+.table-temperature th {
+    background-color: var(--primary);
+    color: white;
+}
+
+.temperature-examples {
+    margin-top: 30px;
+}
+
+.example-card {
+    background: white;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    height: 100%;
+    transition: var(--transition);
+}
+
+.example-card h4 {
+    margin-bottom: 15px;
+    color: var(--primary);
+}
+
+.low-temp h4 {
+    color: #0077b6;
+}
+
+.high-temp h4 {
+    color: #e63946;
+}
+
+/* Quality Analysis */
+.quality-card, .interpretation-card {
+    background: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    height: 100%;
+}
+
+.quality-card h3, .interpretation-card h3 {
+    display: flex;
+    align-items: center;
+    color: var(--primary);
+    margin-bottom: 15px;
+}
+
+.quality-card h3 .material-icons, .interpretation-card h3 .material-icons {
+    margin-right: 10px;
+}
+
+/* Conclusions */
+.conclusions-card, .future-card {
+    background: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    height: 100%;
+}
+
+.conclusions-card h3, .future-card h3 {
+    display: flex;
+    align-items: center;
+    color: var(--primary);
+    margin-bottom: 15px;
+}
+
+.conclusions-card h3 .material-icons, .future-card h3 .material-icons {
+    margin-right: 10px;
+}
+
+/* ========== CHATBOT SECTION ========== */
+.chatbot-card {
+    background: white;
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.chatbot-card h3 {
+    display: flex;
+    align-items: center;
+    color: var(--primary);
+}
+
+.chatbot-card h3 .material-icons {
+    margin-right: 10px;
+}
+
+.caption {
+    font-size: 0.9rem;
+    color: var(--gray);
+    font-style: italic;
+}
+
+/* Data Analysis */
+.data-card, .sample-card {
+    background: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    height: 100%;
+}
+
+.data-card h3 {
+    display: flex;
+    align-items: center;
+    color: var(--primary);
+    margin-bottom: 15px;
+}
+
+.data-card h3 .material-icons {
+    margin-right: 10px;
+}
+
+.dialog-sample {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 15px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.message {
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    max-width: 90%;
+}
+
+.message .speaker {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.message .tag {
+    display: inline-block;
+    font-size: 0.8rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 5px;
+}
+
+.message .tag.act {
+    background-color: var(--primary);
+    color: white;
+}
+
+.message .tag.emotion {
+    background-color: var(--secondary);
+    color: white;
+}
+
+.message.user {
+    background-color: #e9ecef;
+    align-self: flex-end;
+    margin-left: auto;
+}
+
+.message.bot {
+    background-color: #d1e7dd;
+    align-self: flex-start;
+}
+
+.message.system {
+    background-color: #cfe2ff;
+    font-style: italic;
+    text-align: center;
+    max-width: 100%;
+}
+
+/* Model Comparison */
+.model-comparison {
+    background: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    height: 100%;
+}
+
+.model-comparison h3 {
+    display: flex;
+    align-items: center;
+    color: var(--primary);
+    margin-bottom: 20px;
+}
+
+.model-comparison h3 .material-icons {
+    margin-right: 10px;
+}
+
+.model-type {
+    margin-bottom: 15px;
+}
+
+.model-type h4 {
+    color: var(--secondary);
+    margin-bottom: 10px;
+}
+
+.model-params-card {
+    background: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    height: 100%;
+}
+
+.model-params-card h3 {
+    display: flex;
+    align-items: center;
+    color: var(--primary);
+    margin-bottom: 20px;
+}
+
+.model-params-card h3 .material-icons {
+    margin-right: 10px;
+}
+
+.model-params-card h4 {
+    color: var(--secondary);
+    margin-bottom: 15px;
+}
+
+/* Acts & Emotions Cards */
+.acts-card, .emotion-card {
+    background: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    height: 100%;
+}
+
+.acts-card h3, .emotion-card h3 {
+    display: flex;
+    align-items: center;
+    color: var(--primary);
+    margin-bottom: 15px;
+}
+
+.acts-card h3 .material-icons, .emotion-card h3 .material-icons {
+    margin-right: 10px;
+}
+
+.acts-examples, .emotion-examples {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.act-example, .emotion-example {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.act-tag, .emotion-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 15px;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.act-tag {
+    background-color: var(--primary);
+    color: white;
+}
+
+.emotion-tag {
+    color: white;
+}
+
+.emotion-tag.joy {
+    background-color: #fdca40;
+}
+
+.emotion-tag.anger {
+    background-color: #e63946;
+}
+
+.emotion-tag.sadness {
+    background-color: #457b9d;
+}
+
+.emotion-tag.neutral {
+    background-color: #8d99ae;
+}
+
+/* Results Card */
+.results-card {
+    background: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    height: 100%;
+}
+
+.results-card h3 {
+    display: flex;
+    align-items: center;
+    color: var(--primary);
+    margin-bottom: 15px;
+}
+
+.results-card h3 .material-icons {
+    margin-right: 10px;
+}
+
+.results-table {
+    font-size: 0.9rem;
+}
+
+.results-table th {
+    background-color: var(--primary);
+    color: white;
+}
+
+.results-table tr.highlight {
+    background-color: rgba(65, 179, 163, 0.1);
+    font-weight: 500;
+}
+
+.interpretation h4 {
+    color: var(--secondary);
+    margin-bottom: 10px;
+}
+
+/* Comparison Chart */
+.comparison-chart {
+    background: white;
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.chart-container {
+    display: flex;
+    justify-content: space-around;
+    height: 350px;
+    margin: 30px 0;
+}
+
+.chart-bar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+}
+
+.task-label {
+    font-weight: bold;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    color: var(--primary);
+}
+
+.model-bars {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    height: 100%;
+    align-items: flex-end;
+}
+
+.model-bar-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+}
+
+.model-name {
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+
+.model-bar {
+    width: 100%;
+    background: var(--gradient-secondary);
+    border-radius: 5px 5px 0 0;
+    position: relative;
+    /* transition: all 0.5s ease; */
+    transition: height 1s ease-out;
+    min-height: 2px; /* Para asegurar que barras muy pequeñas sean visibles */
+}
+
+.bar-value {
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.takeaway-card, .insight-card {
+    background: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    height: 100%;
+}
+
+.takeaway-card h3, .insight-card h3 {
+    display: flex;
+    align-items: center;
+    color: var(--primary);
+    margin-bottom: 15px;
+}
+
+.takeaway-card h3 .material-icons, .insight-card h3 .material-icons {
+    margin-right: 10px;
+}
+
+/* Interactive Testing */
+.testing-card, .examples-card {
+    background: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    height: 100%;
+}
+
+.testing-card h3, .examples-card h3 {
+    display: flex;
+    align-items: center;
+    color: var(--primary);
+    margin-bottom: 15px;
+}
+
+.testing-card h3 .material-icons, .examples-card h3 .material-icons {
+    margin-right: 10px;
+}
+
+.chat-interface {
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.chat-header {
+    background-color: var(--primary);
+    color: white;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+}
+
+.chat-header .material-icons {
+    margin-right: 10px;
+}
+
+.chat-messages {
+    padding: 15px;
+    max-height: 300px;
+    overflow-y: auto;
+    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+}
+
+.examples-table th {
+    background-color: var(--primary);
+    color: white;
+}
+
+/* Applications */
+.application-card {
+    background: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    height: 100%;
+    transition: var(--transition);
+}
+
+.application-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.app-icon {
+    background-color: var(--primary);
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.app-icon .material-icons {
+    font-size: 28px;
+}
+
+.application-card h3 {
+    color: var(--secondary);
+    margin-bottom: 15px;
+}
+
+.app-example {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
+.example-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Integration */
+.integration-card, .example-integration {
+    background: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    height: 100%;
+}
+
+.integration-card h3, .example-integration h3 {
+    display: flex;
+    align-items: center;
+    color: var(--primary);
+    margin-bottom: 15px;
+}
+
+.integration-card h3 .material-icons, .example-integration h3 .material-icons {
+    margin-right: 10px;
+}
+
+.prototype-demo {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.prompt, .response {
+    margin-bottom: 15px;
+}
+
+.label {
+    font-weight: bold;
+    color: var(--dark);
+    margin-bottom: 5px;
+}
+
+.quijote-style {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    line-height: 1.8;
+    color: #654321;
+}
+
+/* Final Thanks */
+#thanks {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.thanks-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.contact-info p {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.contact-info .material-icons {
+    margin-right: 10px;
+}
+
+.duoc-logo-footer {
+    max-width: 150px;
+    filter: brightness(0) invert(1);
+    opacity: 0.8;
+}
+
+.final-message {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 30px;
+    margin-bottom: 40px;
+    box-shadow: var(--shadow);
+    color: var(--dark);
+}
+
+.final-message h3 {
+    color: var(--primary);
+    margin-bottom: 15px;
+}
+
+.team-members {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.date {
+    font-style: italic;
+    margin-top: 5px;
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+    .slide {
+        padding: 60px 0;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .section-description {
+        font-size: 1rem;
+    }
+    
+    .intro-card, .application-card {
+        margin-bottom: 30px;
+    }
+    
+    .acts-examples, .emotion-examples {
+        grid-template-columns: 1fr;
+    }
+    
+    .chart-container {
+        flex-direction: column;
+        height: auto;
+    }
+    
+    .chart-bar-container {
+        width: 100%;
+        margin-bottom: 50px;
+    }
+}
+
+@media (max-width: 768px) {
+    .slide {
+        padding: 40px 0;
+    }
+    
+    h1 {
+        font-size: 2.5rem;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+    
+    .quijote-quote {
+        font-size: 1rem;
+    }
+    
+    .model-bars {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .model-bar-group {
+        width: 80%;
+        margin-bottom: 30px;
+    }
+    
+    .example-card {
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .slide {
+        padding: 30px 0;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .scroll-indicator {
+        margin-top: 30px;
+    }
+    
+    .loss-chart {
+        height: 150px;
+    }
+    
+    .application-card {
+        padding: 15px;
+    }
+    
+    .app-icon {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .app-icon .material-icons {
+        font-size: 24px;
+    }
+}
+/* Barra de progreso */
+.progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.3);
+    z-index: 1000;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0;
+    background: var(--primary);
+    transition: width 0.3s ease, background-color 0.5s ease;
+}
+
+.progress-markers {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.marker {
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    top: 0;
+}
+
+.marker[data-percentage="33"] {
+    left: 33%;
+}
+
+.marker[data-percentage="66"] {
+    left: 66%;
+}
+
+.marker[data-percentage="99"] {
+    left: 99%;
+}
+
+/* Colores de la barra de progreso según el avance */
+.progress-bar.stage-1 {
+    background: #64b5f6; /* Azul claro para 0-33% */
+}
+
+.progress-bar.stage-2 {
+    background: #2196f3; /* Azul medio para 34-66% */
+}
+
+.progress-bar.stage-3 {
+    background: #1976d2; /* Azul oscuro para 67-100% */
+}
+.slide-counter {
+    position: fixed;
+    top: 15px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    z-index: 1000;
+}
+/* Estilo específico para la sección final */
+#thanks {
+    background: var(--gradient-primary);
+    color: white;
+    min-height: 100vh;
+    position: relative;
+}
+
+#thanks .duoc-logo {
+    height: 60px;
+    filter: brightness(0) invert(1);
+    margin-bottom: 30px;
+}
+
+#thanks .logo-container {
+    margin-bottom: 20px;
+}
+
+#thanks .thanks-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+#thanks .final-message {
+    background: white;
+    color: var(--dark);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin: 40px 0;
+}
+
+#thanks .final-message h3 {
+    color: var(--primary);
+    margin-bottom: 15px;
+}
+
+#thanks .team-members {
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 20px;
+}
+
+#thanks .contact-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#thanks .contact-info p {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#thanks .contact-info .material-icons {
+    margin-right: 10px;
+}
+
+#thanks .scroll-indicator {
+    margin-top: 30px;
+}
+
+#thanks .scroll-indicator .material-icons {
+    font-size: 36px;
+    animation: float 2s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+#thanks .scroll-indicator p {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+/* Estilos para la sección de comparación de modelos */
+.comparison-chart {
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.comparison-chart:hover {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.chart-legend {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.legend-color {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.nav-tabs .nav-link {
+    color: var(--primary);
+    border: none;
+    padding: 8px 20px;
+    border-radius: 0;
+    position: relative;
+}
+
+.nav-tabs .nav-link.active {
+    color: var(--secondary);
+    background-color: transparent;
+    font-weight: 500;
+}
+
+.nav-tabs .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--secondary);
+}
+
+.list-group-item {
+    padding: 0.75rem 0;
+    border-color: rgba(0,0,0,0.05);
+}
+/* Estilos para optimizar el espacio en la sección de análisis de calidad */
+.quality-card, .interpretation-card, .comparison-table-card, .glossary-card {
+    background: white;
+    padding: 15px 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    height: 100%;
+}
+
+.quality-card h3, .interpretation-card h3, .comparison-table-card h3, .glossary-card h3 {
+    display: flex;
+    align-items: center;
+    color: var(--primary);
+    margin-bottom: 12px;
+    font-size: 1.3rem;
+}
+
+.quality-card h3 .material-icons, 
+.interpretation-card h3 .material-icons, 
+.comparison-table-card h3 .material-icons, 
+.glossary-card h3 .material-icons {
+    margin-right: 8px;
+    font-size: 1.2rem;
+}
+
+/* Listas más compactas */
+.metrics-list, .interpretation-list {
+    padding-left: 15px;
+    margin-bottom: 0;
+}
+
+.metrics-list li, .interpretation-list li {
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+/* Tabla compacta */
+.table-responsive {
+    margin: 0;
+}
+
+.table-sm {
+    font-size: 0.85rem;
+}
+
+.table-sm th, .table-sm td {
+    padding: 6px 8px;
+    text-align: center;
+}
+
+.highlight-row {
+    background-color: rgba(77, 106, 154, 0.15);
+    font-weight: 500;
+}
+
+/* Glosario compacto */
+.glossary-list {
+    margin-bottom: 0;
+    font-size: 0.85rem;
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.glossary-list dt {
+    font-weight: 600;
+    color: var(--secondary);
+    margin-bottom: 2px;
+}
+
+.glossary-list dd {
+    margin-bottom: 8px;
+    line-height: 1.3;
+    padding-left: 8px;
+    border-left: 2px solid rgba(77, 106, 154, 0.2);
+}
+/* Estilos para la nota de estado del proyecto y la línea de tiempo */
+.project-status-note .alert {
+    border-left: 4px solid #0dcaf0;
+    background-color: rgba(13, 202, 240, 0.1);
+    color: #055160;
+}
+
+.prototype-label {
+    background-color: var(--secondary);
+    color: white;
+    font-size: 0.8rem;
+    padding: 3px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.timeline-card {
+    background: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.timeline-card h3 {
+    color: var(--primary);
+    margin-bottom: 20px;
+}
+
+.timeline-card h3 .material-icons {
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+.timeline {
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    width: 3px;
+    background-color: #e5e5e5;
+    top: 0;
+    bottom: 0;
+    left: 50px;
+    margin-left: -1.5px;
+}
+
+.timeline-item {
+    display: flex;
+    margin-bottom: 30px;
+}
+
+.timeline-marker {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+    margin-right: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.timeline-marker.completed {
+    background-color: var(--accent1);
+}
+
+.timeline-marker.current {
+    background-color: var(--secondary);
+    box-shadow: 0 0 0 4px rgba(226, 125, 96, 0.2);
+}
+
+.timeline-marker:not(.completed):not(.current) {
+    background-color: var(--gray);
+}
+
+.timeline-content {
+    flex: 1;
+    padding-top: 3px;
+}
+
+.timeline-content h4 {
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+    color: var(--dark);
+}
+
+.timeline-content p {
+    margin-bottom: 0;
+    color: var(--gray);
+}
+
+.prototype-demo {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.quijote-style {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: #555;
+    line-height: 1.5;
+}
+/* Estilos para el diagrama Mermaid optimizado para 16:9 */
+.mermaid-container {
+    overflow: hidden;
+    transition: all 0.3s ease;
+    width: 100%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.mermaid {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    width: 100%;
+}
+
+.legend {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.8rem;
+    margin: 0 5px;
+}
+
+.legend-color {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 4px;
+    border-radius: 2px;
+}
+/* Estilos para la visualización del proyecto */
+.project-visualization-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.project-visualization {
+    width: 100%;
+    max-width: 500px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.project-visualization:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
+}
+
+.visualization-header {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+.visualization-header h3 {
+    margin: 0;
+    font-size: 1.4rem;
+}
+
+.visualization-content {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.component {
+    width: 42%;
+    padding: 15px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.quijote-component {
+    background-color: var(--quijote-bg);
+    border-left: 4px solid var(--primary);
+}
+
+.dialog-component {
+    background-color: var(--chatbot-bg);
+    border-left: 4px solid var(--secondary);
+}
+
+.component:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.component-icon {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.component-icon .material-icons {
+    font-size: 28px;
+    color: var(--primary);
+}
+
+.dialog-component .component-icon .material-icons {
+    color: var(--secondary);
+}
+
+.component-title {
+    font-weight: 700;
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: var(--dark);
+}
+
+.component-details {
+    margin-bottom: 15px;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 0.85rem;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: var(--gray);
+}
+
+.detail-value {
+    color: var(--dark);
+}
+
+.component-sample {
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 8px;
+    border-radius: 5px;
+    font-style: italic;
+    font-size: 0.8rem;
+    color: var(--dark);
+    font-family: 'Playfair Display', serif;
+}
+
+.connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 10%;
+}
+
+.connector .material-icons {
+    font-size: 24px;
+    color: var(--primary);
+    margin-bottom: 5px;
+}
+
+.connector-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.dialog-bubbles {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.dialog-bubble {
+    padding: 8px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    max-width: 90%;
+}
+
+.bubble-1 {
+    background-color: #e9ecef;
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+}
+
+.bubble-2 {
+    background-color: #d1e7dd;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+}
+
+/* Animación para las burbujas de diálogo */
+@keyframes bubble-in {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.dialog-bubble {
+    animation: bubble-in 0.5s forwards;
+}
+
+.bubble-1 {
+    animation-delay: 0.3s;
+}
+
+.bubble-2 {
+    animation-delay: 0.8s;
+}
+/* Estilos para la visualización de diálogos */
+.dialog-visualization-container {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.dialog-visualization-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
+}
+
+.dialog-header {
+    background: var(--gradient-secondary);
+    color: white;
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+}
+
+.dialog-header .material-icons {
+    margin-right: 8px;
+}
+
+.dialog-header h4 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.dialog-conversation {
+    padding: 15px;
+    max-height: 300px;
+    overflow-y: auto;
+    background-color: #f8f9fa;
+}
+
+.message {
+    margin-bottom: 12px;
+    max-width: 85%;
+    opacity: 0;
+    animation: message-appear 0.5s forwards;
+}
+
+@keyframes message-appear {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.message.user {
+    margin-left: auto;
+}
+
+.message.bot {
+    margin-right: auto;
+}
+
+.message-content {
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.user .message-content {
+    background-color: #e9ecef;
+    border-bottom-right-radius: 3px;
+}
+
+.bot .message-content {
+    background-color: #d1e7dd;
+    border-bottom-left-radius: 3px;
+}
+
+.message-annotations {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    font-size: 0.75rem;
+}
+
+.act-tag, .emotion-tag {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 10px;
+    color: white;
+}
+
+.act-tag {
+    background-color: var(--primary);
+}
+
+.emotion-tag {
+    background-color: var(--secondary);
+}
+
+.dialog-legend {
+    padding: 10px 15px;
+    background-color: #f0f0f0;
+    border-top: 1px solid #dee2e6;
+    font-size: 0.8rem;
+}
+
+.legend-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: var(--dark);
+}
+
+.legend-sections {
+    display: flex;
+    justify-content: space-between;
+}
+
+.legend-section {
+    width: 48%;
+}
+
+.section-title {
+    font-weight: 600;
+    /* color: var(--gray); */
+    margin-bottom: 3px;
+}
+
+.legend-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.legend-item {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 10px;
+    background-color: #e9ecef;
+    font-size: 0.7rem;
+}
+
+/* Animación secuencial para los mensajes */
+.message:nth-child(1) { animation-delay: 0.2s; }
+.message:nth-child(2) { animation-delay: 0.7s; }
+.message:nth-child(3) { animation-delay: 1.2s; }
+.message:nth-child(4) { animation-delay: 1.7s; }
+.message:nth-child(5) { animation-delay: 2.2s; }
+
+    </style>
+</head>
+
+<body>
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+        <div class="progress-markers">
+            <div class="marker" data-percentage="33"></div>
+            <div class="marker" data-percentage="66"></div>
+            <div class="marker" data-percentage="99"></div>
+        </div>
+    </div>
+
+    <div class="slide-counter" id="slideCounter">1/21</div>
+
+    <!-- Slide 1: Cover -->
+    <section id="cover" class="slide d-flex align-items-center justify-content-center text-center">
+        <div class="container">
+            <div class="logo-container mb-4">
+                <img src="https://www.duoc.cl/wp-content/themes/wordpress-duoc-cl/images/logo-duoc.svg" alt="Duoc UC"
+                    class="duoc-logo">
+            </div>
+            <h1 class="display-3 fw-bold mb-4" data-aos="fade-up">Examen Transversal</h1>
+            <h2 class="display-5 mb-5" data-aos="fade-up" data-aos-delay="200">Quijote + chatbots (mejoras)</h2>
+            <p class="fs-5 mb-5" data-aos="fade-up" data-aos-delay="400">Julio 2025</p>
+            <div class="team-members" data-aos="fade-up" data-aos-delay="600">
+                <p class="fs-6">Patricio Quintanilla | Alexander Seydewitz | Italo Brignardello</p>
+            </div>
+            <div class="scroll-indicator" data-aos="fade-up" data-aos-delay="800">
+                <p>Desplázate para continuar</p>
+                <span class="material-icons">keyboard_arrow_down</span>
+            </div>
+        </div>
+    </section>
+
+<!-- Slide 2: Introduction -->
+<section id="introduction" class="slide d-flex align-items-center">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6" data-aos="fade-right">
+                <h2 class="section-title">Introducción al Proyecto</h2>
+                <p class="section-description">Este proyecto explora dos áreas fundamentales del procesamiento de
+                    lenguaje natural:</p>
+                <div class="intro-cards mt-4">
+                    <div class="intro-card mb-3">
+                        <span class="material-icons">auto_stories</span>
+                        <h3>Generación de texto basado en "El Quijote"</h3>
+                        <p>Utilizando redes neuronales recurrentes LSTM para aprender y generar texto con el estilo
+                            de Cervantes.</p>
+                    </div>
+                    <div class="intro-card">
+                        <span class="material-icons">chat</span>
+                        <h3>Análisis y clasificación de diálogos</h3>
+                        <p>Implementando modelos de clasificación para detectar actos de habla y emociones en
+                            conversaciones.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center" data-aos="fade-left">
+                <div class="project-visualization-container">
+                    <div class="project-visualization">
+                        <div class="visualization-header">
+                            <h3>Componentes del Proyecto</h3>
+                        </div>
+                        <div class="visualization-content">
+                            <div class="component quijote-component">
+                                <div class="component-icon">
+                                    <span class="material-icons">auto_stories</span>
+                                </div>
+                                <div class="component-title">Generación de Texto</div>
+                                <div class="component-details">
+                                    <div class="detail-item">
+                                        <span class="detail-label">Fuente:</span>
+                                        <span class="detail-value">El Quijote</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Modelo:</span>
+                                        <span class="detail-value">LSTM</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Caracteres:</span>
+                                        <span class="detail-value">2.07M</span>
+                                    </div>
+                                </div>
+                                <div class="component-sample">
+                                    <p>"En un lugar de la mancha, de cuyo nombre no quiero acordarme..."</p>
+                                </div>
+                            </div>
+                            <div class="connector">
+                                <span class="material-icons">compare_arrows</span>
+                                <span class="connector-label">NLP</span>
+                            </div>
+                            <div class="component dialog-component">
+                                <div class="component-icon">
+                                    <span class="material-icons">chat</span>
+                                </div>
+                                <div class="component-title">Análisis de Diálogos</div>
+                                <div class="component-details">
+                                    <div class="detail-item">
+                                        <span class="detail-label">Actos:</span>
+                                        <span class="detail-value">5,752</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Emociones:</span>
+                                        <span class="detail-value">2,757</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Modelo:</span>
+                                        <span class="detail-value">Transformer</span>
+                                    </div>
+                                </div>
+                                <div class="dialog-bubbles">
+                                    <div class="dialog-bubble bubble-1">¿Cómo estás?</div>
+                                    <div class="dialog-bubble bubble-2">¡Muy bien, gracias!</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+    <!-- PARTE 1: QUIJOTE -->
+
+    <!-- Slide 3: Quijote Overview -->
+    <section id="quijote-overview" class="slide d-flex align-items-center quijote-section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5" data-aos="fade-up">Generación de Texto con Redes Neuronales</h2>
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="quijote-card">
+                        <h3><span class="material-icons">psychology</span> Objetivo</h3>
+                        <p>Crear un modelo capaz de generar texto con el estilo literario de Miguel de Cervantes a
+                            partir del análisis de "Don Quijote de la Mancha".</p>
+
+                        <h3 class="mt-4"><span class="material-icons">lightbulb</span> Enfoque</h3>
+                        <p>Utilización de redes neuronales recurrentes (LSTM) para aprender patrones lingüísticos y
+                            estilísticos del texto original.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center" data-aos="fade-left">
+                    <blockquote class="quijote-quote">
+                        "En un lugar de la mancha, de cuyo nombre no quiero acordarme, no ha mucho tiempo que vivía un
+                        hidalgo de los de lanza en astillero, adarga antigua, rocín flaco y galgo corredor..."
+                        <footer>— Miguel de Cervantes</footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 4: Data Analysis -->
+    <section id="quijote-data" class="slide d-flex align-items-center quijote-section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5" data-aos="fade-up">Análisis del Texto Original</h2>
+            <div class="row">
+                <div class="col-lg-6" data-aos="fade-up">
+                    <div class="stats-card">
+                        <h3><span class="material-icons">analytics</span> Estadísticas del Texto</h3>
+                        <ul class="stats-list">
+                            <li><strong>Caracteres totales:</strong> 2,071,198</li>
+                            <li><strong>Vocabulario único:</strong> 61 caracteres</li>
+                            <li><strong>Palabras totales:</strong> 376,500</li>
+                            <li><strong>Palabras únicas:</strong> 37,269</li>
+                            <li><strong>Longitud media de palabra:</strong> 4.48 caracteres</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="frequency-card">
+                                <h4>Palabras más comunes</h4>
+                                <ul>
+                                    <li>que: 19,273</li>
+                                    <li>de: 17,892</li>
+                                    <li>y: 16,290</li>
+                                    <li>la: 10,201</li>
+                                    <li>a: 9,641</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="frequency-card">
+                                <h4>Caracteres más comunes</h4>
+                                <ul>
+                                    <li>[espacio]: 348,116</li>
+                                    <li>e: 219,239</li>
+                                    <li>a: 191,124</li>
+                                    <li>o: 151,442</li>
+                                    <li>s: 124,229</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="frequency-card" data-aos="fade-up" data-aos-delay="300">
+                        <h4>Bigramas más comunes</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul>
+                                    <li>e␣: 64,477</li>
+                                    <li>a␣: 51,189</li>
+                                    <li>o␣: 46,549</li>
+                                    <li>␣d: 39,076</li>
+                                    <li>s␣: 37,011</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul>
+                                    <li>,␣: 36,919</li>
+                                    <li>ue: 36,549</li>
+                                    <li>de: 33,599</li>
+                                    <li>en: 33,211</li>
+                                    <li>es: 32,244</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 5: Model Architecture -->
+    <section id="quijote-model" class="slide d-flex align-items-center quijote-section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5" data-aos="fade-up">Arquitectura del Modelo LSTM</h2>
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="model-card">
+                        <h3><span class="material-icons">architecture</span> Estructura</h3>
+                        <p class="model-flow">Input Layer (61) → LSTM Layer 1 (256) → LSTM Layer 2 (256) → Dropout (0.2)
+                            → Fully Connected (61) → Softmax</p>
+                        <h3 class="mt-4"><span class="material-icons">settings</span> Parámetros</h3>
+                        <ul class="model-params">
+                            <li><strong>Dimensión de entrada:</strong> 61 (tamaño del vocabulario)</li>
+                            <li><strong>Capas LSTM:</strong> 2 capas de 256 unidades cada una</li>
+                            <li><strong>Regularización:</strong> Dropout de 0.2</li>
+                            <li><strong>Parámetros totales:</strong> 868,669</li>
+                            <li><strong>Batch size:</strong> 128</li>
+                            <li><strong>Épocas:</strong> 20</li>
+                            <li><strong>Tasa de aprendizaje:</strong> 0.001</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="mermaid-container bg-white p-3 rounded shadow" style="aspect-ratio: 16/9;">
+                        <div class="mermaid">
+                            flowchart LR
+                            classDef input fill:#e1eeff,stroke:#4d6a9a,stroke-width:2px
+                            classDef lstm fill:#d8f3dc,stroke:#2d6a4f,stroke-width:2px
+                            classDef dropout fill:#ffddd2,stroke:#e29578,stroke-width:2px
+                            classDef fc fill:#dfe7fd,stroke:#4361ee,stroke-width:2px
+                            classDef activation fill:#ffcfd2,stroke:#ef476f,stroke-width:2px
+
+                            A["Input<br>Layer<br>(61)"] --> B["LSTM<br>Layer 1<br>(256)"]
+                            B --> C["LSTM<br>Layer 2<br>(256)"]
+                            C --> D["Dropout<br>(0.2)"]
+                            D --> E["Fully<br>Connected<br>(61)"]
+                            E --> F["Softmax"]
+
+                            A:::input
+                            B:::lstm
+                            C:::lstm
+                            D:::dropout
+                            E:::fc
+                            F:::activation
+                        </div>
+                    </div>
+                    <div class="legend d-flex justify-content-center flex-wrap mt-3">
+                        <div class="legend-item mx-2">
+                            <span class="legend-color"
+                                style="background-color: #e1eeff; border: 1px solid #4d6a9a;"></span>
+                            <span>Input</span>
+                        </div>
+                        <div class="legend-item mx-2">
+                            <span class="legend-color"
+                                style="background-color: #d8f3dc; border: 1px solid #2d6a4f;"></span>
+                            <span>LSTM</span>
+                        </div>
+                        <div class="legend-item mx-2">
+                            <span class="legend-color"
+                                style="background-color: #ffddd2; border: 1px solid #e29578;"></span>
+                            <span>Dropout</span>
+                        </div>
+                        <div class="legend-item mx-2">
+                            <span class="legend-color"
+                                style="background-color: #dfe7fd; border: 1px solid #4361ee;"></span>
+                            <span>FC</span>
+                        </div>
+                        <div class="legend-item mx-2">
+                            <span class="legend-color"
+                                style="background-color: #ffcfd2; border: 1px solid #ef476f;"></span>
+                            <span>Softmax</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <!-- Slide 6: Training Process -->
+    <section id="quijote-training" class="slide d-flex align-items-center quijote-section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5" data-aos="fade-up">Proceso de Entrenamiento</h2>
+            <div class="row">
+                <div class="col-lg-6" data-aos="fade-up">
+                    <div class="process-card">
+                        <h3><span class="material-icons">query_stats</span> Preparación de Datos</h3>
+                        <ul>
+                            <li>Creación de 2,071,148 secuencias de entrenamiento de longitud 50</li>
+                            <li>Codificación one-hot de secuencias</li>
+                            <li>División en lotes de 128 para entrenamiento eficiente</li>
+                        </ul>
+
+                        <h3 class="mt-4"><span class="material-icons">timer</span> Entrenamiento</h3>
+                        <ul>
+                            <li>20 épocas de entrenamiento</li>
+                            <li>Tiempo total: ~7830 segundos (~2.2 horas)</li>
+                            <li>Reducción constante de pérdida en cada época</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="metrics-card">
+                        <h3><span class="material-icons">trending_down</span> Evolución de la Pérdida</h3>
+                        <div class="loss-chart">
+                            <div class="loss-bar" style="height: 85%;">
+                                <span class="loss-label">Época 1: 0.0388</span>
+                            </div>
+                            <div class="loss-bar" style="height: 75%;">
+                                <span class="loss-label">Época 5: 0.0301</span>
+                            </div>
+                            <div class="loss-bar" style="height: 65%;">
+                                <span class="loss-label">Época 10: 0.0288</span>
+                            </div>
+                            <div class="loss-bar" style="height: 55%;">
+                                <span class="loss-label">Época 15: 0.0281</span>
+                            </div>
+                            <div class="loss-bar" style="height: 45%;">
+                                <span class="loss-label">Época 20: 0.0277</span>
+                            </div>
+                        </div>
+                        <p class="text-center mt-3">La pérdida se redujo constantemente, indicando un aprendizaje
+                            efectivo</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 7: Text Generation Results -->
+    <section id="quijote-results" class="slide d-flex align-items-center quijote-section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5" data-aos="fade-up">Resultados de Generación de Texto</h2>
+            <div class="row">
+                <div class="col-lg-12" data-aos="fade-up">
+                    <p class="generation-intro text-center mb-4">Evolución de la generación de texto a partir de la
+                        semilla: "en un lugar de la mancha"</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="generation-card">
+                        <h4><span class="material-icons">filter_4</span> Época 4</h4>
+                        <div class="generation-sample">
+                            <p>en un lugar de la mancha, respondió lo que una vez.</p>
+                            <p>-¡casa -respondió don quijote-. cuya señora hor...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="generation-card">
+                        <h4><span class="material-icons">filter_8</span> Época 8</h4>
+                        <div class="generation-sample">
+                            <p>en un lugar de la mancha, porque, concertimiento, que ya no decío, pitando los labradores
+                                apetates...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="generation-card">
+                        <h4><span class="material-icons">filter_16</span> Época 16</h4>
+                        <div class="generation-sample">
+                            <p>en un lugar de la mancha:</p>
+                            <p>-todo lo que más me descubriese andaje. en fin, queda acabada de fuerte,...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 8: Temperature Effect -->
+    <section id="quijote-temperature" class="slide d-flex align-items-center quijote-section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5" data-aos="fade-up">Efecto de la Temperatura en la Generación</h2>
+            <div class="row mb-4">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="temperature-card">
+                        <h3><span class="material-icons">thermostat</span> ¿Qué es la temperatura?</h3>
+                        <p>La temperatura controla la aleatoriedad de la generación de texto:</p>
+                        <ul>
+                            <li><strong>Temperatura baja:</strong> Generaciones más deterministas y conservadoras</li>
+                            <li><strong>Temperatura alta:</strong> Generaciones más aleatorias y creativas</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="stats-comparison">
+                        <h3><span class="material-icons">insights</span> Análisis Comparativo</h3>
+                        <table class="table table-temperature">
+                            <thead>
+                                <tr>
+                                    <th>Temperatura</th>
+                                    <th>Diversidad léxica</th>
+                                    <th>Entropía</th>
+                                    <th>Repetitividad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>0.2</td>
+                                    <td>0.3750</td>
+                                    <td>0.2832</td>
+                                    <td>0.5153</td>
+                                </tr>
+                                <tr>
+                                    <td>0.5</td>
+                                    <td>0.5818</td>
+                                    <td>0.7159</td>
+                                    <td>0.3603</td>
+                                </tr>
+                                <tr>
+                                    <td>1.0</td>
+                                    <td>0.7000</td>
+                                    <td>1.1793</td>
+                                    <td>0.2063</td>
+                                </tr>
+                                <tr>
+                                    <td>1.5</td>
+                                    <td>0.7931</td>
+                                    <td>1.6949</td>
+                                    <td>0.1504</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12" data-aos="fade-up" data-aos-delay="200">
+                    <div class="temperature-examples">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="example-card low-temp">
+                                    <h4>Temperatura Baja (0.2)</h4>
+                                    <p>en un lugar de la mancha, y que el caballero de la triste figura, y que ellos le
+                                        habían de ser con el caballero de la triste figura, que el que había de ser muy
+                                        buena parte de la cabeza de la cabeza,...</p>
+                                    <p class="text-muted"><small>Alta repetitividad, menor creatividad</small></p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="example-card high-temp">
+                                    <h4>Temperatura Alta (1.5)</h4>
+                                    <p>en un lugar de la mancha, siendo dispara proponer, o, como unos, acotparo que
+                                        zerpimé rocinante, no han éstes que les han eansatado, y subiesimentero
+                                        llamándore correr las ahechas, que yo te oí...</p>
+                                    <p class="text-muted"><small>Mayor creatividad, pero menos coherencia</small></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 9: Text Quality Analysis -->
+    <section id="quijote-quality" class="slide d-flex align-items-center quijote-section">
+        <div class="container">
+            <h2 class="section-title text-center mb-4" data-aos="fade-up">Análisis de Calidad del Texto Generado</h2>
+
+            <div class="row mb-4">
+                <!-- Métricas de Similitud -->
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="quality-card h-100">
+                        <h3><span class="material-icons">check_circle</span> Métricas de Similitud</h3>
+                        <ul class="metrics-list">
+                            <li><strong>Similitud de Jaccard (1-gramas):</strong> 86.11%</li>
+                            <li><strong>Similitud de Jaccard (2-gramas):</strong> 48.24%</li>
+                            <li><strong>Similitud de Jaccard (3-gramas):</strong> 19.97%</li>
+                            <li><strong>KL Divergence:</strong> 0.0977 (menor valor indica mayor similitud)</li>
+                            <li><strong>Solapamiento palabras comunes:</strong> 50%</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Interpretación -->
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="interpretation-card h-100">
+                        <h3><span class="material-icons">psychology</span> Interpretación</h3>
+                        <ul class="interpretation-list">
+                            <li>Alta similitud a nivel de caracteres individuales (1-gramas)</li>
+                            <li>Moderada similitud en pares de caracteres (2-gramas)</li>
+                            <li>Menor similitud en estructuras más complejas (3-gramas)</li>
+                            <li>El modelo aprende bien el vocabulario pero tiene limitaciones en reproducir estructuras
+                                complejas</li>
+                            <li>Mejores resultados con temperatura moderada (0.7-1.0) para balance entre creatividad y
+                                coherencia</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Tabla comparativa por temperatura -->
+                <div class="col-lg-6" data-aos="fade-up">
+                    <div class="comparison-table-card h-100">
+                        <h3><span class="material-icons">insights</span> Comparativa por Temperatura</h3>
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Temperatura</th>
+                                        <th>Diversidad léxica</th>
+                                        <th>Entropía</th>
+                                        <th>Repetitividad</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>0.2</td>
+                                        <td>0.3750</td>
+                                        <td>0.2832</td>
+                                        <td>0.5153</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0.5</td>
+                                        <td>0.5818</td>
+                                        <td>0.7159</td>
+                                        <td>0.3603</td>
+                                    </tr>
+                                    <tr class="highlight-row">
+                                        <td>0.7</td>
+                                        <td>0.6827</td>
+                                        <td>0.8507</td>
+                                        <td>0.2938</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1.0</td>
+                                        <td>0.7000</td>
+                                        <td>1.1793</td>
+                                        <td>0.2063</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1.5</td>
+                                        <td>0.7931</td>
+                                        <td>1.6949</td>
+                                        <td>0.1504</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Glosario de términos -->
+                <div class="col-lg-6" data-aos="fade-up">
+                    <div class="glossary-card h-100">
+                        <h3><span class="material-icons">school</span> Glosario de Términos</h3>
+                        <dl class="glossary-list">
+                            <dt>Similitud de Jaccard</dt>
+                            <dd>Medida que compara la similitud entre conjuntos. Se calcula como la intersección
+                                dividida por la unión. Valores cercanos a 1 indican mayor similitud.</dd>
+
+                            <dt>N-gramas</dt>
+                            <dd>Secuencias contiguas de n elementos. 1-gramas (caracteres individuales), 2-gramas (pares
+                                de caracteres), 3-gramas (tríos de caracteres).</dd>
+
+                            <dt>KL Divergence</dt>
+                            <dd>Mide la diferencia entre dos distribuciones de probabilidad. Valores más bajos indican
+                                distribuciones más similares.</dd>
+
+                            <dt>Diversidad léxica</dt>
+                            <dd>Relación entre palabras únicas y palabras totales. Mayor valor indica mayor variedad de
+                                vocabulario.</dd>
+
+                            <dt>Entropía</dt>
+                            <dd>Mide la incertidumbre o aleatoriedad en la distribución de los datos. Mayor valor indica
+                                mayor aleatoriedad.</dd>
+
+                            <dt>Temperatura</dt>
+                            <dd>Parámetro que controla la aleatoriedad en la generación. Valores bajos = más
+                                determinista, valores altos = más aleatorio.</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 10: Quijote Conclusions -->
+    <section id="quijote-conclusions" class="slide d-flex align-items-center quijote-section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5" data-aos="fade-up">Conclusiones del Experimento Quijote</h2>
+            <div class="row">
+                <div class="col-lg-6" data-aos="fade-up">
+                    <div class="conclusions-card">
+                        <h3><span class="material-icons">lightbulb</span> Hallazgos Principales</h3>
+                        <ul>
+                            <li>Las redes LSTM son capaces de aprender y reproducir el estilo literario de Cervantes
+                            </li>
+                            <li>La temperatura es un parámetro crucial para balancear creatividad y coherencia</li>
+                            <li>Mejora gradual de la calidad de texto a lo largo del entrenamiento</li>
+                            <li>El modelo captura elementos léxicos básicos pero tiene dificultades con estructuras
+                                narrativas complejas</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="future-card">
+                        <h3><span class="material-icons">trending_up</span> Futuras Mejoras</h3>
+                        <ul>
+                            <li>Experimentar con arquitecturas más avanzadas (Transformers)</li>
+                            <li>Aumentar el tamaño del modelo para capturar estructuras más complejas</li>
+                            <li>Incorporar preprocesamiento a nivel de palabras en lugar de caracteres</li>
+                            <li>Implementar técnicas de fine-tuning para mejorar la coherencia narrativa</li>
+                            <li>Explorar modelos generativos más recientes como GPT para comparar resultados</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PARTE 2: CHATBOT -->
+
+    <!-- Slide 11: Chatbot Overview -->
+    <section id="chatbot-overview" class="slide d-flex align-items-center chatbot-section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5" data-aos="fade-up">Análisis y Clasificación de Diálogos</h2>
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="chatbot-card">
+                        <h3><span class="material-icons">chat</span> Objetivos</h3>
+                        <p>Desarrollar modelos capaces de analizar y clasificar aspectos fundamentales de los diálogos:
+                        </p>
+                        <ul>
+                            <li>Identificar actos de habla (intención comunicativa)</li>
+                            <li>Reconocer emociones expresadas en el texto</li>
+                            <li>Comprender la estructura de las conversaciones</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="dialog-visualization-container">
+                        <div class="dialog-header">
+                            <span class="material-icons">forum</span>
+                            <h4>Visualización de Análisis de Diálogos</h4>
+                        </div>
+                        <div class="dialog-conversation">
+                            <div class="message user" data-act="pregunta" data-emotion="curiosidad">
+                                <div class="message-content">¿Podrías ayudarme a encontrar un buen restaurante cerca?</div>
+                                <div class="message-annotations">
+                                    <span class="act-tag">Acto: Pregunta</span>
+                                    <span class="emotion-tag">Emoción: Curiosidad</span>
+                                </div>
+                            </div>
+                            
+                            <div class="message bot" data-act="respuesta" data-emotion="neutral">
+                                <div class="message-content">Claro, hay varios restaurantes recomendados en esta zona. ¿Qué tipo de comida prefieres?</div>
+                                <div class="message-annotations">
+                                    <span class="act-tag">Acto: Respuesta</span>
+                                    <span class="emotion-tag">Emoción: Neutral</span>
+                                </div>
+                            </div>
+                            
+                            <div class="message user" data-act="declaración" data-emotion="entusiasmo">
+                                <div class="message-content">¡Me encantaría probar comida italiana! Especialmente si tienen buena pasta.</div>
+                                <div class="message-annotations">
+                                    <span class="act-tag">Acto: Declaración</span>
+                                    <span class="emotion-tag">Emoción: Entusiasmo</span>
+                                </div>
+                            </div>
+                            
+                            <div class="message bot" data-act="sugerencia" data-emotion="positiva">
+                                <div class="message-content">Te recomendaría "La Trattoria", tienen las mejores pastas de la ciudad y está a solo 5 minutos de aquí.</div>
+                                <div class="message-annotations">
+                                    <span class="act-tag">Acto: Sugerencia</span>
+                                    <span class="emotion-tag">Emoción: Positiva</span>
+                                </div>
+                            </div>
+                            
+                            <div class="message user" data-act="agradecimiento" data-emotion="gratitud">
+                                <div class="message-content">¡Muchas gracias! Iré ahora mismo.</div>
+                                <div class="message-annotations">
+                                    <span class="act-tag">Acto: Agradecimiento</span>
+                                    <span class="emotion-tag">Emoción: Gratitud</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dialog-legend">
+                            <div class="legend-title">Clasificaciones</div>
+                            <div class="legend-sections">
+                                <div class="legend-section">
+                                    <div class="section-title">Actos de Habla:</div>
+                                    <div class="legend-items">
+                                        <span class="legend-item">Pregunta</span>
+                                        <span class="legend-item">Respuesta</span>
+                                        <span class="legend-item">Declaración</span>
+                                        <span class="legend-item">Sugerencia</span>
+                                        <span class="legend-item">Agradecimiento</span>
+                                    </div>
+                                </div>
+                                <div class="legend-section">
+                                    <div class="section-title">Emociones:</div>
+                                    <div class="legend-items">
+                                        <span class="legend-item">Curiosidad</span>
+                                        <span class="legend-item">Neutral</span>
+                                        <span class="legend-item">Entusiasmo</span>
+                                        <span class="legend-item">Positiva</span>
+                                        <span class="legend-item">Gratitud</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="caption mt-2">Aplicaciones: asistentes virtuales, análisis de sentimiento, sistemas de recomendación</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Slide 12: Data Analysis -->
+    <section id="chatbot-data" class="slide d-flex align-items-center chatbot-section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5" data-aos="fade-up">Análisis de los Datos de Diálogo</h2>
+            <div class="row">
+                <div class="col-lg-6" data-aos="fade-up">
+                    <div class="data-card">
+                        <h3><span class="material-icons">dataset</span> Conjunto de Datos</h3>
+                        <ul>
+                            <li><strong>Entrenamiento:</strong> 11,118 diálogos</li>
+                            <li><strong>Validación:</strong> 1,000 diálogos</li>
+                            <li><strong>Prueba:</strong> 1,000 diálogos</li>
+                        </ul>
+
+                        <h3 class="mt-4"><span class="material-icons">category</span> Distribución</h3>
+                        <ul>
+                            <li><strong>Actos de habla únicos:</strong> 5,005 combinaciones</li>
+                            <li><strong>Emociones únicas:</strong> 2,453 combinaciones</li>
+                            <li><strong>Vocabulario:</strong> 5,000 palabras más frecuentes</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="row">
+                        <div class="col-md-12 mb-4">
+                            <div class="sample-card">
+                                <h4>Ejemplo de Diálogo</h4>
+                                <div class="dialog-sample">
+                                    <div class="message user">
+                                        <span class="speaker">Usuario:</span>
+                                        <span class="text">Could you help me with this?</span>
+                                        <span class="tag act">request</span>
+                                        <span class="tag emotion">neutral</span>
+                                    </div>
+                                    <div class="message bot">
+                                        <span class="speaker">Bot:</span>
+                                        <span class="text">Of course I can. It's not difficult.</span>
+                                        <span class="tag act">statement</span>
+                                        <span class="tag emotion">confident</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="frequency-card">
+                                <h4>Actos de habla comunes</h4>
+                                <ul>
+                                    <li>[2 1 2 1]: 344</li>
+                                    <li>[1 1 1 1]: 222</li>
+                                    <li>[2 1 1 1]: 203</li>
+                                    <li>[1 1]: 175</li>
+                                    <li>[2 1]: 157</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="frequency-card">
+                                <h4>Emociones comunes</h4>
+                                <ul>
+                                    <li>[0 0 0 0]: 1,264</li>
+                                    <li>[0 0 0 0 0 0]: 607</li>
+                                    <li>[0 0 0 0 0]: 505</li>
+                                    <li>[0 0]: 308</li>
+                                    <li>[0 0 0]: 237</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 13: Model Architecture -->
+    <section id="chatbot-models" class="slide d-flex align-items-center chatbot-section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5" data-aos="fade-up">Arquitecturas de Modelos</h2>
+            <div class="row align-items-center">
+                <div class="col-lg-5" data-aos="fade-right">
+                    <div class="model-comparison">
+                        <h3><span class="material-icons">compare</span> Modelos Implementados</h3>
+                        <div class="model-type">
+                            <h4>SimpleRNN</h4>
+                            <ul>
+                                <li>Arquitectura más simple y rápida de entrenar</li>
+                                <li>Menor capacidad para capturar dependencias a largo plazo</li>
+                                <li>Embedding → RNN → Dense → Softmax</li>
+                            </ul>
+                        </div>
+                        <div class="model-type mt-4">
+                            <h4>Transformer</h4>
+                            <ul>
+                                <li>Arquitectura basada en mecanismos de atención</li>
+                                <li>Mayor capacidad para modelar relaciones contextuales</li>
+                                <li>Embedding → Multi-Head Attention → Feed Forward → Dense → Softmax</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7" data-aos="fade-left">
+                    <div class="model-params-card">
+                        <h3><span class="material-icons">tune</span> Configuración</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4>Parámetros Comunes</h4>
+                                <ul>
+                                    <li>Tamaño de vocabulario: 5,000</li>
+                                    <li>Dimensión de embedding: 128</li>
+                                    <li>Dimensión oculta: 256</li>
+                                    <li>Clases (actos): 5,752</li>
+                                    <li>Clases (emociones): 2,757</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h4>Entrenamiento</h4>
+                                <ul>
+                                    <li>Épocas: 10</li>
+                                    <li>Early stopping: paciencia=3</li>
+                                    <li>Batch size: 32</li>
+                                    <li>Optimizador: Adam</li>
+                                    <li>Loss: Cross-Entropy</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 14: Speech Acts Classification -->
+    <section id="speech-acts" class="slide d-flex align-items-center chatbot-section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5" data-aos="fade-up">Clasificación de Actos de Habla</h2>
+            <div class="row">
+                <div class="col-lg-6" data-aos="fade-up">
+                    <div class="acts-card">
+                        <h3><span class="material-icons">record_voice_over</span> ¿Qué son los actos de habla?</h3>
+                        <p>Intenciones comunicativas que indican el propósito de un enunciado:</p>
+                        <div class="acts-examples">
+                            <div class="act-example">
+                                <span class="act-tag">Pregunta</span>
+                                <p>"¿Qué hora es?"</p>
+                            </div>
+                            <div class="act-example">
+                                <span class="act-tag">Solicitud</span>
+                                <p>"¿Podrías ayudarme con esto?"</p>
+                            </div>
+                            <div class="act-example">
+                                <span class="act-tag">Afirmación</span>
+                                <p>"Hoy hace buen tiempo."</p>
+                            </div>
+                            <div class="act-example">
+                                <span class="act-tag">Saludo</span>
+                                <p>"Hola, ¿cómo estás?"</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="results-card">
+                        <h3><span class="material-icons">assessment</span> Resultados</h3>
+                        <table class="table results-table">
+                            <thead>
+                                <tr>
+                                    <th>Modelo</th>
+                                    <th>Accuracy</th>
+                                    <th>Precision</th>
+                                    <th>Recall</th>
+                                    <th>F1-Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>SimpleRNN</td>
+                                    <td>0.0250</td>
+                                    <td>0.0056</td>
+                                    <td>0.0250</td>
+                                    <td>0.0070</td>
+                                </tr>
+                                <tr class="highlight">
+                                    <td>Transformer</td>
+                                    <td>0.0760</td>
+                                    <td>0.0224</td>
+                                    <td>0.0760</td>
+                                    <td>0.0322</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="interpretation mt-3">
+                            <h4>Interpretación</h4>
+                            <ul>
+                                <li>El Transformer supera significativamente al SimpleRNN</li>
+                                <li>Resultados modestos debido a la alta complejidad del problema (5,752 clases)</li>
+                                <li>La atención del Transformer ayuda a capturar mejor las relaciones entre palabras
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 15: Emotion Classification -->
+    <section id="emotion-classification" class="slide d-flex align-items-center chatbot-section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5" data-aos="fade-up">Clasificación de Emociones</h2>
+            <div class="row">
+                <div class="col-lg-6" data-aos="fade-up">
+                    <div class="emotion-card">
+                        <h3><span class="material-icons">sentiment_satisfied_alt</span> ¿Qué son las emociones en texto?
+                        </h3>
+                        <p>Estados afectivos expresados a través del lenguaje que reflejan el sentimiento del hablante:
+                        </p>
+                        <div class="emotion-examples">
+                            <div class="emotion-example">
+                                <span class="emotion-tag joy">Alegría</span>
+                                <p>"¡Estoy tan feliz con esta noticia!"</p>
+                            </div>
+                            <div class="emotion-example">
+                                <span class="emotion-tag anger">Enfado</span>
+                                <p>"No puedo creer que hayan hecho esto."</p>
+                            </div>
+                            <div class="emotion-example">
+                                <span class="emotion-tag sadness">Tristeza</span>
+                                <p>"La echo tanto de menos cada día."</p>
+                            </div>
+                            <div class="emotion-example">
+                                <span class="emotion-tag neutral">Neutral</span>
+                                <p>"El tren sale a las cinco."</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="results-card">
+                        <h3><span class="material-icons">assessment</span> Resultados</h3>
+                        <table class="table results-table">
+                            <thead>
+                                <tr>
+                                    <th>Modelo</th>
+                                    <th>Accuracy</th>
+                                    <th>Precision</th>
+                                    <th>Recall</th>
+                                    <th>F1-Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>SimpleRNN</td>
+                                    <td>0.0260</td>
+                                    <td>0.0190</td>
+                                    <td>0.0260</td>
+                                    <td>0.0131</td>
+                                </tr>
+                                <tr class="highlight">
+                                    <td>Transformer</td>
+                                    <td>0.1880</td>
+                                    <td>0.1227</td>
+                                    <td>0.1880</td>
+                                    <td>0.1299</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="interpretation mt-3">
+                            <h4>Interpretación</h4>
+                            <ul>
+                                <li>El Transformer obtiene resultados significativamente mejores</li>
+                                <li>La tarea de clasificación de emociones parece más sencilla que la de actos de habla
+                                </li>
+                                <li>F1-Score de 0.1299 vs. 0.0322 para actos de habla</li>
+                                <li>Menor número de clases (2,757 vs. 5,752) facilita el aprendizaje</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 16: Models Comparison -->
+    <section id="models-comparison" class="slide d-flex align-items-center chatbot-section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5" data-aos="fade-up">Comparación de Modelos</h2>
+            <div class="row">
+                <div class="col-lg-12" data-aos="fade-up">
+                    <div class="comparison-chart p-4 bg-white rounded shadow">
+                        <h3 class="text-center mb-4"><span
+                                class="material-icons align-middle me-2">assessment</span>Rendimiento Comparativo</h3>
+
+                        <!-- Pestañas para alternar entre tipos de gráficos -->
+                        <ul class="nav nav-tabs justify-content-center mb-4" id="chartTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="bar-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bar-chart" type="button" role="tab">Gráfico de Barras</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="radar-tab" data-bs-toggle="tab"
+                                    data-bs-target="#radar-chart" type="button" role="tab">Gráfico Radar</button>
+                            </li>
+                        </ul>
+
+                        <!-- Contenido de las pestañas -->
+                        <div class="tab-content" id="chartTabContent">
+                            <!-- Gráfico de Barras -->
+                            <div class="tab-pane fade show active" id="bar-chart" role="tabpanel">
+                                <div class="chart-container" style="position: relative; height: 350px;">
+                                    <canvas id="modelComparisonBarChart"></canvas>
+                                </div>
+                            </div>
+
+                            <!-- Gráfico Radar -->
+                            <div class="tab-pane fade" id="radar-chart" role="tabpanel">
+                                <div class="chart-container" style="position: relative; height: 350px;">
+                                    <canvas id="modelComparisonRadarChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="chart-legend text-center mt-4">
+                            <div class="d-inline-block me-4">
+                                <span class="legend-color" style="background-color: rgba(54, 162, 235, 0.7);"></span>
+                                <span>SimpleRNN</span>
+                            </div>
+                            <div class="d-inline-block">
+                                <span class="legend-color" style="background-color: rgba(255, 99, 132, 0.7);"></span>
+                                <span>Transformer</span>
+                            </div>
+                        </div>
+
+                        <p class="text-center mt-3 text-muted">F1-Score por modelo y tarea (valores multiplicados por
+                            100 para mejor visualización)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="takeaway-card">
+                        <h3><span class="material-icons align-middle me-2">trending_up</span>Principales Tendencias</h3>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item bg-transparent">
+                                <i class="material-icons text-primary align-middle me-2"
+                                    style="font-size: 1rem;">check_circle</i>
+                                Los Transformers superan consistentemente a SimpleRNN en ambas tareas
+                            </li>
+                            <li class="list-group-item bg-transparent">
+                                <i class="material-icons text-primary align-middle me-2"
+                                    style="font-size: 1rem;">check_circle</i>
+                                La clasificación de emociones obtiene mejores resultados que la de actos de habla
+                            </li>
+                            <li class="list-group-item bg-transparent">
+                                <i class="material-icons text-primary align-middle me-2"
+                                    style="font-size: 1rem;">check_circle</i>
+                                El rendimiento modesto refleja la complejidad de la tarea (miles de clases)
+                            </li>
+                            <li class="list-group-item bg-transparent">
+                                <i class="material-icons text-primary align-middle me-2"
+                                    style="font-size: 1rem;">check_circle</i>
+                                La arquitectura basada en atención demuestra ser más eficaz para la comprensión de
+                                contexto
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="insight-card">
+                        <h3><span class="material-icons align-middle me-2">lightbulb</span>Insights Importantes</h3>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item bg-transparent">
+                                <i class="material-icons text-secondary align-middle me-2"
+                                    style="font-size: 1rem;">insights</i>
+                                La atención permite modelar mejor las relaciones entre palabras distantes
+                            </li>
+                            <li class="list-group-item bg-transparent">
+                                <i class="material-icons text-secondary align-middle me-2"
+                                    style="font-size: 1rem;">insights</i>
+                                Las emociones parecen tener patrones más reconocibles que los actos de habla
+                            </li>
+                            <li class="list-group-item bg-transparent">
+                                <i class="material-icons text-secondary align-middle me-2"
+                                    style="font-size: 1rem;">insights</i>
+                                El número elevado de clases representa un desafío significativo
+                            </li>
+                            <li class="list-group-item bg-transparent">
+                                <i class="material-icons text-secondary align-middle me-2"
+                                    style="font-size: 1rem;">insights</i>
+                                Se requieren modelos más potentes o enfoques de reducción de complejidad
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Slide 17: Interactive Testing -->
+    <section id="interactive-testing" class="slide d-flex align-items-center chatbot-section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5" data-aos="fade-up">Pruebas Interactivas</h2>
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="testing-card">
+                        <h3><span class="material-icons">chat</span> Interfaz de Prueba</h3>
+                        <p>El sistema permite analizar frases en inglés para clasificar su acto de habla y emoción:</p>
+                        <div class="chat-interface">
+                            <div class="chat-header">
+                                <span class="material-icons">android</span> Asistente de Análisis
+                            </div>
+                            <div class="chat-messages">
+                                <div class="message system">
+                                    Ingrese frases en inglés para clasificar su acto de habla y emoción
+                                </div>
+                                <div class="message user">
+                                    <span class="speaker">Usuario:</span>
+                                    <span class="text">I'm very happy today!</span>
+                                </div>
+                                <div class="message bot">
+                                    <span class="speaker">Asistente:</span>
+                                    <span class="text">😊 Emoción detectada: joy</span>
+                                    <span class="text">💬 Acto de habla: statement</span>
+                                </div>
+                                <div class="message user">
+                                    <span class="speaker">Usuario:</span>
+                                    <span class="text">Could you help me please?</span>
+                                </div>
+                                <div class="message bot">
+                                    <span class="speaker">Asistente:</span>
+                                    <span class="text">😐 Emoción detectada: neutral</span>
+                                    <span class="text">💬 Acto de habla: request</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="examples-card">
+                        <h3><span class="material-icons">list_alt</span> Ejemplos de Frases de Prueba</h3>
+                        <table class="table examples-table">
+                            <thead>
+                                <tr>
+                                    <th>Frase</th>
+                                    <th>Acto de habla</th>
+                                    <th>Emoción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>I'm so happy we won!</td>
+                                    <td>statement</td>
+                                    <td>joy</td>
+                                </tr>
+                                <tr>
+                                    <td>What time is it?</td>
+                                    <td>question</td>
+                                    <td>neutral</td>
+                                </tr>
+                                <tr>
+                                    <td>I'm angry about what happened.</td>
+                                    <td>statement</td>
+                                    <td>anger</td>
+                                </tr>
+                                <tr>
+                                    <td>Please help me with this.</td>
+                                    <td>request</td>
+                                    <td>neutral</td>
+                                </tr>
+                                <tr>
+                                    <td>I feel sad about the news.</td>
+                                    <td>statement</td>
+                                    <td>sadness</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 18: Practical Applications -->
+    <section id="applications" class="slide d-flex align-items-center chatbot-section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5" data-aos="fade-up">Aplicaciones Prácticas</h2>
+            <div class="row">
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="application-card">
+                        <div class="app-icon">
+                            <span class="material-icons">support_agent</span>
+                        </div>
+                        <h3>Asistentes Virtuales</h3>
+                        <p>Mejora de chatbots para responder apropiadamente según el acto de habla y la emoción
+                            detectada.</p>
+                        <div class="app-example">
+                            <p class="example-title">Ejemplo:</p>
+                            <p>Un asistente que responde con empatía a emociones negativas y ofrece información concisa
+                                ante preguntas neutrales.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="application-card">
+                        <div class="app-icon">
+                            <span class="material-icons">psychology</span>
+                        </div>
+                        <h3>Análisis de Sentimiento</h3>
+                        <p>Monitoreo avanzado de reacciones en redes sociales, reseñas de productos y comunicaciones
+                            empresariales.</p>
+                        <div class="app-example">
+                            <p class="example-title">Ejemplo:</p>
+                            <p>Análisis de mensajes de clientes para identificar insatisfacción aun cuando no se exprese
+                                directamente una queja.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="application-card">
+                        <div class="app-icon">
+                            <span class="material-icons">school</span>
+                        </div>
+                        <h3>Educación</h3>
+                        <p>Sistemas de tutoría inteligente que se adaptan al estado emocional y necesidades
+                            comunicativas del estudiante.</p>
+                        <div class="app-example">
+                            <p class="example-title">Ejemplo:</p>
+                            <p>Tutores virtuales que detectan frustración y ajustan el nivel de dificultad o
+                                proporcionan pistas adicionales.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-6" data-aos="fade-up" data-aos-delay="400">
+                    <div class="application-card">
+                        <div class="app-icon">
+                            <span class="material-icons">health_and_safety</span>
+                        </div>
+                        <h3>Salud Mental</h3>
+                        <p>Herramientas de monitoreo para detectar patrones lingüísticos asociados con estados
+                            emocionales específicos.</p>
+                        <div class="app-example">
+                            <p class="example-title">Ejemplo:</p>
+                            <p>Aplicaciones que alertan sobre posibles signos de depresión o ansiedad basados en el
+                                análisis del lenguaje utilizado.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" data-aos="fade-up" data-aos-delay="500">
+                    <div class="application-card">
+                        <div class="app-icon">
+                            <span class="material-icons">integration_instructions</span>
+                        </div>
+                        <h3>Interfaces de Programación</h3>
+                        <p>APIs que permiten integrar análisis de actos de habla y emociones en aplicaciones de
+                            terceros.</p>
+                        <div class="app-example">
+                            <p class="example-title">Ejemplo:</p>
+                            <p>Servicios cloud que proporcionan análisis lingüístico avanzado para desarrolladores de
+                                aplicaciones.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 19: Chatbot Conclusions -->
+    <section id="chatbot-conclusions" class="slide d-flex align-items-center chatbot-section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5" data-aos="fade-up">Conclusiones del Experimento Chatbot</h2>
+            <div class="row">
+                <div class="col-lg-6" data-aos="fade-up">
+                    <div class="conclusions-card">
+                        <h3><span class="material-icons">lightbulb</span> Hallazgos Principales</h3>
+                        <ul>
+                            <li>La arquitectura Transformer supera significativamente a SimpleRNN en tareas de
+                                clasificación de diálogos</li>
+                            <li>Las emociones resultan más fáciles de clasificar que los actos de habla (F1: 0.1299 vs.
+                                0.0322)</li>
+                            <li>La complejidad del problema (miles de clases) limita el rendimiento general</li>
+                            <li>Los mecanismos de atención son clave para modelar el contexto en conversaciones</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="future-card">
+                        <h3><span class="material-icons">trending_up</span> Futuras Mejoras</h3>
+                        <ul>
+                            <li>Reducir la complejidad agrupando actos de habla y emociones similares</li>
+                            <li>Explorar modelos pre-entrenados como BERT, RoBERTa o GPT para transfer learning</li>
+                            <li>Implementar técnicas de data augmentation para clases minoritarias</li>
+                            <li>Desarrollar modelos jerárquicos que primero clasifiquen categorías generales</li>
+                            <li>Incorporar análisis multimodal (texto + audio) para mayor precisión</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 20: Project Integration -->
+    <section id="integration" class="slide d-flex align-items-center">
+        <div class="container">
+            <h2 class="section-title text-center mb-3" data-aos="fade-up">Integrando Quijote y Chatbots</h2>
+
+            <!-- Nota sobre el estado del proyecto -->
+            <div class="project-status-note mb-4" data-aos="fade-up">
+                <div class="alert alert-info d-flex align-items-start">
+                    <span class="material-icons me-3 mt-1">info</span>
+                    <div>
+                        <strong>Nota sobre el estado actual:</strong> Esta integración representa nuestra visión para el
+                        proyecto completo. Por restricciones de tiempo, no hemos podido implementarla en su totalidad,
+                        pero estamos trabajando en ello como parte de nuestro aprendizaje.
+                    </div>
+                </div>
+            </div>
+
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="integration-card">
+                        <h3><span class="material-icons">hub</span> Potencial de Integración</h3>
+                        <p>Ambos proyectos explorados pueden complementarse creando sistemas de comunicación más
+                            avanzados:</p>
+                        <ul>
+                            <li>Chatbots literarios que generan respuestas con estilo cervantino</li>
+                            <li>Clasificación automática del estilo y emoción en textos históricos</li>
+                            <li>Generación de texto condicionada por actos de habla y emociones específicas</li>
+                            <li>Análisis comparativo de estilos literarios a través de modelos de clasificación</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="example-integration">
+                        <h3><span class="material-icons">psychology_alt</span> Prototipo Conceptual</h3>
+                        <div class="prototype-demo">
+                            <div class="prototype-label">Demostración conceptual - Integración futura</div>
+                            <div class="prompt">
+                                <p class="label">Prompt:</p>
+                                <p>Generar una respuesta con estilo de Cervantes, acto de habla: consejo, emoción:
+                                    sabiduría</p>
+                            </div>
+                            <div class="response">
+                                <p class="label">Respuesta:</p>
+                                <p class="quijote-style">Mirad, buen amigo, que en los negocios desta vida no hay cosa
+                                    segura, y mucho menos en los que dependen de voluntades ajenas. Tomad, pues, mi
+                                    consejo, y antes que la fortuna os vuelva las espaldas, asegurad lo que en vuestras
+                                    manos tenéis, que más vale pájaro en mano que buitre volando.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="row mt-4">
+                <div class="col-lg-12" data-aos="fade-up" data-aos-delay="300">
+                    <div class="timeline-card">
+                        <h3 class="text-center"><span class="material-icons">timeline</span> Plan de Implementación</h3>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-marker completed">1</div>
+                                <div class="timeline-content">
+                                    <h4>Fase I: Modelos Independientes</h4>
+                                    <p>Desarrollo y entrenamiento separado de modelos de generación de texto y clasificación de diálogos. <strong>(Completado)</strong></p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-marker current">2</div>
+                                <div class="timeline-content">
+                                    <h4>Fase II: Desarrollo de API de Integración</h4>
+                                    <p>Creación de interfaces que permitan la comunicación entre los modelos. <strong>(En progreso)</strong></p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-marker">3</div>
+                                <div class="timeline-content">
+                                    <h4>Fase III: Prototipo Funcional</h4>
+                                    <p>Implementación de un sistema que integre generación estilizada con clasificación de intenciones y emociones. <strong>(Próximamente)</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+            <div class="row mt-4">
+                <div class="col-lg-12 text-center" data-aos="fade-up" data-aos-delay="400">
+                    <div class="final-message">
+                        <h3>Hacia el futuro del Procesamiento de Lenguaje Natural</h3>
+                        <p>La combinación de técnicas de generación de texto y análisis de diálogos abre nuevas
+                            fronteras en la creación de sistemas de comunicación más naturales, empáticos y
+                            contextualmente apropiados.</p>
+                    </div>
+                    <div class="team-members mt-4" data-aos="fade-up" data-aos-delay="500">
+                        <p class="fs-6">Patricio Quintanilla | Alexander Seydewitz | Italo Brignardello</p>
+                        <p class="date">Julio 2025</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Slide 21: Final Thanks -->
+    <section id="thanks" class="slide d-flex align-items-center justify-content-center text-center">
+        <div class="container">
+            <div class="logo-container mb-4">
+                <img src="https://www.duoc.cl/wp-content/themes/wordpress-duoc-cl/images/logo-duoc.svg" alt="Duoc UC"
+                    class="duoc-logo">
+            </div>
+            <h1 class="display-3 fw-bold mb-4" data-aos="fade-up">Gracias por su atención</h1>
+            <h2 class="display-5 mb-5" data-aos="fade-up" data-aos-delay="200">Quijote + chatbots (mejoras)</h2>
+            <p class="fs-5 mb-5" data-aos="fade-up" data-aos-delay="400">Julio 2025</p>
+            <div class="team-members" data-aos="fade-up" data-aos-delay="600">
+                <p class="fs-6">Patricio Quintanilla | Alexander Seydewitz | Italo Brignardello</p>
+            </div>
+            <div class="contact-info mt-4" data-aos="fade-up" data-aos-delay="700">
+                <!-- <p><span class="material-icons">email</span> contacto@ejemplo.com</p> -->
+                <!-- <p><span class="material-icons">web</span> www.proyectosnlp.cl</p> -->
+            </div>
+            <div class="scroll-indicator" data-aos="fade-up" data-aos-delay="800">
+                <a href="#cover">
+                    <p>Volver al inicio</p>
+                    <span class="material-icons">keyboard_arrow_up</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script src="assets/scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Inicializar Mermaid con configuración personalizada
+            mermaid.initialize({
+                startOnLoad: true,
+                theme: 'default',
+                flowchart: {
+                    useMaxWidth: true,
+                    htmlLabels: true,
+                    curve: 'basis'
+                },
+                securityLevel: 'loose' // Permite hacer clic en los nodos
+            });
+        });
+    </script>
+
+     <script> 
+        document.addEventListener('DOMContentLoaded', function() {
+    // Inicializar Animate on Scroll (AOS)
+    AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true,
+        offset: 100
+    });
+
+    // Navegación de scroll suave
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    // Configuración de gráficos de pérdida para el entrenamiento
+    const lossValues = [0.0388, 0.0329, 0.0314, 0.0306, 0.0301];
+    const lossChart = document.querySelector('.loss-chart');
+    
+    if (lossChart) {
+        const maxLoss = Math.max(...lossValues);
+        const lossBars = lossChart.querySelectorAll('.loss-bar');
+        
+        lossBars.forEach((bar, index) => {
+            const height = (lossValues[index] / maxLoss) * 100;
+            bar.style.height = `${height}%`;
+            
+            // Añadir efecto de animación
+            setTimeout(() => {
+                bar.style.height = `${height}%`;
+            }, 300 * index);
+        });
+    }
+
+    // Animación para los gráficos de barras de comparación - VERSIÓN MEJORADA
+    const modelBars = document.querySelectorAll('.model-bar');
+    
+    if (modelBars.length > 0) {
+        console.log(`Encontradas ${modelBars.length} barras para animar`); // Depuración
+        
+        modelBars.forEach((bar, index) => {
+            // Verificar si existe el atributo data-height
+            if (!bar.hasAttribute('data-height')) {
+                console.warn('Barra sin atributo data-height:', bar);
+                return; // Saltar esta barra
+            }
+            
+            const height = bar.getAttribute('data-height');
+            console.log(`Barra ${index}: altura = ${height}%`); // Depuración
+            
+            // Asegurarse de que no haya altura configurada previamente
+            bar.style.height = '0%';
+            
+            // Crear un observador para animar cuando sea visible
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Añadir un pequeño retraso escalonado para efecto visual
+                        setTimeout(() => {
+                            bar.style.height = `${height}%`;
+                            console.log(`Animando barra ${index} a ${height}%`); // Depuración
+                        }, 100 * index);
+                        
+                        // Dejar de observar una vez animado
+                        observer.unobserve(bar);
+                    }
+                });
+            }, { threshold: 0.2 }); // Empezar animación cuando 20% visible
+            
+            // Comenzar a observar
+            observer.observe(bar);
+        });
+    } else {
+        console.warn('No se encontraron barras .model-bar para animar');
+    }
+
+    // Interactividad en las secciones de ejemplos de generación
+    const generationCards = document.querySelectorAll('.generation-card');
+    
+    generationCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.classList.add('active');
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.classList.remove('active');
+        });
+    });
+
+    // Control de temperatura en la sección de ejemplos
+    const temperatureSlider = document.getElementById('temperature-slider');
+    const temperatureValue = document.getElementById('temperature-value');
+    
+    if (temperatureSlider) {
+        temperatureSlider.addEventListener('input', function() {
+            temperatureValue.textContent = this.value;
+            
+            // Actualizar ejemplos basados en temperatura
+            updateExamples(this.value);
+        });
+    }
+
+    function updateExamples(temp) {
+        const lowTempExample = document.querySelector('.low-temp .generation-sample');
+        const highTempExample = document.querySelector('.high-temp .generation-sample');
+        
+        if (temp < 0.5) {
+            lowTempExample.classList.add('highlight');
+            highTempExample.classList.remove('highlight');
+        } else {
+            lowTempExample.classList.remove('highlight');
+            highTempExample.classList.add('highlight');
+        }
+    }
+
+    // Función para animación de métricas
+    function animateValue(obj, start, end, duration) {
+        let startTimestamp = null;
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            const currentValue = Math.floor(progress * (end - start) + start);
+            obj.innerHTML = currentValue.toLocaleString();
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            }
+        };
+        window.requestAnimationFrame(step);
+    }
+
+    // Animación de estadísticas cuando son visibles
+    const statsElements = document.querySelectorAll('.stats-value');
+    
+    // Opciones para IntersectionObserver
+    const options = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.5
+    };
+
+    // Callback para IntersectionObserver
+    const statsObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const element = entry.target;
+                const finalValue = parseInt(element.getAttribute('data-value'));
+                animateValue(element, 0, finalValue, 1500);
+                observer.unobserve(element);
+            }
+        });
+    }, options);
+
+    // Aplicar observador a los elementos de estadísticas
+    statsElements.forEach(element => {
+        statsObserver.observe(element);
+    });
+
+    // Navegación de secciones con teclado
+    document.addEventListener('keydown', function(e) {
+        const sections = document.querySelectorAll('.slide');
+        const currentSection = document.querySelector('.slide:target') || sections[0];
+        let currentIndex = Array.from(sections).indexOf(currentSection);
+        
+        // Flecha abajo o avance de página
+        if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+            e.preventDefault();
+            currentIndex = Math.min(currentIndex + 1, sections.length - 1);
+            sections[currentIndex].scrollIntoView({ behavior: 'smooth' });
+            window.location.hash = sections[currentIndex].id;
+            updateProgressBar(); // Actualizar barra de progreso al cambiar slide
+        }
+        
+        // Flecha arriba o retroceso de página
+        if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+            e.preventDefault();
+            currentIndex = Math.max(currentIndex - 1, 0);
+            sections[currentIndex].scrollIntoView({ behavior: 'smooth' });
+            window.location.hash = sections[currentIndex].id;
+            updateProgressBar(); // Actualizar barra de progreso al cambiar slide
+        }
+    });
+    
+    // Inicializar visualización de código
+    document.querySelectorAll('pre code').forEach((block) => {
+        hljs.highlightBlock(block);
+    });
+    
+    // ===== INICIO: FUNCIONALIDAD DE BARRA DE PROGRESO =====
+    
+    // Crear elementos de la barra de progreso si no existen
+    if (!document.querySelector('.progress-container')) {
+        const progressContainer = document.createElement('div');
+        progressContainer.className = 'progress-container';
+        
+        const progressBar = document.createElement('div');
+        progressBar.className = 'progress-bar';
+        progressBar.id = 'progressBar';
+        
+        const progressMarkers = document.createElement('div');
+        progressMarkers.className = 'progress-markers';
+        
+        // Crear marcadores
+        const markerPositions = [33, 66, 99];
+        markerPositions.forEach(position => {
+            const marker = document.createElement('div');
+            marker.className = 'marker';
+            marker.setAttribute('data-percentage', position);
+            progressMarkers.appendChild(marker);
+        });
+        
+        // Crear contador de diapositivas
+        const slideCounter = document.createElement('div');
+        slideCounter.className = 'slide-counter';
+        slideCounter.id = 'slideCounter';
+        
+        // Añadir todo al DOM
+        progressContainer.appendChild(progressBar);
+        progressContainer.appendChild(progressMarkers);
+        document.body.insertBefore(progressContainer, document.body.firstChild);
+        document.body.insertBefore(slideCounter, document.body.firstChild);
+    }
+    
+    // Inicializar barra de progreso
+    updateProgressBar();
+    
+    // Actualizar la barra de progreso cuando se hace scroll
+    window.addEventListener('scroll', updateProgressBar);
+    
+    // Función para actualizar la barra de progreso
+    function updateProgressBar() {
+        const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight - windowHeight;
+        const scrollPosition = window.scrollY;
+        
+        // Calcular el porcentaje de progreso
+        const scrollPercentage = (scrollPosition / documentHeight) * 100;
+        
+        // Actualizar el ancho de la barra de progreso
+        const progressBar = document.getElementById('progressBar');
+        progressBar.style.width = scrollPercentage + '%';
+        
+        // Cambiar el color según el porcentaje
+        if (scrollPercentage < 33) {
+            progressBar.className = 'progress-bar stage-1';
+        } else if (scrollPercentage < 66) {
+            progressBar.className = 'progress-bar stage-2';
+        } else {
+            progressBar.className = 'progress-bar stage-3';
+        }
+        
+        // Actualizar contador de diapositivas
+        const slideCount = document.querySelectorAll('.slide').length;
+        const currentSlide = Math.min(Math.ceil(scrollPercentage * slideCount / 100), slideCount);
+        const slideCounter = document.getElementById('slideCounter');
+        if (slideCounter) {
+            slideCounter.textContent = `${currentSlide}/${slideCount}`;
+        }
+    }
+    
+    // Detectar cambios de slide más precisamente
+    const slideObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+                // Obtener índice del slide actual
+                const slides = document.querySelectorAll('.slide');
+                const currentIndex = Array.from(slides).indexOf(entry.target) + 1;
+                const totalSlides = slides.length;
+                
+                // Actualizar contador
+                const slideCounter = document.getElementById('slideCounter');
+                if (slideCounter) {
+                    slideCounter.textContent = `${currentIndex}/${totalSlides}`;
+                }
+                
+                // Calcular porcentaje para la barra
+                const percentage = (currentIndex - 1) / (totalSlides - 1) * 100;
+                
+                // Actualizar barra de progreso manualmente para mayor precisión
+                const progressBar = document.getElementById('progressBar');
+                if (progressBar) {
+                    progressBar.style.width = `${percentage}%`;
+                    
+                    // Actualizar clase según el porcentaje
+                    if (percentage < 33) {
+                        progressBar.className = 'progress-bar stage-1';
+                    } else if (percentage < 66) {
+                        progressBar.className = 'progress-bar stage-2';
+                    } else {
+                        progressBar.className = 'progress-bar stage-3';
+                    }
+                }
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    // Observar todas las diapositivas
+    document.querySelectorAll('.slide').forEach(slide => {
+        slideObserver.observe(slide);
+    });
+    
+    // ===== FIN: FUNCIONALIDAD DE BARRA DE PROGRESO =====
+});
+
+
+// Añade este código a tu archivo scripts.js
+document.addEventListener('DOMContentLoaded', function() {
+    // Código existente...
+
+    // Inicializar gráficos de comparación de modelos si existen los elementos
+    if (document.getElementById('modelComparisonBarChart')) {
+        initializeModelCharts();
+    }
+    
+    // Función para inicializar los gráficos
+    function initializeModelCharts() {
+        // Datos para los gráficos
+        const models = ['SimpleRNN', 'Transformer'];
+        const tasks = ['Actos de Habla', 'Emociones'];
+        const values = [
+            [0.70, 1.31],  // SimpleRNN (valores multiplicados por 100)
+            [3.22, 12.99]  // Transformer (valores multiplicados por 100)
+        ];
+        
+        // Colores para los modelos
+        const colors = [
+            'rgba(54, 162, 235, 0.7)',  // Azul para SimpleRNN
+            'rgba(255, 99, 132, 0.7)'   // Rojo para Transformer
+        ];
+        
+        // Inicializar gráfico de barras
+        const barCtx = document.getElementById('modelComparisonBarChart').getContext('2d');
+        new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: tasks,
+                datasets: models.map((model, idx) => ({
+                    label: model,
+                    data: values[idx],
+                    backgroundColor: colors[idx],
+                    borderColor: colors[idx].replace('0.7', '1'),
+                    borderWidth: 1
+                }))
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Rendimiento por Modelo y Tarea (F1-Score %)',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.dataset.label}: ${context.raw.toFixed(2)}%`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'F1-Score (%)'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Inicializar gráfico radar
+        const radarCtx = document.getElementById('modelComparisonRadarChart').getContext('2d');
+        new Chart(radarCtx, {
+            type: 'radar',
+            data: {
+                labels: tasks,
+                datasets: models.map((model, idx) => ({
+                    label: model,
+                    data: values[idx],
+                    backgroundColor: colors[idx].replace('0.7', '0.2'),
+                    borderColor: colors[idx].replace('0.7', '1'),
+                    borderWidth: 2,
+                    pointBackgroundColor: colors[idx].replace('0.7', '1'),
+                    pointRadius: 5
+                }))
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Comparación de Rendimiento (F1-Score %)',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    legend: {
+                        position: 'top'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.dataset.label}: ${context.raw.toFixed(2)}%`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    r: {
+                        min: 0,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+});
+document.addEventListener('DOMContentLoaded', function() {
+    // Añadir interactividad a los componentes
+    const components = document.querySelectorAll('.component');
+    
+    components.forEach(component => {
+        component.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-8px)';
+        });
+        
+        component.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(-3px)';
+        });
+    });
+});
+document.addEventListener('DOMContentLoaded', function() {
+    // Añadir interactividad a los mensajes
+    const messages = document.querySelectorAll('.message');
+    
+    messages.forEach(message => {
+        message.addEventListener('mouseenter', function() {
+            this.querySelector('.message-annotations').style.opacity = '1';
+        });
+        
+        message.addEventListener('mouseleave', function() {
+            this.querySelector('.message-annotations').style.opacity = '0.8';
+        });
+        
+        // Inicialmente ocultar las anotaciones
+        message.querySelector('.message-annotations').style.opacity = '0.8';
+    });
+    
+    // Efecto de "escribiendo" para los mensajes bot
+    const botMessages = document.querySelectorAll('.message.bot .message-content');
+    
+    botMessages.forEach((message, index) => {
+        const originalText = message.textContent;
+        const animationDelay = 0.7 + (index * 1.5); // Basado en el orden del mensaje
+        
+        // Inicialmente vacío
+        message.textContent = '';
+        
+        // Comenzar a "escribir" después del retraso
+        setTimeout(() => {
+            let i = 0;
+            const typing = setInterval(() => {
+                message.textContent += originalText.charAt(i);
+                i++;
+                if (i > originalText.length) {
+                    clearInterval(typing);
+                }
+            }, 20);
+        }, animationDelay * 1000);
+    });
+});
+
+    </script>
+</body>
+
+</html>
