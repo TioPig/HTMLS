@@ -6,7 +6,6 @@
     <title>Plan de Gestión y Mitigación de Riesgos TI - DUOC UC</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --primary-color: #2c3e50;
@@ -41,20 +40,11 @@
             padding: 2rem 0;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            opacity: 0;
-            transform: translateX(100px);
-            transition: all 0.5s ease-in-out;
         }
 
         .slide.active {
             display: block;
-            opacity: 1;
-            transform: translateX(0);
             animation: slideIn 0.6s ease-out;
-        }
-
-        .slide.prev {
-            transform: translateX(-100px);
         }
 
         @keyframes slideIn {
@@ -65,40 +55,6 @@
             to { 
                 opacity: 1; 
                 transform: translateY(0); 
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
             }
         }
 
@@ -170,22 +126,6 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.15);
         }
 
-        .slide.active .card {
-            animation: fadeInUp 0.6s ease-out forwards;
-        }
-
-        .slide.active .card:nth-child(2) {
-            animation-delay: 0.1s;
-        }
-
-        .slide.active .card:nth-child(3) {
-            animation-delay: 0.2s;
-        }
-
-        .slide.active .card:nth-child(4) {
-            animation-delay: 0.3s;
-        }
-
         .card-gradient-primary {
             background: var(--gradient-primary);
             color: white;
@@ -204,10 +144,6 @@
         .stat-card {
             text-align: center;
             padding: 2rem;
-        }
-
-        .stat-card:hover {
-            animation: pulse 0.6s ease-in-out;
         }
 
         .stat-number {
@@ -267,8 +203,6 @@
         .risk-item:hover {
             border-left-color: var(--secondary-color);
             transform: translateX(5px);
-            background-color: rgba(0, 123, 255, 0.05);
-            border-left: 4px solid var(--primary-color);
         }
 
         .risk-level-badge {
@@ -302,11 +236,8 @@
             background: rgba(44, 62, 80, 0.95);
             backdrop-filter: blur(10px);
             border-radius: 50px;
-            padding: 1rem;
+            padding: 0.5rem;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
         }
 
         .slide-counter {
@@ -320,13 +251,6 @@
             font-weight: 600;
             z-index: 1000;
             backdrop-filter: blur(10px);
-        }
-
-        .slide-counter-inline {
-            color: white;
-            font-weight: 600;
-            min-width: 80px;
-            text-align: center;
         }
 
         .progress-custom {
@@ -373,24 +297,6 @@
             position: relative;
             padding-left: 3rem;
             margin-bottom: 2rem;
-            animation: slideInRight 0.8s ease-out forwards;
-            opacity: 0;
-        }
-
-        .slide.active .timeline-item:nth-child(1) {
-            animation-delay: 0.2s;
-        }
-
-        .slide.active .timeline-item:nth-child(2) {
-            animation-delay: 0.4s;
-        }
-
-        .slide.active .timeline-item:nth-child(3) {
-            animation-delay: 0.6s;
-        }
-
-        .slide.active .timeline-item:nth-child(4) {
-            animation-delay: 0.8s;
         }
 
         .timeline-item::before {
@@ -418,13 +324,16 @@
             display: none;
         }
 
-        .chart-container {
+        .chart-placeholder {
             height: 300px;
-            background: white;
+            background: var(--light-color);
             border-radius: 15px;
-            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-color);
+            font-size: 1.2rem;
             margin: 2rem 0;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         .highlight-box {
@@ -436,7 +345,7 @@
         }
 
         .tab-content-custom {
-            background: #2c3e50;
+            background: white;
             border-radius: 0 15px 15px 15px;
             padding: 2rem;
             box-shadow: 0 5px 20px rgba(0,0,0,0.1);
@@ -456,25 +365,6 @@
             color: var(--primary-color);
         }
 
-        .chart-image {
-            width: 100%;
-            height: 300px;
-            object-fit: contain;
-            border-radius: 10px;
-            background: white;
-            padding: 1rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .chart-container-image {
-            background: white;
-            border-radius: 15px;
-            padding: 1rem;
-            margin: 2rem 0;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
         @media (max-width: 768px) {
             .slide-header h1 {
                 font-size: 2rem;
@@ -490,70 +380,12 @@
             
             .navigation-fixed {
                 bottom: 1rem;
-                padding: 0.5rem;
             }
             
             .slide-counter {
                 top: 80px;
                 right: 1rem;
             }
-        }
-
-        /* Print styles */
-        @media print {
-            .navigation-fixed,
-            .progress-custom,
-            .slide-counter {
-                display: none !important;
-            }
-            
-            .slide {
-                page-break-after: always;
-                opacity: 1 !important;
-                transform: none !important;
-                position: static !important;
-                height: auto !important;
-                min-height: 100vh;
-            }
-            
-            .slide:last-child {
-                page-break-after: avoid;
-            }
-        }
-
-        /* Accessibility improvements */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-
-        /* High contrast mode support */
-        @media (prefers-contrast: high) {
-            .card-custom {
-                border: 2px solid #000;
-            }
-            
-            .text-muted {
-                color: #000 !important;
-            }
-        }
-
-        /* Loading animation */
-        #loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
         }
     </style>
 </head>
@@ -568,6 +400,7 @@
         <div class="container">
             <a class="navbar-brand" href="#">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Logo_DuocUC.svg/1067px-Logo_DuocUC.svg.png" alt="DUOC UC">
+                <!-- <span class="ms-2">DUOC UC</span> -->
             </a>
             <div class="navbar-nav ms-auto">
                 <span class="navbar-text">
@@ -578,7 +411,7 @@
         </div>
     </nav>
 
-    <!-- Slide Counter -->
+
 
     <div class="presentation-container">
         <!-- Slide 1: Portada -->
@@ -587,7 +420,7 @@
                 <div class="container text-center">
                     <h1><i class="fas fa-shield-alt me-3"></i>Plan de Gestión y Mitigación de Riesgos TI</h1>
                     <p class="lead">Proyecto: Sistema de Gestión Académica Integrado</p>
-                    <p>DUOC UC - Sede San Joaquín</p>
+                    <p>DUOC UC - Sede Plaza Vespucio</p>
                 </div>
             </div>
             
@@ -991,10 +824,10 @@
                                             <tr>
                                                 <td class="bg-dark text-white fw-bold">Media (3)</td>
                                                 <td class="matrix-low fw-bold">3</td>
-                                                <td class="matrix-low fw-bold">3</td>
                                                 <td class="matrix-medium fw-bold">6</td>
                                                 <td class="matrix-medium fw-bold">9</td>
                                                 <td class="matrix-high fw-bold">12</td>
+                                                <td class="matrix-high fw-bold">15</td>
                                             </tr>
                                             <tr>
                                                 <td class="bg-dark text-white fw-bold">Baja (2)</td>
@@ -1188,10 +1021,17 @@
                         <div class="card card-custom">
                             <div class="card-body">
                                 <h5 class="card-title"><i class="fas fa-chart-area me-2"></i>Distribución de Probabilidad de Costos</h5>
-                                <div class="chart-container-image">
-                                    <!-- Aquí va tu imagen PNG del gráfico Monte Carlo -->
-                                    <img src="graficos/simulacion_monte_carlo.png" alt="Gráfico de Distribución Monte Carlo" class="chart-image">
+                                                                <div class="chart-container">
+                                    <div class="text-center">
+                                        <img src="https://i.postimg.cc/g034kqhZ/simulacion-monte-carlo.png" 
+                                             alt="Gráfico de Distribución Monte Carlo" 
+                                             class="img-fluid chart-image"
+                                             style="max-height: 300px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                                        <p class="mt-3 fw-bold">Gráfico de Distribución Monte Carlo</p>
+                                        <small class="text-muted">Curva de probabilidad acumulada de costos del proyecto</small>
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -1364,7 +1204,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="card card-custom h-100">
+                            <div class="card card-custom h-100">
                             <div class="card-body">
                                 <h5 class="card-title text-success"><i class="fas fa-check me-2"></i>ACEPTAR (5%)</h5>
                                 <p class="card-text">Reconocer el riesgo sin acción activa</p>
@@ -1602,15 +1442,27 @@
                     <div class="tab-pane fade" id="dashboard" role="tabpanel">
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <div class="chart-container-image">
-                                    <!-- Aquí va tu segunda imagen PNG -->
-                                    <img src="graficos/distribucion_riesgos.png" alt="Dashboard de Riesgos por Categoría" class="chart-image">
+                                <div class="chart-container">
+                                    <div class="text-center">
+                                        <img src="https://i.postimg.cc/NfhnYMSS/distribucion-riesgos.png" 
+                                             alt="Dashboard de Riesgos por Categoría" 
+                                             class="img-fluid chart-image"
+                                             style="max-height: 300px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                                        <p class="mt-3 fw-bold">Dashboard de Riesgos por Categoría</p>
+                                        <small class="text-muted">Distribución en tiempo real</small>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="chart-container-image">
-                                    <!-- Aquí va tu segunda imagen PNG -->
-                                    <img src="graficos/dashboard_kpis_riesgos.png" alt="Dashboard de KPIs de Riesgos" class="chart-image">
+                                <div class="chart-container">
+                                    <div class="text-center">
+                                        <img src="https://i.postimg.cc/PrkS978k/Diagrama-sin-t-tulo-drawio.png" 
+                                             alt="Tendencia de KPIs Principales" 
+                                             class="img-fluid chart-image"
+                                             style="max-height: 300px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                                        <p class="mt-3 fw-bold">Tendencia de KPIs Principales</p>
+                                        <small class="text-muted">Últimos 30 días</small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1669,39 +1521,51 @@
                                 <h5 class="card-title"><i class="fas fa-road me-2"></i>Roadmap de Implementación - Próximos 90 días</h5>
                                 <div class="timeline">
                                     <div class="timeline-item">
-                                        <h6 class="timeline-title">Semanas 1-2: Preparación</h6>
-                                        <p class="timeline-description">
-                                            <i class="fas fa-users me-2"></i>Conformación del equipo de gestión de riesgos<br>
-                                            <i class="fas fa-tools me-2"></i>Configuración de herramientas de monitoreo<br>
-                                            <i class="fas fa-handshake me-2"></i>Firma de contratos con proveedores especializados
-                                        </p>
+                                        <div class="timeline-marker bg-primary"></div>
+                                        <div class="timeline-content">
+                                            <h6 class="timeline-title">Semanas 1-2: Preparación</h6>
+                                            <p class="timeline-description">
+                                                <i class="fas fa-users me-2"></i>Conformación del equipo de gestión de riesgos<br>
+                                                <i class="fas fa-tools me-2"></i>Configuración de herramientas de monitoreo<br>
+                                                <i class="fas fa-handshake me-2"></i>Firma de contratos con proveedores especializados
+                                            </p>
+                                        </div>
                                     </div>
                                     
                                     <div class="timeline-item">
-                                        <h6 class="timeline-title">Semanas 3-6: Implementación Inicial</h6>
-                                        <p class="timeline-description">
-                                            <i class="fas fa-play me-2"></i>Activación del sistema de monitoreo 24/7<br>
-                                            <i class="fas fa-graduation-cap me-2"></i>Capacitación del equipo en nuevas metodologías<br>
-                                            <i class="fas fa-vial me-2"></i>Inicio de pruebas de integración tempranas
-                                        </p>
+                                        <div class="timeline-marker bg-success"></div>
+                                        <div class="timeline-content">
+                                            <h6 class="timeline-title">Semanas 3-6: Implementación Inicial</h6>
+                                            <p class="timeline-description">
+                                                <i class="fas fa-play me-2"></i>Activación del sistema de monitoreo 24/7<br>
+                                                <i class="fas fa-graduation-cap me-2"></i>Capacitación del equipo en nuevas metodologías<br>
+                                                <i class="fas fa-vial me-2"></i>Inicio de pruebas de integración tempranas
+                                            </p>
+                                        </div>
                                     </div>
                                     
                                     <div class="timeline-item">
-                                        <h6 class="timeline-title">Semanas 7-10: Consolidación</h6>
-                                        <p class="timeline-description">
-                                            <i class="fas fa-chart-line me-2"></i>Primer reporte de efectividad de mitigación<br>
-                                            <i class="fas fa-cogs me-2"></i>Ajustes en estrategias basados en resultados<br>
-                                            <i class="fas fa-shield-alt me-2"></i>Implementación de planes de contingencia
-                                        </p>
+                                        <div class="timeline-marker bg-warning"></div>
+                                        <div class="timeline-content">
+                                            <h6 class="timeline-title">Semanas 7-10: Consolidación</h6>
+                                            <p class="timeline-description">
+                                                <i class="fas fa-chart-line me-2"></i>Primer reporte de efectividad de mitigación<br>
+                                                <i class="fas fa-cogs me-2"></i>Ajustes en estrategias basados en resultados<br>
+                                                <i class="fas fa-shield-alt me-2"></i>Implementación de planes de contingencia
+                                            </p>
+                                        </div>
                                     </div>
                                     
                                     <div class="timeline-item">
-                                        <h6 class="timeline-title">Semanas 11-12: Evaluación</h6>
-                                        <p class="timeline-description">
-                                            <i class="fas fa-clipboard-check me-2"></i>Evaluación trimestral de resultados<br>
-                                            <i class="fas fa-book me-2"></i>Documentación de lecciones aprendidas<br>
-                                            <i class="fas fa-arrow-right me-2"></i>Planificación del siguiente trimestre
-                                        </p>
+                                        <div class="timeline-marker bg-info"></div>
+                                        <div class="timeline-content">
+                                            <h6 class="timeline-title">Semanas 11-12: Evaluación</h6>
+                                            <p class="timeline-description">
+                                                <i class="fas fa-clipboard-check me-2"></i>Evaluación trimestral de resultados<br>
+                                                <i class="fas fa-book me-2"></i>Documentación de lecciones aprendidas<br>
+                                                <i class="fas fa-arrow-right me-2"></i>Planificación del siguiente trimestre
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1761,6 +1625,18 @@
                                     Estamos listos para responder sus preguntas sobre el plan de gestión de riesgos
                                     y cualquier aspecto específico que deseen profundizar.
                                 </p>
+                                
+                                <div class="row mt-5">
+                                    <div class="col-md-6">
+                                        <div class="contact-info">
+                                            <h6><i class="fas fa-envelope me-2"></i>Contacto del Equipo</h6>
+                                            <p class="mb-1">cla.sanchez@duocuc.cl</p>
+                                            <p class="mb-1">pat.quintanilla@duocuc.cl</p>
+                                            <p class="mb-1">al.seydewitz@duocuc.cl</p>
+                                            <p class="mb-1">i.brignardello@duocuc.cl</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1770,162 +1646,319 @@
     </div>
 
     <!-- Navigation Controls -->
-    <div class="navigation-fixed">
-        <button id="prevBtn" class="btn btn-outline-light btn-sm me-2">
+    <div class="navigation-controls">
+        <button id="prevBtn" class="nav-btn nav-btn-prev">
             <i class="fas fa-chevron-left"></i>
         </button>
-        <button id="nextBtn" class="btn btn-outline-light btn-sm">
+        <div class="slide-counter">
+            <span id="currentSlide">1</span> / <span id="totalSlides">11</span>
+        </div>
+        <button id="nextBtn" class="nav-btn nav-btn-next">
             <i class="fas fa-chevron-right"></i>
         </button>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
     </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <!-- Custom JavaScript -->
-
     <script>
-class PresentationController {
-    constructor() {
-        this.currentSlide = 0;
-        this.totalSlides = document.querySelectorAll('.slide').length;
-        this.slides = document.querySelectorAll('.slide');
-        this.init();
-    }
-
-    init() {
-        this.bindEvents();
-        this.showSlide(0);
-        this.updateSlideCounter();
-        this.updateProgressBar();
-    }
-
-    bindEvents() {
-        const nextBtn = document.getElementById('nextBtn');
-        const prevBtn = document.getElementById('prevBtn');
-        
-        if (nextBtn) nextBtn.addEventListener('click', () => this.nextSlide());
-        if (prevBtn) prevBtn.addEventListener('click', () => this.prevSlide());
-        
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight' || e.key === ' ') {
-                e.preventDefault();
-                this.nextSlide();
-            } else if (e.key === 'ArrowLeft') {
-                e.preventDefault();
-                this.prevSlide();
+        class PresentationController {
+            constructor() {
+                this.currentSlide = 0;
+                this.totalSlides = document.querySelectorAll('.slide').length;
+                this.slides = document.querySelectorAll('.slide');
+                this.init();
             }
-        });
 
-        // Touch events for mobile
-        let startX = 0;
-        document.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-        });
+            init() {
+                this.updateSlideCounter();
+                this.updateProgressBar();
+                this.bindEvents();
+                this.showSlide(0);
+            }
 
-        document.addEventListener('touchend', (e) => {
-            const endX = e.changedTouches[0].clientX;
-            const diff = startX - endX;
-            
-            if (Math.abs(diff) > 50) {
-                if (diff > 0) {
-                    this.nextSlide();
-                } else {
-                    this.prevSlide();
+            bindEvents() {
+                document.getElementById('nextBtn').addEventListener('click', () => this.nextSlide());
+                document.getElementById('prevBtn').addEventListener('click', () => this.prevSlide());
+                
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowRight' || e.key === ' ') {
+                        e.preventDefault();
+                        this.nextSlide();
+                    } else if (e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        this.prevSlide();
+                    }
+                });
+
+                // Touch events for mobile
+                let startX = 0;
+                document.addEventListener('touchstart', (e) => {
+                    startX = e.touches[0].clientX;
+                });
+
+                document.addEventListener('touchend', (e) => {
+                    const endX = e.changedTouches[0].clientX;
+                    const diff = startX - endX;
+                    
+                    if (Math.abs(diff) > 50) {
+                        if (diff > 0) {
+                            this.nextSlide();
+                        } else {
+                            this.prevSlide();
+                        }
+                    }
+                });
+            }
+
+            showSlide(index) {
+                this.slides.forEach((slide, i) => {
+                    slide.classList.toggle('active', i === index);
+                });
+                
+                this.currentSlide = index;
+                this.updateSlideCounter();
+                this.updateProgressBar();
+                this.updateNavigationButtons();
+            }
+
+            nextSlide() {
+                if (this.currentSlide < this.totalSlides - 1) {
+                    this.showSlide(this.currentSlide + 1);
                 }
             }
+
+            prevSlide() {
+                if (this.currentSlide > 0) {
+                    this.showSlide(this.currentSlide - 1);
+                }
+            }
+
+            updateSlideCounter() {
+                document.getElementById('currentSlide').textContent = this.currentSlide + 1;
+                document.getElementById('totalSlides').textContent = this.totalSlides;
+            }
+
+            updateProgressBar() {
+                const progress = ((this.currentSlide + 1) / this.totalSlides) * 100;
+                document.getElementById('progressFill').style.width = progress + '%';
+            }
+
+            updateNavigationButtons() {
+                const prevBtn = document.getElementById('prevBtn');
+                const nextBtn = document.getElementById('nextBtn');
+                
+                prevBtn.disabled = this.currentSlide === 0;
+                nextBtn.disabled = this.currentSlide === this.totalSlides - 1;
+            }
+        }
+
+        // Initialize presentation when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new PresentationController();
         });
-    }
 
-    showSlide(index) {
-        this.slides.forEach((slide, i) => {
-            slide.classList.toggle('active', i === index);
+        // Utility function for smooth scrolling in long slides
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Auto-scroll to top when changing slides
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                        const target = mutation.target;
+                        if (target.classList.contains('slide') && target.classList.contains('active')) {
+                            scrollToTop();
+                        }
+                    }
+                });
+            });
+
+            document.querySelectorAll('.slide').forEach(slide => {
+                observer.observe(slide, { attributes: true });
+            });
         });
-        
-        this.currentSlide = index;
-        this.updateSlideCounter();
-        this.updateProgressBar();
-        this.updateNavigationButtons();
-        this.scrollToTop();
-    }
 
-    nextSlide() {
-        if (this.currentSlide < this.totalSlides - 1) {
-            this.showSlide(this.currentSlide + 1);
+        // Chart animation simulation
+        function animateCharts() {
+            const chartPlaceholders = document.querySelectorAll('.chart-placeholder');
+            chartPlaceholders.forEach(placeholder => {
+                placeholder.addEventListener('mouseenter', () => {
+                    placeholder.style.transform = 'scale(1.02)';
+                    placeholder.style.transition = 'transform 0.3s ease';
+                });
+                
+                placeholder.addEventListener('mouseleave', () => {
+                    placeholder.style.transform = 'scale(1)';
+                });
+            });
         }
-    }
 
-    prevSlide() {
-        if (this.currentSlide > 0) {
-            this.showSlide(this.currentSlide - 1);
+        // Initialize chart animations
+        document.addEventListener('DOMContentLoaded', animateCharts);
+
+        // Risk matrix hover effects
+        document.addEventListener('DOMContentLoaded', () => {
+            const matrixCells = document.querySelectorAll('.risk-matrix-table td:not(.bg-dark)');
+            matrixCells.forEach(cell => {
+                cell.addEventListener('mouseenter', () => {
+                    cell.style.transform = 'scale(1.1)';
+                    cell.style.transition = 'transform 0.2s ease';
+                    cell.style.zIndex = '10';
+                    cell.style.position = 'relative';
+                });
+                
+                cell.addEventListener('mouseleave', () => {
+                    cell.style.transform = 'scale(1)';
+                    cell.style.zIndex = '1';
+                });
+            });
+        });
+
+        // Typewriter effect for key statistics
+        function typewriterEffect(element, text, speed = 50) {
+            let i = 0;
+            element.innerHTML = '';
+            
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            
+            type();
         }
-    }
 
-    updateSlideCounter() {
-        const currentSlideEl = document.getElementById('currentSlide');
-        const totalSlidesEl = document.getElementById('totalSlides');
-        
-        if (currentSlideEl) currentSlideEl.textContent = this.currentSlide + 1;
-        if (totalSlidesEl) totalSlidesEl.textContent = this.totalSlides;
-    }
+        // Animate statistics when slide becomes active
+        document.addEventListener('DOMContentLoaded', () => {
+            const slideObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const statNumbers = entry.target.querySelectorAll('.stat-number');
+                        statNumbers.forEach(stat => {
+                            const originalText = stat.textContent;
+                            typewriterEffect(stat, originalText, 100);
+                        });
+                    }
+                });
+            });
 
-    updateProgressBar() {
-        const progressBar = document.getElementById('progressBar');
-        if (progressBar) {
-            const progress = ((this.currentSlide + 1) / this.totalSlides) * 100;
-            progressBar.style.width = progress + '%';
+            document.querySelectorAll('.slide').forEach(slide => {
+                slideObserver.observe(slide);
+            });
+        });
+
+        // Print functionality
+        function printPresentation() {
+            window.print();
         }
-    }
 
-    updateNavigationButtons() {
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        
-        if (prevBtn) prevBtn.disabled = this.currentSlide === 0;
-        if (nextBtn) nextBtn.disabled = this.currentSlide === this.totalSlides - 1;
-    }
+        // Export to PDF (placeholder function)
+        function exportToPDF() {
+            alert('Funcionalidad de exportación a PDF en desarrollo. Por favor, use la función de impresión del navegador.');
+        }
 
-    scrollToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-}
+        // Fullscreen toggle
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
 
-// Initialize presentation when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    new PresentationController();
-});
-</script>
+        // Add keyboard shortcuts info
+        document.addEventListener('DOMContentLoaded', () => {
+            const shortcutsInfo = document.createElement('div');
+            shortcutsInfo.innerHTML = `
+                <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1000;">
+                    <div class="toast" id="shortcutsToast" role="alert">
+                        <div class="toast-header">
+                            <i class="fas fa-keyboard me-2"></i>
+                            <strong class="me-auto">Atajos de Teclado</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                        </div>
+                        <div class="toast-body">
+                            <small>
+                                <strong>→ / Espacio:</strong> Siguiente slide<br>
+                                <strong>←:</strong> Slide anterior<br>
+                                <strong>F11:</strong> Pantalla completa<br>
+                                <strong>Ctrl+P:</strong> Imprimir
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(shortcutsInfo);
 
+            // Show shortcuts toast on first load
+            setTimeout(() => {
+                const toast = new bootstrap.Toast(document.getElementById('shortcutsToast'));
+                toast.show();
+            }, 2000);
+        });
 
+        // Add slide transition effects
+        document.addEventListener('DOMContentLoaded', () => {
+            const style = document.createElement('style');
+            style.textContent = `
+                .slide {
+                    opacity: 0;
+                    transform: translateX(100px);
+                    transition: all 0.5s ease-in-out;
+                }
+                
+                .slide.active {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+                
+                .slide.prev {
+                    transform: translateX(-100px);
+                }
+            `;
+            document.head.appendChild(style);
+        });
 
-    <!-- Additional CSS for chart images -->
+        // Add loading animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const loader = document.createElement('div');
+            loader.innerHTML = `
+                <div id="loader" class="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-white" style="z-index: 9999;">
+                    <div class="text-center">
+                        <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                        <h5>Cargando Presentación...</h5>
+                        <p class="text-muted">Gestión de Riesgos - Proyecto SGA</p>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(loader);
+
+            // Hide loader after content is loaded
+            setTimeout(() => {
+                const loaderElement = document.getElementById('loader');
+                loaderElement.style.opacity = '0';
+                setTimeout(() => {
+                    loaderElement.remove();
+                }, 500);
+            }, 1500);
+        });
+    </script>
+
+    <!-- Additional CSS for enhanced animations -->
     <style>
-        .chart-container-image {
-            position: relative;
-            text-align: center;
-            height: 300px;
-            background: var(--light-color);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 2rem 0;
-            overflow: hidden;
-        }
-
-        .chart-image {
-            max-width: 100%;
-            max-height: 100%;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .chart-image:hover {
-            transform: scale(1.05);
-        }
-
-        /* Enhanced animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -2009,9 +2042,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         /* Print styles */
         @media print {
-            .navigation-fixed,
-            .progress-custom,
-            .slide-counter {
+            .navigation-controls,
+            .progress-bar {
                 display: none !important;
             }
             
@@ -2022,15 +2054,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 position: static !important;
                 height: auto !important;
                 min-height: 100vh;
-                display: block !important;
             }
             
             .slide:last-child {
                 page-break-after: avoid;
-            }
-
-            .navbar-custom {
-                display: none !important;
             }
         }
 
@@ -2048,76 +2075,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 font-size: 2rem;
             }
             
-            .navigation-fixed {
-                bottom: 1rem;
-                padding: 0.5rem;
+            .navigation-controls {
+                padding: 10px;
+            }
+            
+            .nav-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 14px;
             }
             
             .slide-counter {
-                top: 80px;
-                right: 1rem;
-                font-size: 0.8rem;
-                padding: 0.5rem 1rem;
-            }
-
-            .table-responsive {
-                font-size: 0.85rem;
-            }
-
-            .timeline-item {
-                padding-left: 2rem;
-            }
-
-            .timeline-item::before {
-                width: 15px;
-                height: 15px;
-            }
-
-            .timeline-item::after {
-                left: 7px;
-            }
-
-            .risk-matrix-table {
-                font-size: 0.75rem;
-            }
-
-            .risk-matrix-table th,
-            .risk-matrix-table td {
-                padding: 0.5rem;
-            }
-        }
-
-        /* Mobile specific adjustments */
-        @media (max-width: 480px) {
-            .slide-header {
-                padding: 2rem 0;
-            }
-
-            .slide-header h1 {
-                font-size: 1.5rem;
-            }
-            
-            .slide-header h2 {
-                font-size: 1.3rem;
-            }
-
-            .card-body {
-                padding: 1rem;
-            }
-
-            .btn-custom {
-                padding: 0.5rem 1rem;
-                font-size: 0.9rem;
-            }
-
-            .team-avatar {
-                width: 60px;
-                height: 60px;
-                font-size: 1.5rem;
-            }
-
-            .methodology-icon {
-                font-size: 2rem;
+                font-size: 14px;
             }
         }
 
@@ -2139,138 +2108,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .text-muted {
                 color: #000 !important;
             }
-
-            .slide-header {
-                background: #000 !important;
-                color: #fff !important;
-            }
-        }
-
-        /* Dark mode support */
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --primary-color: #4a90e2;
-                --secondary-color: #f56565;
-                --light-color: #2d3748;
-                --dark-color: #e2e8f0;
-            }
-
-            body {
-                background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
-                color: var(--dark-color);
-            }
-
-            .slide {
-                background: rgba(45, 55, 72, 0.95);
-            }
-
-            .card-custom {
-                background: rgba(74, 85, 104, 0.9);
-                color: var(--dark-color);
-            }
-        }
-
-        /* Focus styles for accessibility */
-        .btn:focus,
-        .nav-link:focus,
-        button:focus {
-            outline: 2px solid var(--info-color);
-            outline-offset: 2px;
-        }
-
-        /* Smooth transitions for all interactive elements */
-        .card-custom,
-        .btn,
-        .nav-link,
-        .risk-item {
-            transition: all 0.3s ease;
-        }
-
-        /* Loading animation refinements */
-        #loader {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .spinner-border {
-            border-color: rgba(255, 255, 255, 0.3);
-            border-top-color: white;
-        }
-
-        /* Enhanced card hover effects */
-        .card-custom:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-        }
-
-        /* Slide transition effects */
-        .slide {
-            opacity: 0;
-            transform: translateX(100px);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .slide.active {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        /* Enhanced progress bar */
-        .progress-bar-custom {
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #4facfe 100%);
-            background-size: 200% 100%;
-            animation: progressGradient 3s ease infinite;
-        }
-
-        @keyframes progressGradient {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-
-        /* Navigation button enhancements */
-        .navigation-fixed button {
-            transition: all 0.3s ease;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .navigation-fixed button:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.6);
-            transform: scale(1.05);
-        }
-
-        .navigation-fixed button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* Enhanced matrix cell effects */
-        .risk-matrix-table td {
-            position: relative;
-            cursor: pointer;
-        }
-
-        .risk-matrix-table td:hover::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 0.5rem;
-            border-radius: 4px;
-            white-space: nowrap;
-            z-index: 1000;
-            font-size: 0.8rem;
         }
     </style>
-
-    <!-- Optional: Add chart.js for future interactive charts -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
-
 </body>
 </html>
-
-
-
