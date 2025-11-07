@@ -268,6 +268,14 @@
     </style>
 </head>
 <body>
+    <!-- Modal para ampliar imágenes -->
+    <div id="imageModal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.9);">
+        <span id="closeModal" style="position: absolute; top: 15px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer;">&times;</span>
+        <div id="modalContent" style="margin: auto; display: block; width: 90%; max-width: 1200px; padding: 60px 20px 20px 20px; text-align: center;">
+            <img id="modalImage" style="max-width: 100%; max-height: 85vh; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+        </div>
+    </div>
+
     <div class="container">
         <!-- Hero Section -->
         <div class="hero-section text-center">
@@ -893,8 +901,8 @@
                         <i class="fas fa-network-wired"></i> Diagrama de Arquitectura
                     </div>
                     <div class="card-body text-center">
-                        <img src="docs/architecture_diagram.svg" alt="Diagrama de Arquitectura" style="max-width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                        <p class="mt-3 text-muted"><small>Arquitectura multicapa con separación de responsabilidades</small></p>
+                        <img src="docs/architecture_diagram.svg" alt="Diagrama de Arquitectura" class="diagram-image zoomable-image" style="max-width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); cursor: pointer;">
+                        <p class="mt-3 text-muted"><small>Arquitectura multicapa con separación de responsabilidades<br><i class="fas fa-search-plus"></i> Click para ampliar</small></p>
                     </div>
                 </div>
             </div>
@@ -905,8 +913,8 @@
                         <i class="fas fa-shield-alt"></i> Flujo de Autenticación JWT
                     </div>
                     <div class="card-body text-center">
-                        <img src="docs/auth_flow.svg" alt="Flujo de Autenticación" style="max-width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                        <p class="mt-3 text-muted"><small>Proceso completo de autenticación y autorización con JWT</small></p>
+                        <img src="docs/auth_flow.svg" alt="Flujo de Autenticación" class="diagram-image zoomable-image" style="max-width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); cursor: pointer;">
+                        <p class="mt-3 text-muted"><small>Proceso completo de autenticación y autorización con JWT<br><i class="fas fa-search-plus"></i> Click para ampliar</small></p>
                     </div>
                 </div>
             </div>
@@ -917,8 +925,8 @@
                 <i class="fas fa-sitemap"></i> Diagrama Entidad-Relación (ER)
             </div>
             <div class="card-body text-center">
-                <img src="docs/er_diagram_actualizado.png" alt="Diagrama ER" style="max-width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                <p class="mt-3 text-muted"><small>Modelo de datos completo con 13 tablas y relaciones FK validadas</small></p>
+                <img src="docs/er_diagram_actualizado.png" alt="Diagrama ER" class="zoomable-image" style="max-width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); cursor: pointer;">
+                <p class="mt-3 text-muted"><small>Modelo de datos completo con 13 tablas y relaciones FK validadas<br><i class="fas fa-search-plus"></i> Click para ampliar</small></p>
             </div>
         </div>
 
@@ -927,8 +935,8 @@
                 <i class="fas fa-code-branch"></i> Vista General de Endpoints
             </div>
             <div class="card-body text-center">
-                <img src="docs/endpoints_overview.svg" alt="Vista de Endpoints" style="max-width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                <p class="mt-3 text-muted"><small>Organización y distribución de los 70+ endpoints de la API</small></p>
+                <img src="docs/endpoints_overview.svg" alt="Vista de Endpoints" class="diagram-image zoomable-image" style="max-width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); cursor: pointer;">
+                <p class="mt-3 text-muted"><small>Organización y distribución de los 70+ endpoints de la API<br><i class="fas fa-search-plus"></i> Click para ampliar</small></p>
             </div>
         </div>
 
@@ -2048,6 +2056,169 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header" style="background: linear-gradient(135deg, #2c3e50, #34495e); color: white;">
+                        <i class="fas fa-save"></i> ¿El sistema es persistente?
+                    </div>
+                    <div class="card-body">
+                        <p><strong>¿Los datos sobreviven reinicios y recreación de contenedores?</strong></p>
+                        <div class="alert alert-success">
+                            <strong><i class="fas fa-check-circle"></i> SÍ, completamente persistente</strong>
+                        </div>
+                        <ul class="mb-3">
+                            <li><strong>Volumen nombrado:</strong> <code>postgres_data:/var/lib/postgresql/data</code></li>
+                            <li><strong>Declarado en:</strong> <code>docker-compose.yml</code></li>
+                            <li><strong>Sobrevive a:</strong> <code>docker-compose down</code> y <code>up</code></li>
+                            <li><strong>Se pierde solo si:</strong> Eliminas explícitamente el volumen</li>
+                        </ul>
+                        <div class="bg-dark text-white p-2 rounded">
+                            <small><code># Comandos que NO eliminan datos:<br>
+                            docker-compose down<br>
+                            docker-compose up -d<br><br>
+                            # Elimina datos (¡cuidado!):<br>
+                            docker-compose down -v<br>
+                            docker volume rm postgres_data</code></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header" style="background: linear-gradient(135deg, #d35400, #e67e22); color: white;">
+                        <i class="fas fa-database"></i> ¿Cómo y cuándo se hacen los respaldos?
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Backups automáticos configurados con systemd</strong></p>
+                        <ul class="mb-3">
+                            <li><strong>Servicio:</strong> <code>recetas-backup.service</code></li>
+                            <li><strong>Timer:</strong> <code>recetas-backup.timer</code></li>
+                            <li><strong>Script:</strong> <code>backup_full.sh</code></li>
+                            <li><strong>Frecuencia:</strong> Diariamente a las <strong>02:00</strong></li>
+                            <li><strong>Ubicación:</strong> <code>/home/admin/api-recetas/backups</code></li>
+                        </ul>
+                        <h6><i class="fas fa-trash-alt"></i> Rotación de Backups:</h6>
+                        <ul class="mb-0">
+                            <li><strong>Script:</strong> <code>backup_rotate.sh</code></li>
+                            <li><strong>Hora:</strong> 02:30 (después del backup)</li>
+                            <li><strong>Retención:</strong> Elimina archivos mayores a <strong>14 días</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header" style="background: linear-gradient(135deg, #16a085, #27ae60); color: white;">
+                        <i class="fas fa-undo"></i> ¿Cómo restaurar desde un respaldo?
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Pasos para restauración desde backup:</strong></p>
+                        <div class="bg-dark text-white p-3 rounded">
+                            <small><code># 1. Copiar backup al contenedor<br>
+                            docker cp /home/admin/api-recetas/backups/init.sql \<br>
+                            &nbsp;&nbsp;postgres_container:/tmp/restore.sql<br><br>
+                            # 2. Conectar al contenedor<br>
+                            docker exec -it postgres_container bash<br><br>
+                            # 3. Restaurar la base de datos<br>
+                            psql -U postgres -d recetas_db -f /tmp/restore.sql<br><br>
+                            # 4. Verificar restauración<br>
+                            psql -U postgres -d recetas_db -c "SELECT COUNT(*) FROM receta;"</code></small>
+                        </div>
+                        <div class="alert alert-warning mt-3 mb-0">
+                            <small><strong>⚠️ Importante:</strong> Ejecutar <code>pg_dump</code> desde dentro del contenedor para preservar UTF-8 correctamente.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header" style="background: linear-gradient(135deg, #8e44ad, #9b59b6); color: white;">
+                        <i class="fas fa-language"></i> ¿El backup preserva UTF-8 y caracteres especiales?
+                    </div>
+                    <div class="card-body">
+                        <p><strong>¿Se pierden tildes/ñ al exportar?</strong></p>
+                        <div class="alert alert-danger mb-2">
+                            <small><strong>❌ Problema conocido:</strong> Redireccionamiento desde PowerShell corrompe UTF-8</small>
+                        </div>
+                        <div class="alert alert-success mb-3">
+                            <small><strong>✅ Solución implementada:</strong></small>
+                            <ul class="mb-0 mt-2">
+                                <li>Ejecutar <code>pg_dump</code> dentro del contenedor</li>
+                                <li>Guardar en <code>/tmp</code> del contenedor</li>
+                                <li>Usar <code>docker cp</code> para extraer el archivo</li>
+                                <li>Verificación: <code>init.sql</code> regenerado con UTF-8 correcto</li>
+                            </ul>
+                        </div>
+                        <div class="bg-dark text-white p-2 rounded">
+                            <small><code># Método correcto:<br>
+                            docker exec postgres_container \<br>
+                            &nbsp;&nbsp;pg_dump -U postgres recetas_db > /tmp/backup.sql<br>
+                            docker cp postgres_container:/tmp/backup.sql .</code></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header" style="background: linear-gradient(135deg, #2980b9, #3498db); color: white;">
+                        <i class="fas fa-expand-arrows-alt"></i> ¿Es escalable este diseño actual?
+                    </div>
+                    <div class="card-body">
+                        <p><strong>¿Se puede escalar al aumentar usuarios?</strong></p>
+                        <div class="alert alert-success mb-3">
+                            <strong><i class="fas fa-check-circle"></i> SÍ, con ajustes recomendados</strong>
+                        </div>
+                        <h6><i class="fas fa-server"></i> Backend (Stateless):</h6>
+                        <ul class="mb-2">
+                            <li>Múltiples réplicas detrás de load balancer (nginx/ALB)</li>
+                            <li>Eliminar cachés locales o migrar a Redis</li>
+                        </ul>
+                        <h6><i class="fas fa-database"></i> Base de Datos:</h6>
+                        <ul class="mb-2">
+                            <li><strong>Vertical:</strong> Más CPU/RAM (inmediato)</li>
+                            <li><strong>Horizontal:</strong> Réplica de lectura (streaming replication)</li>
+                            <li>Particionamiento para grandes volúmenes</li>
+                        </ul>
+                        <h6><i class="fas fa-image"></i> Archivos Estáticos:</h6>
+                        <ul class="mb-0">
+                            <li>Bucket S3/MinIO con CDN (CloudFront, Cloudflare)</li>
+                            <li>URLs externas actualmente (escalable)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header" style="background: linear-gradient(135deg, #c0392b, #e74c3c); color: white;">
+                        <i class="fas fa-shield-alt"></i> Seguridad y Credenciales
+                    </div>
+                    <div class="card-body">
+                        <h6><i class="fas fa-exclamation-triangle text-warning"></i> Observaciones Actuales:</h6>
+                        <div class="alert alert-warning mb-3">
+                            <ul class="mb-0">
+                                <li><strong>docker-compose.yml:</strong> Contiene password en claro</li>
+                                <li><strong>Puertos expuestos:</strong> Algunos servicios accesibles públicamente</li>
+                            </ul>
+                        </div>
+                        <h6><i class="fas fa-check-circle text-success"></i> Recomendaciones de Mejora:</h6>
+                        <ul class="mb-0">
+                            <li><strong>Docker Secrets:</strong> Para passwords en producción</li>
+                            <li><strong>Gestión de secretos:</strong> Vault, Azure Key Vault, AWS Secrets Manager</li>
+                            <li><strong>Variables de entorno:</strong> <code>.env</code> en <code>.gitignore</code></li>
+                            <li><strong>Redes privadas:</strong> Limitar exposición de puertos</li>
+                            <li><strong>Reverse Proxy:</strong> Nginx con TLS/SSL (HTTPS)</li>
+                            <li><strong>Firewall:</strong> Solo puertos 80/443 públicos</li>
+                            <li><strong>Auditoría:</strong> Logs de acceso y cambios</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Conclusión -->
@@ -2269,6 +2440,50 @@
 
         document.querySelectorAll('.stats-card').forEach(card => {
             statsObserver.observe(card);
+        });
+
+        // Funcionalidad para ampliar imágenes al hacer clic
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const modalContent = document.getElementById('modalContent');
+        const closeBtn = document.getElementById('closeModal');
+
+        // Agregar event listener a todas las imágenes zoomables
+        document.querySelectorAll('.zoomable-image').forEach(img => {
+            img.addEventListener('click', function() {
+                modal.style.display = 'block';
+                modalImg.src = this.src;
+                
+                // Si es SVG, agregar fondo blanco
+                if (this.src.endsWith('.svg') || this.classList.contains('diagram-image')) {
+                    modalContent.style.backgroundColor = 'white';
+                    modalContent.style.padding = '60px 40px 40px 40px';
+                    modalContent.style.borderRadius = '15px';
+                } else {
+                    modalContent.style.backgroundColor = 'transparent';
+                    modalContent.style.padding = '60px 20px 20px 20px';
+                    modalContent.style.borderRadius = '0';
+                }
+            });
+        });
+
+        // Cerrar modal al hacer clic en la X
+        closeBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+
+        // Cerrar modal al hacer clic fuera de la imagen
+        modal.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Cerrar modal con tecla ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && modal.style.display === 'block') {
+                modal.style.display = 'none';
+            }
         });
     </script>
 </body>
