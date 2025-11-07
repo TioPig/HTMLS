@@ -1,0 +1,14 @@
+﻿ public.categoria
+ public.comentario
+ public.donacion
+ public.estrella
+ public.favorito
+ public.ingrediente
+ public.me_gusta
+ public.pais
+ public.perfil
+ public.receta
+ public.receta_del_dia
+ public.sesion_pago
+ public.usuario
+

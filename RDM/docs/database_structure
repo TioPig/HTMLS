@@ -1,0 +1,47 @@
+# Database structure - generated from running Postgres container (Oct 2025)
+
+This file summarizes tables, columns, primary keys and foreign keys for the `api_recetas_postgres` database (schema: public).
+
+Tables (public):
+
+-- See `tables.txt` for full list
+
+Columns: brief listing (see `columns.txt` for full detail)
+
+-- categoria
+   - id_cat (PK) : integer
+   - nombre : character varying
+   - url_imagen : character varying
+   - estado : smallint (default 1)
+   - fecha_creacion : timestamp (default now())
+   - comentario : character varying
+   - id_usr : integer
+
+-- receta
+   - id_receta (PK) : integer
+   - nombre : character varying
+   - url_imagen : character varying
+   - ingrediente : text
+   - preparacion : character varying
+   - estado : smallint (default 1)
+   - id_cat : integer (FK -> categoria.id_cat)
+   - id_pais : integer (FK -> pais.id_pais)
+   - fecha_creacion : date (default now())
+   - id_usr : integer (FK -> usuario.id_usr)
+   - visitas : integer (default 0)
+
+-- usuario
+   - id_usr (PK) : integer
+   - nombre, apellido, email, password
+   - estado : smallint (default 1)
+   - fecha_creacion : timestamp (default now())
+   - comentario : character varying
+   - id_perfil : integer (FK -> perfil.id_perfil)
+
+Primary keys: see `pks.txt` (excerpt)
+
+Foreign keys: see `fks.txt` (excerpt)
+
+Notes:
+- The `carrusel` table has been removed; carrusel content is computed dynamically by the API (`GET /recetas/carrusel`).
+- For a full, machine-readable dump of columns and relations, review `columns.txt`, `pks.txt`, `fks.txt` and `ER_diagrama_ascii.txt`.

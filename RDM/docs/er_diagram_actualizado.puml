@@ -1,0 +1,170 @@
+@startuml
+title ER Diagram - API Recetas del Mundo (Actualizado 2025)
+!define primary_key(x) <b><color:blue>x</color></b>
+!define foreign_key(x) <color:green>x</color>
+!define unique(x) <color:orange>x</color>
+
+hide circle
+skinparam linetype ortho
+skinparam backgroundColor #FFFFFF
+skinparam entity {
+  BackgroundColor #E8F4FD
+  BorderColor #2E86AB
+  FontSize 11
+}
+
+entity "perfil" as perfil {
+  primary_key(id_perfil) : integer
+  --
+  nombre : VARCHAR
+}
+
+entity "usuario" as usuario {
+  primary_key(id_usr) : integer
+  --
+  nombre : VARCHAR
+  apellido : VARCHAR
+  email : VARCHAR
+  password : VARCHAR
+  estado : SMALLINT
+  fecha_creacion : TIMESTAMP
+  comentario : VARCHAR
+  foreign_key(id_perfil) : INTEGER
+}
+
+entity "categoria" as categoria {
+  primary_key(id_cat) : integer
+  --
+  nombre : VARCHAR
+  url_imagen : VARCHAR
+  estado : SMALLINT
+  fecha_creacion : TIMESTAMP
+  comentario : VARCHAR
+  foreign_key(id_usr) : INTEGER
+}
+
+entity "pais" as pais {
+  primary_key(id_pais) : integer
+  --
+  nombre : VARCHAR
+  url_imagen : VARCHAR
+  estado : SMALLINT
+  fecha_creacion : TIMESTAMP
+  comentario : VARCHAR
+  foreign_key(id_usr) : INTEGER
+}
+
+entity "receta" as receta {
+  primary_key(id_receta) : integer
+  --
+  nombre : VARCHAR
+  url_imagen : VARCHAR
+  ingrediente : TEXT
+  preparacion : VARCHAR
+  estado : SMALLINT
+  id_cat : integer
+  id_pais : integer
+  fecha_creacion : DATE
+  id_usr : integer
+  visitas : integer
+}
+
+entity "ingrediente" as ingrediente {
+  primary_key(id_ingrediente) : integer
+  --
+  nombre : VARCHAR
+  foreign_key(id_receta) : INTEGER
+}
+
+entity "comentario" as comentario {
+  primary_key(id_comentario) : integer
+  --
+  fecha_creacion : TIMESTAMP
+  id_receta : INTEGER
+  texto : VARCHAR
+  id_usr : INTEGER
+}
+
+entity "me_gusta" as me_gusta {
+  primary_key(id_megusta) : integer
+  --
+  fecha_creacion : TIMESTAMP
+  foreign_key(id_receta) : INTEGER
+  foreign_key(id_usr) : INTEGER
+}
+
+entity "favorito" as favorito {
+  primary_key(id_fav) : integer
+  --
+  fecha_creacion : TIMESTAMP
+  foreign_key(id_receta) : INTEGER
+  foreign_key(id_usr) : INTEGER
+}
+
+entity "estrella" as estrella {
+  primary_key(id_estrella) : integer
+  --
+  valor : SMALLINT
+  fecha_creacion : TIMESTAMP
+  id_receta : INTEGER
+  id_usr : INTEGER
+}
+
+entity "receta_del_dia" as receta_del_dia {
+  primary_key(fecha) : DATE
+  --
+  id_receta : INTEGER
+}
+
+' === RELACIONES ===
+perfil ||--o{ usuario : "define rol"
+usuario ||--o{ categoria : "administra"
+usuario ||--o{ pais : "gestiona" 
+usuario ||--o{ receta : "crea"
+
+categoria ||--o{ receta : "clasifica"
+pais ||--o{ receta : "origen"
+
+receta ||--o{ ingrediente : "contiene"
+receta ||--o{ comentario : "recibe"
+receta ||--o{ me_gusta : "obtiene"
+receta ||--o{ favorito : "agregada a"
+receta ||--o{ estrella : "calificada con"
+receta ||--o| receta_del_dia : "seleccionada como"
+
+usuario ||--o{ comentario : "escribe"
+usuario ||--o{ me_gusta : "otorga"
+usuario ||--o{ favorito : "marca como"
+usuario ||--o{ estrella : "califica con"
+
+note top of receta
+  **Entidad Principal**
+  - Almacena recetas completas
+  - Relación 1:N con ingredientes
+  - Sistema completo de interacciones
+  - Validación: 658 recetas activas
+end note
+
+note bottom of ingrediente
+  **Ingredientes Separados**
+  - Cada ingrediente es un registro
+  - Relación N:1 con receta
+  - Permite gestión granular
+  - Validación: 8 ingredientes/receta promedio
+end note
+
+note right of estrella
+  **Sistema de Calificación**
+  - Escala 1-5 estrellas
+  - Una calificación por usuario/receta
+  - Promedio calculado dinámicamente
+end note
+
+footer
+  **API Recetas del Mundo v2.0**
+  Actualizado: Octubre 2025
+  Base de Datos: PostgreSQL 15
+  Validado con datos reales
+end footer
+
+@enduml

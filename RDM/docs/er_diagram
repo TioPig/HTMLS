@@ -1,0 +1,127 @@
+ER Diagram (ASCII) - generated from live DB (Oct 2025)
+
+-- Tables and columns (PK marked)
+
+TABLE: categoria
+  (PK) id_cat : integer
+       nombre : character varying
+       url_imagen : character varying
+       estado : smallint
+       fecha_creacion : timestamp
+       comentario : character varying
+       id_usr : integer
+
+TABLE: comentario
+  (PK) id_comentario : integer
+       fecha_creacion : timestamp
+       id_receta : integer
+       id_usr : integer
+       texto : character varying
+
+TABLE: donacion
+  (PK) id_donacion : integer
+       amount : integer
+       currency : character varying
+       fecha_actualizacion : timestamp
+       fecha_creacion : timestamp
+       id_receta : integer
+       id_usr : integer
+       status : character varying
+       stripe_payment_intent : character varying
+       stripe_session_id : character varying
+
+TABLE: estrella
+  (PK) id_estrella : integer
+       fecha_creacion : timestamp
+       id_receta : integer
+       id_usr : integer
+       valor : smallint
+
+TABLE: favorito
+  (PK) id_fav : integer
+       fecha_creacion : timestamp
+       id_receta : integer
+       id_usr : integer
+
+TABLE: ingrediente
+  (PK) id_ingrediente : integer
+       nombre : character varying
+       id_receta : integer
+
+TABLE: me_gusta
+  (PK) id_megusta : integer
+       fecha_creacion : timestamp
+       id_receta : integer
+       id_usr : integer
+
+TABLE: pais
+  (PK) id_pais : integer
+       nombre : character varying
+       url_imagen : character varying
+       estado : smallint
+       fecha_creacion : timestamp
+       comentario : character varying
+       id_usr : integer
+
+TABLE: perfil
+  (PK) id_perfil : integer
+       nombre : character varying
+
+TABLE: receta
+  (PK) id_receta : integer
+       nombre : character varying
+       url_imagen : character varying
+       ingrediente : text
+       preparacion : character varying
+       estado : smallint
+       id_cat : integer
+       id_pais : integer
+       fecha_creacion : date
+       id_usr : integer
+       visitas : integer
+
+TABLE: receta_del_dia
+  (PK) fecha : date
+       id_receta : integer
+
+TABLE: sesion_pago
+  (PK) id_sesion : integer
+       session_id : character varying
+       provider : character varying
+       status : character varying
+       id_donacion : integer
+       metadata : jsonb
+       fecha_creacion : timestamp
+       fecha_actualizacion : timestamp
+
+TABLE: usuario
+  (PK) id_usr : integer
+       nombre : character varying
+       apellido : character varying
+       email : character varying
+       password : character varying
+       estado : smallint
+       fecha_creacion : timestamp
+       comentario : character varying
+       id_perfil : integer
+
+Relationships (excerpt from fks):
+- receta.id_cat -> categoria.id_cat
+- receta.id_pais -> pais.id_pais
+- receta.id_usr -> usuario.id_usr
+- comentario.id_receta -> receta.id_receta
+- comentario.id_usr -> usuario.id_usr
+- favorito.id_receta -> receta.id_receta
+- favorito.id_usr -> usuario.id_usr
+- estrella.id_receta -> receta.id_receta
+- estrella.id_usr -> usuario.id_usr
+- me_gusta.id_receta -> receta.id_receta
+- me_gusta.id_usr -> usuario.id_usr
+- donacion.id_receta -> receta.id_receta
+- donacion.id_usr -> usuario.id_usr
+- pais.id_usr -> usuario.id_usr
+- categoria.id_usr -> usuario.id_usr
+- sesion_pago.id_donacion -> donacion.id_donacion
+- usuario.id_perfil -> perfil.id_perfil
+
+Note: the `carrusel` table was removed; carrusel is computed dynamically by the backend.

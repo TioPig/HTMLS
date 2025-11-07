@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="520" viewBox="0 0 1000 520">
+  <style>
+    .title { font: bold 20px sans-serif; fill:#333 }
+    .group { font: 14px sans-serif; fill:#fff }
+    .box { rx:10; ry:10; fill:#2b6cb0; stroke:#1e40af; stroke-width:2 }
+    .center { fill:#ffffff; font: 18px sans-serif; font-weight:700 }
+    .line { stroke:#94a3b8; stroke-width:2 }
+  </style>
+
+  <!-- background -->
+  <rect width="100%" height="100%" fill="#f8fafc"/>
+
+  <!-- title removed per request -->
+  <!-- central API box -->
+  <g transform="translate(360,70)">
+    <rect class="box" x="0" y="0" width="280" height="80" rx="12" ry="12" fill="#0f172a"/>
+    <text x="140" y="44" text-anchor="middle" class="center">API Recetas del Mundo</text>
+  </g>
+
+  <!-- left column -->
+  <g transform="translate(40,160)">
+    <rect class="box" x="0" y="0" width="220" height="50" rx="8" ry="8"/>
+    <text x="110" y="32" text-anchor="middle" class="group">Autenticación</text>
+    <rect class="box" x="0" y="80" width="220" height="50" rx="8" ry="8"/>
+    <text x="110" y="112" text-anchor="middle" class="group">Usuarios</text>
+    <rect class="box" x="0" y="160" width="220" height="50" rx="8" ry="8"/>
+    <text x="110" y="192" text-anchor="middle" class="group">Categorías</text>
+    <rect class="box" x="0" y="240" width="220" height="50" rx="8" ry="8"/>
+    <text x="110" y="272" text-anchor="middle" class="group">Países</text>
+  </g>
+
+  <!-- right column -->
+  <g transform="translate(740,180)">
+    <!-- Administración expandida: listar sub-módulos admin dentro del mismo bloque -->
+    <rect class="box" x="0" y="0" width="220" height="140" rx="8" ry="8"/>
+    <text x="110" y="24" text-anchor="middle" class="group">Administración (admin)</text>
+    <text x="110" y="44" text-anchor="middle" font-size="12" fill="#fff">Perfil · Comentarios · Favoritos</text>
+    <text x="110" y="64" text-anchor="middle" font-size="12" fill="#fff">Me_gusta · Estrellas · Ingredientes</text>
+
+    <rect class="box" x="0" y="160" width="220" height="50" rx="8" ry="8"/>
+    <text x="110" y="192" text-anchor="middle" class="group">Donaciones (Stripe)</text>
+  </g>
+
+  <!-- bottom column centered -->
+  <g transform="translate(300,300)">
+    <rect class="box" x="0" y="0" width="400" height="60" rx="8" ry="8"/>
+    <text x="200" y="38" text-anchor="middle" class="group">Recetas (CRUD + búsquedas especiales)</text>
+  </g>
+
+  <!-- interacciones group under recipes -->
+  <g transform="translate(300,380)">
+    <rect class="box" x="0" y="0" width="400" height="70" rx="8" ry="8"/>
+    <text x="200" y="28" text-anchor="middle" class="group">Interacciones</text>
+    <text x="200" y="48" text-anchor="middle" font-size="12" fill="#fff">favoritos · me_gusta · estrellas · comentarios · ingredientes · perfil</text>
+  </g>
+
+  <!-- left connections (from central box left edge to left column centers) -->
+  <line x1="360" y1="100" x2="150" y2="185" class="line"/>
+  <line x1="360" y1="110" x2="150" y2="265" class="line"/>
+  <line x1="360" y1="120" x2="150" y2="345" class="line"/>
+  <line x1="360" y1="130" x2="150" y2="425" class="line"/>
+
+  <!-- right connections (from central box right edge to right column centers) -->
+  <line x1="640" y1="100" x2="850" y2="205" class="line"/>
+  <line x1="640" y1="110" x2="850" y2="285" class="line"/>
+  <line x1="640" y1="120" x2="850" y2="365" class="line"/>
+
+  <!-- bottom connection -->
+  <line x1="500" y1="150" x2="500" y2="300" class="line"/>
+  <line x1="500" y1="360" x2="500" y2="380" class="line"/>
+
+  <!-- footer note -->
+  <text x="40" y="500" font-size="12" fill="#475569">Ver lista completa y ejemplos en docs/ENDPOINTS-COMPLETOS.md</text>
+
+</svg>

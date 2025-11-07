@@ -1,0 +1,14 @@
+﻿table_name	column_name
+categoria	id_cat
+comentario	id_comentario
+donacion	id_donacion
+estrella	id_estrella
+favorito	id_fav
+ingrediente	id_ingrediente
+me_gusta	id_megusta
+pais	id_pais
+perfil	id_perfil
+receta	id_receta
+receta_del_dia	fecha
+sesion_pago	id_sesion
+usuario	id_usr

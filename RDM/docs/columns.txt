@@ -1,0 +1,78 @@
+﻿ categoria      | id_cat                | integer                     | NO          | nextval('categoria_id_cat_seq'::regclass)
+ categoria      | nombre                | character varying           | NO          | 
+ categoria      | url_imagen            | character varying           | YES         | 
+ categoria      | estado                | smallint                    | NO          | 1
+ categoria      | fecha_creacion        | timestamp without time zone | NO          | now()
+ categoria      | comentario            | character varying           | YES         | 
+ categoria      | id_usr                | integer                     | YES         | 
+ comentario     | id_comentario         | integer                     | NO          | nextval('comentario_id_comentario_seq'::regclass)
+ comentario     | fecha_creacion        | timestamp without time zone | NO          | now()
+ comentario     | id_receta             | integer                     | NO          | 
+ comentario     | texto                 | character varying           | YES         | 
+ comentario     | id_usr                | integer                     | YES         | 
+ donacion       | id_donacion           | integer                     | NO          | nextval('donacion_id_donacion_seq'::regclass)
+ donacion       | amount                | integer                     | YES         | 
+ donacion       | currency              | character varying           | YES         | 
+ donacion       | fecha_actualizacion   | timestamp without time zone | YES         | 
+ donacion       | fecha_creacion        | timestamp without time zone | YES         | now()
+ donacion       | id_receta             | integer                     | YES         | 
+ donacion       | id_usr                | integer                     | YES         | 
+ donacion       | status                | character varying           | YES         | 
+ donacion       | stripe_payment_intent | character varying           | YES         | 
+ donacion       | stripe_session_id     | character varying           | YES         | 
+ estrella       | id_estrella           | integer                     | NO          | nextval('estrella_id_estrella_seq'::regclass)
+ estrella       | fecha_creacion        | timestamp without time zone | YES         | now()
+ estrella       | valor                 | smallint                    | NO          | 
+ estrella       | id_receta             | integer                     | NO          | 
+ estrella       | id_usr                | integer                     | NO          | 
+ favorito       | id_fav                | integer                     | NO          | nextval('favorito_id_fav_seq'::regclass)
+ favorito       | fecha_creacion        | timestamp without time zone | NO          | now()
+ favorito       | id_receta             | integer                     | NO          | 
+ favorito       | id_usr                | integer                     | NO          | 
+ ingrediente    | id_ingrediente        | integer                     | NO          | nextval('ingrediente_new_id_ingrediente_seq'::regclass)
+ ingrediente    | nombre                | character varying           | NO          | 
+ ingrediente    | id_receta             | integer                     | NO          | 
+ me_gusta       | id_megusta            | integer                     | NO          | nextval('me_gusta_id_megusta_seq'::regclass)
+ me_gusta       | fecha_creacion        | timestamp without time zone | YES         | now()
+ me_gusta       | id_receta             | integer                     | NO          | 
+ me_gusta       | id_usr                | integer                     | NO          | 
+ pais           | id_pais               | integer                     | NO          | nextval('pais_id_pais_seq'::regclass)
+ pais           | nombre                | character varying           | NO          | 
+ pais           | url_imagen            | character varying           | YES         | 
+ pais           | estado                | smallint                    | NO          | 1
+ pais           | fecha_creacion        | timestamp without time zone | NO          | now()
+ pais           | comentario            | character varying           | YES         | 
+ pais           | id_usr                | integer                     | YES         | 
+ perfil         | id_perfil             | integer                     | NO          | nextval('perfil_id_perfil_seq'::regclass)
+ perfil         | nombre                | character varying           | NO          | 
+ receta         | id_receta             | integer                     | NO          | nextval('receta_id_receta_seq'::regclass)
+ receta         | nombre                | character varying           | NO          | 
+ receta         | url_imagen            | character varying           | NO          | 
+ receta         | ingrediente           | text                        | YES         | ''::text
+ receta         | preparacion           | character varying           | NO          | 
+ receta         | estado                | smallint                    | NO          | 1
+ receta         | id_cat                | integer                     | NO          | 
+ receta         | id_pais               | integer                     | NO          | 
+ receta         | fecha_creacion        | date                        | NO          | now()
+ receta         | id_usr                | integer                     | NO          | 
+ receta         | visitas               | integer                     | NO          | 0
+ receta_del_dia | fecha                 | date                        | NO          | 
+ receta_del_dia | id_receta             | integer                     | NO          | 
+ sesion_pago    | id_sesion             | integer                     | NO          | nextval('sesion_pago_id_sesion_seq'::regclass)
+ sesion_pago    | session_id            | character varying           | NO          | 
+ sesion_pago    | provider              | character varying           | NO          | 'unknown'::character varying
+ sesion_pago    | status                | character varying           | NO          | 'PENDING'::character varying
+ sesion_pago    | id_donacion           | integer                     | YES         | 
+ sesion_pago    | metadata              | jsonb                       | YES         | 
+ sesion_pago    | fecha_creacion        | timestamp with time zone    | NO          | now()
+ sesion_pago    | fecha_actualizacion   | timestamp with time zone    | NO          | now()
+ usuario        | id_usr                | integer                     | NO          | nextval('usuario_id_usr_seq'::regclass)
+ usuario        | nombre                | character varying           | NO          | 
+ usuario        | apellido              | character varying           | NO          | 
+ usuario        | email                 | character varying           | NO          | 
+ usuario        | password              | character varying           | NO          | 
+ usuario        | estado                | smallint                    | NO          | 1
+ usuario        | fecha_creacion        | timestamp without time zone | NO          | now()
+ usuario        | comentario            | character varying           | YES         | 
+ usuario        | id_perfil             | integer                     | NO          | 
+

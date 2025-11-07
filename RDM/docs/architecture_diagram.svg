@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-label="Arquitectura del sistema - Cliente, Reverse Proxy, Backend, Postgres, Backups y CI/CD">
+  <style>
+  .title { font: bold 18px 'Segoe UI', Roboto, Arial, sans-serif; fill:#ffffff }
+    .label { font: 14px 'Segoe UI', Roboto, Arial, sans-serif; fill:#fff }
+  .box { rx:10; ry:10; fill:#2b6cb0; stroke:#1e40af; stroke-width:2 }
+  .box-soft { rx:10; ry:10; fill:#7fb3d5; stroke:#1e40af; stroke-width:2 }
+  .center { fill:#ffffff; font: 16px 'Segoe UI', Roboto, Arial, sans-serif; font-weight:700 }
+  .line { stroke:#94a3b8; stroke-width:2 }
+  .arrow { stroke:#0b6b88; stroke-width:2 }
+  .muted { font:12px 'Segoe UI', Roboto, Arial, sans-serif; fill:#000000 }
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="12" markerHeight="12" markerUnits="strokeWidth" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0b6b88" stroke="#0b6b88" stroke-width="0.5" />
+    </marker>
+  </defs>
+  <!-- background -->
+  <rect width="100%" height="100%" fill="#f8fafc"/>
+
+  <!-- Row 1: Cliente / Edge / CDN -->
+  <g transform="translate(40,36)">
+    <rect class="box" x="0" y="0" width="200" height="84" />
+    <text class="title" x="12" y="24">Cliente</text>
+  <text class="text" x="12" y="52">Web / Mobile</text>
+  <text class="small" x="12" y="70">Browser, SPA, Native App</text>
+  </g>
+
+  <g transform="translate(360,36)">
+    <rect class="box" x="0" y="0" width="260" height="100" />
+    <text class="title" x="12" y="24">Reverse Proxy</text>
+  <text class="text" x="12" y="52">nginx / traefik</text>
+  </g>
+
+  <!-- CDN / Static removed per request -->
+
+  <!-- Row 2: Backend -->
+  <g transform="translate(260,180)">
+    <rect class="box" x="0" y="0" width="520" height="140" />
+  <text class="title" x="12" y="26">Backend / Servicios</text>
+  <text class="text" x="12" y="58">Spring Boot (API REST)</text>
+  <text class="small" x="12" y="78">JWT Auth • Actuator • Contenedores</text>
+  </g>
+
+  <!-- Row 2: DB -->
+  <g transform="translate(860,220)">
+    <rect class="box" x="0" y="0" width="320" height="120" />
+    <text class="title" x="12" y="24">Postgres</text>
+  <text class="small" x="12" y="52">Volumen persistente • pg_dump</text>
+  </g>
+
+  <!-- Backups / Ops -->
+  <g transform="translate(860,360)">
+    <rect class="box" x="0" y="0" width="320" height="100" />
+    <text class="title" x="12" y="24">Operaciones</text>
+  <text class="small" x="12" y="52">systemd timers • backups • rotación</text>
+  </g>
+
+  <!-- CI/CD -->
+  <!-- Pipelines (integración y despliegue continuos) -->
+  <g transform="translate(40,420)">
+    <rect class="box" x="0" y="0" width="700" height="110" />
+    <text class="title" x="12" y="28">Pipelines (integración y despliegue continuos)</text>
+  <text class="small" x="12" y="56">Build → Registry → Deploy</text>
+  </g>
+
+  <!-- Lines -->
+  <line class="arrow" x1="240" y1="78" x2="360" y2="78" marker-end="url(#arrow)" />
+  <!-- CDN connections removed -->
+  <line class="arrow" x1="780" y1="200" x2="860" y2="260" marker-end="url(#arrow)" />
+  <!-- Additional connections -->
+  <!-- Reverse Proxy -> Backend -->
+  <line class="arrow" x1="490" y1="136" x2="520" y2="180" marker-end="url(#arrow)" />
+  <!-- CDN -> Backend removed -->
+  <!-- Backend -> Operaciones (backups/ops) -->
+  <line class="arrow" x1="520" y1="320" x2="860" y2="360" marker-end="url(#arrow)" />
+  <!-- CI/CD -> Backend (deploy) -->
+  <line class="arrow" x1="340" y1="420" x2="520" y2="300" marker-end="url(#arrow)" />
+
+</svg>

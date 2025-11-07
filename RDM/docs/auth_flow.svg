@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="520" viewBox="0 0 1000 520">
+  <style>
+    .title { font: bold 18px 'Segoe UI', Roboto, Arial, sans-serif; fill:#0f172a }
+    .label { font: 14px 'Segoe UI', Roboto, Arial, sans-serif; fill:#fff }
+    .box { rx:10; ry:10; fill:#0f172a; stroke:#0b6b88; stroke-width:2 }
+    .box-soft { rx:10; ry:10; fill:#2b6cb0; stroke:#1e40af; stroke-width:2 }
+    .center { fill:#ffffff; font: 16px 'Segoe UI', Roboto, Arial, sans-serif; font-weight:700 }
+    .line { stroke:#94a3b8; stroke-width:2 }
+    .muted { font:12px 'Segoe UI', Roboto, Arial, sans-serif; fill:#000000 }
+  </style>
+
+  <!-- arrow marker -->
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569" />
+    </marker>
+  </defs>
+
+  <!-- background -->
+  <rect width="100%" height="100%" fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="30" y="34" class="title">Flujo de autenticación — /auth</text>
+
+  <!-- Left: Cliente -->
+  <g transform="translate(40,70)">
+    <rect class="box-soft" x="0" y="0" width="240" height="90" />
+    <text x="120" y="36" text-anchor="middle" class="label">Cliente (SPA / Mobile)</text>
+    <text x="120" y="60" text-anchor="middle" class="muted">POST /auth/login { email, password }</text>
+    <text x="120" y="76" text-anchor="middle" class="muted">POST /auth/register</text>
+  </g>
+
+  <!-- Center: Backend -->
+  <g transform="translate(380,60)">
+    <rect class="box-soft" x="0" y="0" width="300" height="160" />
+    <text x="150" y="32" text-anchor="middle" class="center">Backend (Auth Service)</text>
+    <text x="18" y="64" class="muted">• Valida credenciales</text>
+    <text x="18" y="84" class="muted">• Emite accessToken (JWT)</text>
+    <text x="18" y="104" class="muted">• Claims: id_usr, nombre, correo, id_perfil</text>
+    <text x="18" y="124" class="muted">• Firma HMAC — configurar JWT_SECRET</text>
+  </g>
+
+  <!-- Token Store removed per request -->
+
+  <!-- Connections -->
+  <line x1="280" y1="115" x2="380" y2="120" class="line" marker-end="url(#arrow)"/>
+  <!-- Token Store connection removed -->
+  <!-- Backend -> Uso de accessToken -->
+  <line x1="530" y1="220" x2="500" y2="300" class="line" marker-end="url(#arrow)"/>
+  <!-- Uso de accessToken -> Logout -->
+  <line x1="500" y1="380" x2="500" y2="420" class="line" marker-end="url(#arrow)"/>
+
+  <!-- Bottom center: Uso de accessToken -->
+  <g transform="translate(200,300)">
+    <rect class="box-soft" x="0" y="0" width="600" height="80" />
+    <text x="300" y="36" text-anchor="middle" class="label">Uso de accessToken</text>
+    <text x="300" y="56" text-anchor="middle" class="muted">Authorization: Bearer &lt;accessToken&gt; — middleware valida firma y expiración</text>
+  </g>
+
+  <!-- Logout block (center-bottom) -->
+  <g transform="translate(400,420)">
+    <rect class="box-soft" x="0" y="0" width="200" height="70" />
+    <text x="100" y="28" text-anchor="middle" class="center">Logout / Revocación</text>
+    <text x="100" y="48" text-anchor="middle" class="muted">Invalidar refresh token / blacklist</text>
+  </g>
+
+  <!-- Footer note -->
+  <text x="30" y="500" font-size="12" fill="#475569">Nota: el backend implementa /auth/login y /auth/register; el JWT se entrega en el body de la respuesta.</text>
+
+</svg>
