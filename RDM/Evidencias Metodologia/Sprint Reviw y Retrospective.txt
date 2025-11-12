@@ -1,0 +1,97 @@
+Sprint Review y Retrospectives
+Proyecto: Diseño Portal de Recetas del Mundo
+
+
+Integrantes	Rol definido
+Claudio Sánchez	Líder de proyecto (PO), Desarrollo backend con Spring Boot. Configuración de servidores.
+Italo Brignardello	Desarrollo frontend, Tester QA
+
+
+ 
+
+
+
+
+Tabla de contenido
+
+Tabla de contenido	1
+1. Review Sprint 1 	3
+1. Retrospectiva Sprint 1 	3-4
+1. Review Sprint 2 	4
+1. Retrospectiva Sprint 2 	4-5
+1. Review Sprint 3 	5
+1. Retrospectiva Sprint 3 	5-6
+
+ 
+Sprint 1
+
+Sprint Review - Sprint 1:
+Durante el Sprint Review del Sprint 1, el equipo presentó las siguientes entregas:
+1.	Redacción de una Plataforma de Recetas Internacional:
+o	Se completó la creación de store procedures para agregar, modificar, actualizar y eliminar recetas en la base de datos.
+o	Se desarrollaron los microservicios necesarios para cada función.
+o	Se implementaron las interfaces de usuario React para permitir la interacción con las recetas.
+2.	Mejoras en la seguridad de la plataforma:
+o	Se implementaron las funciones de registro, inicio de sesión, cierre de sesión y generación de tokens para proteger los datos de los usuarios.
+o	Se realizaron pruebas exhaustivas para garantizar la seguridad y la integridad de la plataforma.
+3.	Seguimiento de la receta:
+o	Se crearon store procedures y microservicios para permitir el seguimiento de recetas.
+o	Las interfaces de usuario se actualizaron para incluir funcionalidades de seguimiento en React.
+El equipo demostró un progreso significativo en la implementación de las funcionalidades clave del proyecto durante este sprint. Se identificaron algunos problemas menores que se corrigieron durante el sprint, los cuales fueron comentados en Dailys. Esto problemas fueron con respecto al desarrollo de código.
+
+Retrospectiva - Sprint 1:
+Durante la retrospectiva del Sprint 1, el equipo identificó los siguientes puntos fuertes:
+1.	Entregas de Funcionalidades Clave: El equipo logró completar las funcionalidades fundamentales relacionadas con la gestión de recetas y la seguridad de la plataforma.
+2.	Colaboración Efectiva: Se destacó la comunicación fluida y la colaboración entre los miembros del equipo, lo que permitió un progreso constante durante el sprint.
+3.	Calidad del Código: Se observó una alta calidad en el código desarrollado, con pruebas unitarias.
+Sin embargo, también se identificaron áreas de mejora:
+1.	Estimaciones de Tiempo: Algunas tareas tomaron más tiempo del previsto inicialmente, lo que afectó ligeramente la planificación del sprint.
+2.	Gestión de Dependencias: Hubo algunos problemas con la gestión de dependencias entre las tareas, lo que generó retrasos en la finalización de ciertas funcionalidades.
+3.	Documentación: Se observó una necesidad de mejorar el código y los procesos para facilitar futuras colaboraciones y mantenimiento.
+
+Sprint 2
+
+Sprint Review - Sprint 2:
+Durante el Sprint Review del Sprint 2, el equipo presentó las siguientes entregas:
+1.	Fortalecimiento de la Seguridad de la Plataforma:
+o	Se completó la implementación de las funciones de registro, inicio de sesión, cierre de sesión y generación de tokens.
+o	Se realizaron pruebas exhaustivas para garantizar la seguridad y la integridad de la plataforma.
+2.	Diseño de una Interfaz de Usuario Intuitiva:
+o	Se diseñó un prototipo de interfaz amigable e intuitiva para la plataforma.
+o	Se implementaron las interfaces de usuario en React de acuerdo con el diseño propuesto.
+3.	Ampliación del Alcance Digital de la Plataforma:
+o	Se implementaron las funciones de recibir notificaciones automáticas y generar notificaciones para mejorar la experiencia del usuario.
+o	Se realizaron pruebas unitarias y de calidad para garantizar el correcto funcionamiento de estas funciones.
+El equipo demostró un avance sólido en la mejora de la seguridad y la usabilidad de la plataforma durante este sprint. Se identificaron áreas de mejora para futuros desarrollos, especialmente en la optimización del rendimiento y la escalabilidad.
+
+Retrospectiva - Sprint 2:
+Durante la retrospectiva del Sprint 2, el equipo identificó los siguientes puntos fuertes:
+1.	Mejoras en la Seguridad y Usabilidad: Se lograron avances significativos en la mejora de la seguridad de la plataforma y en la creación de una interfaz de usuario más intuitiva.
+2.	Cumplimiento de Objetivos: El equipo cumplió con la mayoría de los objetivos establecidos para el sprint, entregando funcionalidades clave dentro del plazo previsto.
+3.	Feedback Positivo: Se recibió feedback positivo tanto del cliente (profesor) como de los usuarios internos durante las demostraciones de las funcionalidades implementadas.
+Sin embargo, también se identificaron áreas de mejora:
+1.	Gestión del Tiempo: Hubo algunos desafíos con la gestión del tiempo, especialmente en la estimación de tareas y la asignación de recursos.
+2.	Pruebas de Integración: Se identificaron algunos problemas con las pruebas de integración, lo que resultó en la detección de errores durante este sprint.
+
+
+Sprint 3
+Sprint Review - Sprint 3:
+Durante el Sprint Review del Sprint 3, el equipo presentó las siguientes entregas:
+1.	Optimización de la Infraestructura para Escalabilidad:
+o	Se completó la compatibilización con tecnologías de asistencia para mejorar la accesibilidad de la plataforma.
+o	Se incorporó una base de datos para gestionar eficientemente los datos del sistema.
+2.	Provisión de Herramientas de Análisis y Reportes:
+o	Se desarrollaron funciones para monitorizar el rendimiento del sistema y establecer políticas de moderación.
+o	Se generaron informes del proyecto para proporcionar datos a los usuarios y administradores.
+El equipo demostró un excelente progreso en la optimización de la infraestructura y la provisión de herramientas de análisis durante este sprint. Se destacaron las mejoras en la accesibilidad y la disponibilidad de información para los usuarios finales.
+
+Retrospectiva - Sprint 3:
+Durante la retrospectiva del Sprint 3, el equipo identificó los siguientes puntos fuertes:
+1.	Optimización de la Infraestructura: Se lograron importantes mejoras en la infraestructura del sistema, lo que contribuyó a una mayor escalabilidad y rendimiento.
+2.	Colaboración y Trabajo en Equipo: Se destacó la colaboración efectiva entre los miembros del equipo, con una distribución equitativa de tareas y una comunicación fluida.
+Sin embargo, también se identificaron áreas de mejora:
+1.	Gestión del Alcance: Hubo algunos desafíos con la gestión del alcance del proyecto, especialmente en la planificación y priorización de las funcionalidades a implementar.
+2.	Documentación y Retención de Conocimiento: Se observó una necesidad de mejorar la documentación del proyecto y la retención de conocimiento.
+3.	Pruebas y Calidad del Software: Se identificaron algunos problemas con las pruebas de calidad y la detección de errores, lo que resultó en la entrega de funcionalidades con ciertos defectos.
+Estas retrospectivas proporcionaron al equipo una oportunidad para reflexionar sobre el progreso del proyecto e identificar áreas de mejora.
+
