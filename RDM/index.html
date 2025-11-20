@@ -16,13 +16,20 @@
     
     <style>
         :root {
-            --primary-color: #F75442;
-            --secondary-color: #99682E;
-            --accent-color: #F75442;
-            --success-color: #27ae60;
-            --warning-color: #f39c12;
-            --crema-color: #F9E9AE;
-            --cafe-color: #99682E;
+            --primary-color: #667EEA;
+            --secondary-color: #764BA2;
+            --accent-color: #F093FB;
+            --accent-secondary: #F5576C;
+            --success-color: #48BB78;
+            --info-color: #4299E1;
+            --warning-color: #ED8936;
+            --error-color: #F56565;
+            --text-primary: #1A202C;
+            --text-secondary: #4A5568;
+            --text-muted: #718096;
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F7FAFC;
+            --bg-light: #E2E8F0;
         }
         
         * {
@@ -30,19 +37,19 @@
         }
         
         body {
-            background: linear-gradient(135deg, #F9E9AE 0%, #FFD89B 100%);
+            background: linear-gradient(135deg, #F7FAFC 0%, #E2E8F0 50%, #F7FAFC 100%);
             min-height: 100vh;
             padding: 20px 0;
         }
         
         .hero-section {
-            background: linear-gradient(135deg, rgba(247, 84, 66, 0.95), rgba(153, 104, 46, 0.95)),
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%),
                         url('imgPresentacion/fondo_inicio.jpg') center/cover;
             color: white;
             padding: 80px 0;
             border-radius: 20px;
             margin-bottom: 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
             position: relative;
         }
         
@@ -62,21 +69,22 @@
         .card {
             border: none;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             margin-bottom: 30px;
             overflow: hidden;
-            border: 3px solid #F9E9AE;
+            border: 2px solid #E2E8F0;
+            background: var(--bg-primary);
         }
         
         .card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(247, 84, 66, 0.25);
-            border-color: #F75442;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
+            border-color: var(--primary-color);
         }
         
         .card-header {
-            background: linear-gradient(135deg, #F75442, #99682E);
+            background: linear-gradient(135deg, #667EEA, #764BA2);
             color: white;
             font-weight: 600;
             font-size: 1.3rem;
@@ -94,30 +102,30 @@
         .spring-color { color: #6db33f; }
         .postgres-color { color: #336791; }
         .docker-color { color: #2496ed; }
-        .jwt-color { color: #000000; }
+        .jwt-color { color: #1A202C; }
         
         .feature-card {
             background: white;
             padding: 30px;
             border-radius: 15px;
             height: 100%;
-            border: 3px solid #F9E9AE;
+            border: 2px solid #E2E8F0;
             transition: all 0.3s ease;
         }
         
         .feature-card:hover {
-            border-color: #F75442;
-            box-shadow: 0 15px 40px rgba(247, 84, 66, 0.2);
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
         }
         
         .feature-icon {
             font-size: 3rem;
-            color: #F75442;
+            color: var(--primary-color);
             margin-bottom: 15px;
         }
         
         .stats-card {
-            background: linear-gradient(135deg, #F75442 0%, #99682E 100%);
+            background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
             color: white;
             padding: 30px;
             border-radius: 15px;
@@ -132,7 +140,7 @@
         }
         
         .endpoint-badge {
-            background: #F75442;
+            background: linear-gradient(135deg, #F093FB, #F5576C);
             color: white;
             padding: 8px 15px;
             border-radius: 20px;
@@ -146,7 +154,7 @@
             padding: 40px;
             border-radius: 15px;
             margin: 30px 0;
-            border: 3px solid #F9E9AE;
+            border: 2px solid #E2E8F0;
         }
         
         .timeline-item {
@@ -162,7 +170,7 @@
             top: 0;
             bottom: 0;
             width: 3px;
-            background: #F75442;
+            background: linear-gradient(180deg, #667EEA, #764BA2);
         }
         
         .timeline-icon {
@@ -171,7 +179,7 @@
             top: 0;
             width: 35px;
             height: 35px;
-            background: #F75442;
+            background: linear-gradient(135deg, #667EEA, #764BA2);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -190,10 +198,10 @@
         .section-title {
             font-size: 2.5rem;
             font-weight: 700;
-            color: #99682E;
+            color: var(--text-primary);
             margin-bottom: 30px;
             text-align: center;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            text-shadow: 2px 2px 4px rgba(102, 126, 234, 0.1);
         }
         
         .tech-stack-item {
@@ -203,13 +211,13 @@
             text-align: center;
             height: 100%;
             transition: all 0.3s ease;
-            border: 3px solid #F9E9AE;
+            border: 2px solid #E2E8F0;
         }
         
         .tech-stack-item:hover {
             transform: scale(1.05);
-            border-color: #F75442;
-            box-shadow: 0 15px 40px rgba(247, 84, 66, 0.3);
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
         }
         
         .metric-box {
@@ -269,10 +277,27 @@
 </head>
 <body>
     <!-- Modal para ampliar imágenes -->
-    <div id="imageModal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.9);">
-        <span id="closeModal" style="position: absolute; top: 15px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer;">&times;</span>
-        <div id="modalContent" style="margin: auto; display: block; width: 90%; max-width: 1200px; padding: 60px 20px 20px 20px; text-align: center;">
-            <img id="modalImage" style="max-width: 100%; max-height: 85vh; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+    <div id="imageModal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9);">
+        <span id="closeModal" style="position: absolute; top: 15px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer; z-index: 10001;">&times;</span>
+        
+        <!-- Controles de Zoom -->
+        <div id="zoomControls" style="position: absolute; top: 20px; left: 20px; z-index: 10001; display: flex; gap: 10px;">
+            <button id="zoomIn" style="background: rgba(102, 126, 234, 0.9); color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-size: 18px; font-weight: bold;">
+                <i class="fas fa-search-plus"></i> +
+            </button>
+            <button id="zoomOut" style="background: rgba(102, 126, 234, 0.9); color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-size: 18px; font-weight: bold;">
+                <i class="fas fa-search-minus"></i> −
+            </button>
+            <button id="zoomReset" style="background: rgba(102, 126, 234, 0.9); color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-size: 14px;">
+                <i class="fas fa-redo"></i> Reset
+            </button>
+            <span id="zoomLevel" style="background: rgba(0, 0, 0, 0.7); color: white; padding: 10px 15px; border-radius: 5px; font-size: 14px; font-weight: bold;">
+                100%
+            </span>
+        </div>
+        
+        <div id="modalContent" style="position: absolute; top: 80px; left: 0; right: 0; bottom: 0; overflow: auto; text-align: center; display: flex; align-items: flex-start; justify-content: center; padding: 20px;">
+            <img id="modalImage" style="border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); cursor: grab; display: block; margin: auto;">
         </div>
     </div>
 
@@ -284,10 +309,10 @@
                 <h1 class="hero-title">Recetas Del Mundo</h1>
                 <p class="hero-subtitle">Sistema Completo de Gestión Culinaria con Arquitectura Empresarial</p>
                 <div class="mt-4">
-                    <span class="badge badge-custom" style="background-color: #61dafb; color: #000;"><i class="fab fa-react"></i> React.js</span>
-                    <span class="badge badge-custom" style="background-color: #6db33f; color: white;"><i class="fas fa-leaf"></i> Spring Boot</span>
-                    <span class="badge badge-custom" style="background-color: #336791; color: white;"><i class="fas fa-database"></i> PostgreSQL</span>
-                    <span class="badge badge-custom" style="background-color: #2496ed; color: white;"><i class="fab fa-docker"></i> Docker</span>
+                    <span class="badge badge-custom" style="background: linear-gradient(135deg, #61dafb, #4299E1); color: #000;"><i class="fab fa-react"></i> React.js</span>
+                    <span class="badge badge-custom" style="background: linear-gradient(135deg, #6db33f, #48BB78); color: white;"><i class="fas fa-leaf"></i> Spring Boot</span>
+                    <span class="badge badge-custom" style="background: linear-gradient(135deg, #336791, #4299E1); color: white;"><i class="fas fa-database"></i> PostgreSQL</span>
+                    <span class="badge badge-custom" style="background: linear-gradient(135deg, #2496ed, #667EEA); color: white;"><i class="fab fa-docker"></i> Docker</span>
                 </div>
             </div>
         </div>
@@ -300,42 +325,42 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <div class="feature-card text-center" style="background: linear-gradient(135deg, rgba(247, 84, 66, 0.1), rgba(249, 233, 174, 0.3));">
+                        <div class="feature-card text-center" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));">
                             <div class="mb-3">
-                                <i class="fas fa-user-tie" style="font-size: 3.5rem; color: #F75442;"></i>
+                                <i class="fas fa-user-tie" style="font-size: 3.5rem; color: #667EEA;"></i>
                             </div>
-                            <h4 style="color: #99682E; font-weight: 700;">Claudio Sánchez</h4>
+                            <h4 style="color: var(--text-primary); font-weight: 700;">Claudio Sánchez</h4>
                             <div class="mb-3">
-                                <span class="badge" style="background-color: #F75442; color: white; padding: 8px 15px; margin: 5px;">
+                                <span class="badge" style="background: linear-gradient(135deg, #667EEA, #764BA2); color: white; padding: 8px 15px; margin: 5px;">
                                     <i class="fas fa-crown"></i> Líder de Proyecto (PO)
                                 </span>
                             </div>
-                            <hr style="border-color: #F75442; opacity: 0.3;">
+                            <hr style="border-color: #667EEA; opacity: 0.3;">
                             <ul class="list-unstyled text-start">
-                                <li class="mb-2"><i class="fas fa-check-circle" style="color: #27ae60;"></i> Desarrollo backend con Spring Boot</li>
-                                <li class="mb-2"><i class="fas fa-check-circle" style="color: #27ae60;"></i> Configuración de servidores</li>
-                                <li class="mb-2"><i class="fas fa-check-circle" style="color: #27ae60;"></i> Gestión del proyecto</li>
-                                <li class="mb-2"><i class="fas fa-check-circle" style="color: #27ae60;"></i> Diseño de base de datos</li>
+                                <li class="mb-2"><i class="fas fa-check-circle" style="color: #48BB78;"></i> Desarrollo backend con Spring Boot</li>
+                                <li class="mb-2"><i class="fas fa-check-circle" style="color: #48BB78;"></i> Configuración de servidores</li>
+                                <li class="mb-2"><i class="fas fa-check-circle" style="color: #48BB78;"></i> Gestión del proyecto</li>
+                                <li class="mb-2"><i class="fas fa-check-circle" style="color: #48BB78;"></i> Diseño de base de datos</li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <div class="feature-card text-center" style="background: linear-gradient(135deg, rgba(153, 104, 46, 0.1), rgba(249, 233, 174, 0.3));">
+                        <div class="feature-card text-center" style="background: linear-gradient(135deg, rgba(240, 147, 251, 0.1), rgba(245, 87, 108, 0.1));">
                             <div class="mb-3">
-                                <i class="fas fa-user-cog" style="font-size: 3.5rem; color: #99682E;"></i>
+                                <i class="fas fa-user-cog" style="font-size: 3.5rem; color: #F093FB;"></i>
                             </div>
-                            <h4 style="color: #99682E; font-weight: 700;">Italo Brignardello</h4>
+                            <h4 style="color: var(--text-primary); font-weight: 700;">Italo Brignardello</h4>
                             <div class="mb-3">
-                                <span class="badge" style="background-color: #99682E; color: white; padding: 8px 15px; margin: 5px;">
+                                <span class="badge" style="background: linear-gradient(135deg, #F093FB, #F5576C); color: white; padding: 8px 15px; margin: 5px;">
                                     <i class="fas fa-tasks"></i> Scrum Master (SM)
                                 </span>
                             </div>
-                            <hr style="border-color: #99682E; opacity: 0.3;">
+                            <hr style="border-color: #F093FB; opacity: 0.3;">
                             <ul class="list-unstyled text-start">
-                                <li class="mb-2"><i class="fas fa-check-circle" style="color: #27ae60;"></i> Desarrollo frontend</li>
-                                <li class="mb-2"><i class="fas fa-check-circle" style="color: #27ae60;"></i> Tester QA</li>
-                                <li class="mb-2"><i class="fas fa-check-circle" style="color: #27ae60;"></i> Metodología ágil</li>
-                                <li class="mb-2"><i class="fas fa-check-circle" style="color: #27ae60;"></i> Control de calidad</li>
+                                <li class="mb-2"><i class="fas fa-check-circle" style="color: #48BB78;"></i> Desarrollo frontend</li>
+                                <li class="mb-2"><i class="fas fa-check-circle" style="color: #48BB78;"></i> Tester QA</li>
+                                <li class="mb-2"><i class="fas fa-check-circle" style="color: #48BB78;"></i> Metodología ágil</li>
+                                <li class="mb-2"><i class="fas fa-check-circle" style="color: #48BB78;"></i> Control de calidad</li>
                             </ul>
                         </div>
                     </div>
@@ -354,11 +379,11 @@
                     la gestión digital de contenido culinario. Desarrollada con las mejores prácticas de la industria, 
                     esta plataforma ofrece un ecosistema integral para la creación, gestión y monetización de recetas gastronómicas.
                 </p>
-                <hr style="border-color: #F9E9AE; opacity: 0.3;">
-                <h5 class="text-center mb-4" style="color: #99682E;"><i class="fas fa-tachometer-alt"></i> Indicadores Clave de Rendimiento (KPIs)</h5>
+                <hr style="border-color: #E2E8F0; opacity: 0.3;">
+                <h5 class="text-center mb-4" style="color: var(--text-primary);"><i class="fas fa-tachometer-alt"></i> Indicadores Clave de Rendimiento (KPIs)</h5>
                 <div class="row text-center mt-4">
                     <div class="col-md-3 col-6 mb-3">
-                        <div class="metric-box" style="background: linear-gradient(135deg, #F75442, #ff6b59); backdrop-filter: blur(10px); border: 3px solid #F9E9AE;">
+                        <div class="metric-box" style="background: linear-gradient(135deg, #667EEA, #764BA2); backdrop-filter: blur(10px); border: 2px solid #E2E8F0;">
                             <i class="fas fa-code-branch" style="font-size: 2rem; margin-bottom: 10px; color: white;"></i>
                             <div class="metric-label" style="color: white;">API Endpoints</div>
                             <div class="metric-value" style="color: white;">90+</div>
@@ -366,7 +391,7 @@
                         </div>
                     </div>
                     <div class="col-md-3 col-6 mb-3">
-                        <div class="metric-box" style="background: linear-gradient(135deg, #99682E, #b37a36); backdrop-filter: blur(10px); border: 3px solid #F9E9AE;">
+                        <div class="metric-box" style="background: linear-gradient(135deg, #F093FB, #F5576C); backdrop-filter: blur(10px); border: 2px solid #E2E8F0;">
                             <i class="fas fa-cogs" style="font-size: 2rem; margin-bottom: 10px; color: white;"></i>
                             <div class="metric-label" style="color: white;">Controllers MVC</div>
                             <div class="metric-value" style="color: white;">5</div>
@@ -374,7 +399,7 @@
                         </div>
                     </div>
                     <div class="col-md-3 col-6 mb-3">
-                        <div class="metric-box" style="background: linear-gradient(135deg, #27ae60, #2ecc71); backdrop-filter: blur(10px); border: 3px solid #F9E9AE;">
+                        <div class="metric-box" style="background: linear-gradient(135deg, #48BB78, #38A169); backdrop-filter: blur(10px); border: 2px solid #E2E8F0;">
                             <i class="fas fa-database" style="font-size: 2rem; margin-bottom: 10px; color: white;"></i>
                             <div class="metric-label" style="color: white;">Entidades DB</div>
                             <div class="metric-value" style="color: white;">13</div>
@@ -382,7 +407,7 @@
                         </div>
                     </div>
                     <div class="col-md-3 col-6 mb-3">
-                        <div class="metric-box" style="background: linear-gradient(135deg, #3498db, #5dade2); backdrop-filter: blur(10px); border: 3px solid #F9E9AE;">
+                        <div class="metric-box" style="background: linear-gradient(135deg, #4299E1, #3182CE); backdrop-filter: blur(10px); border: 2px solid #E2E8F0;">
                             <i class="fas fa-rocket" style="font-size: 2rem; margin-bottom: 10px; color: white;"></i>
                             <div class="metric-label" style="color: white;">Reducción TTM</div>
                             <div class="metric-value" style="color: white;">75%</div>
@@ -640,7 +665,7 @@
                     <small>Header requerido: <code>Authorization: Bearer &lt;token&gt;</code></small>
                 </div>
                 <div class="col-md-4 text-end">
-                    <span class="badge" style="background: #F75442; color: white; padding: 10px 15px; font-size: 1rem;">
+                    <span class="badge" style="background: linear-gradient(135deg, #667EEA, #764BA2); color: white; padding: 10px 15px; font-size: 1rem;">
                         <i class="fas fa-shield-alt"></i> JWT Protected
                     </span>
                 </div>
@@ -941,10 +966,10 @@
             <div class="col-md-4 mb-4">
                 <div class="card h-100 text-center">
                     <div class="card-body">
-                        <i class="fas fa-file-code" style="font-size: 3rem; color: #F75442; margin-bottom: 15px;"></i>
+                        <i class="fas fa-file-code" style="font-size: 3rem; color: #667EEA; margin-bottom: 15px;"></i>
                         <h5>Swagger UI</h5>
                         <p>Documentación interactiva de la API con pruebas en vivo</p>
-                        <a href="http://168.181.187.137:8081/swagger-ui/index.html" class="btn btn-sm" style="background: #F75442; color: white;" target="_blank">
+                        <a href="http://recetasdelmundo.site:8081/swagger-ui/index.html" class="btn btn-sm" style="background: linear-gradient(135deg, #667EEA, #764BA2); color: white;" target="_blank">
                             <i class="fas fa-external-link-alt"></i> Ver Swagger
                         </a>
                     </div>
@@ -954,12 +979,12 @@
             <div class="col-md-4 mb-4">
                 <div class="card h-100 text-center">
                     <div class="card-body">
-                        <i class="fas fa-project-diagram" style="font-size: 3rem; color: #99682E; margin-bottom: 15px;"></i>
+                        <i class="fas fa-project-diagram" style="font-size: 3rem; color: #F093FB; margin-bottom: 15px;"></i>
                         <h5>Diagramas ER</h5>
                         <p>Modelo completo de la base de datos con relaciones</p>
-                        <span class="badge" style="background: #99682E; color: white; padding: 8px 15px;">
+                        <a href="/RDM/docs" class="badge" style="background: linear-gradient(135deg, #F093FB, #F5576C); color: white; padding: 8px 15px;">
                             <i class="fas fa-check"></i> Disponible en /docs
-                        </span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -1331,13 +1356,13 @@
                 
                 <div class="row">
                     <div class="col-md-6 mb-4">
-                        <div class="p-4 h-100" style="background: linear-gradient(135deg, rgba(247, 84, 66, 0.1), rgba(249, 233, 174, 0.2)); border-radius: 10px; border: 3px solid #F75442;">
+                        <div class="p-4 h-100" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.08), rgba(118, 75, 162, 0.08)); border-radius: 10px; border: 2px solid #667EEA;">
                             <div class="text-center mb-3">
-                                <i class="fas fa-recycle" style="font-size: 4rem; color: #F75442;"></i>
+                                <i class="fas fa-recycle" style="font-size: 4rem; color: #667EEA;"></i>
                             </div>
-                            <h4 class="text-center mb-3" style="color: #F75442;"><i class="fas fa-sync"></i> Scrum</h4>
+                            <h4 class="text-center mb-3" style="color: #667EEA;"><i class="fas fa-sync"></i> Scrum</h4>
                             <hr>
-                            <h6><i class="fas fa-clock text-primary"></i> Características:</h6>
+                            <h6><i class="fas fa-clock" style="color: #4299E1;"></i> Características:</h6>
                             <ul class="mb-3">
                                 <li><strong>Sprints iterativos (2-4 semanas):</strong> Trabajo dividido en iteraciones manejables</li>
                                 <li><strong>Roles definidos:</strong> PO, Scrum Master, Dev Team</li>
@@ -1346,7 +1371,7 @@
                                 <li><strong>Adaptabilidad:</strong> Flexibilidad ante cambios de requisitos</li>
                             </ul>
 
-                            <div class="alert mb-0" style="background: rgba(247, 84, 66, 0.1); border-left: 3px solid #F75442;">
+                            <div class="alert mb-0" style="background: rgba(102, 126, 234, 0.08); border-left: 3px solid #667EEA;">
                                 <small><strong>En este proyecto:</strong> Usamos Scrum para desarrollar el MVP inicial, 
                                 organizando el trabajo en sprints de 2 semanas con daily standups y retrospectivas 
                                 para mejora continua.</small>
@@ -1355,13 +1380,13 @@
                     </div>
 
                     <div class="col-md-6 mb-4">
-                        <div class="p-4 h-100" style="background: linear-gradient(135deg, rgba(153, 104, 46, 0.1), rgba(249, 233, 174, 0.2)); border-radius: 10px; border: 3px solid #99682E;">
+                        <div class="p-4 h-100" style="background: linear-gradient(135deg, rgba(240, 147, 251, 0.08), rgba(245, 87, 108, 0.08)); border-radius: 10px; border: 2px solid #F093FB;">
                             <div class="text-center mb-3">
-                                <i class="fas fa-columns" style="font-size: 4rem; color: #99682E;"></i>
+                                <i class="fas fa-columns" style="font-size: 4rem; color: #F093FB;"></i>
                             </div>
-                            <h4 class="text-center mb-3" style="color: #99682E;"><i class="fas fa-columns"></i> Kanban</h4>
+                            <h4 class="text-center mb-3" style="color: #F093FB;"><i class="fas fa-columns"></i> Kanban</h4>
                             <hr>
-                            <h6><i class="fas fa-stream text-info"></i> Características:</h6>
+                            <h6><i class="fas fa-stream" style="color: #4299E1;"></i> Características:</h6>
                             <ul class="mb-3">
                                 <li><strong>Flujo continuo:</strong> Sin sprints, trabajo continuo</li>
                                 <li><strong>Tablero visual:</strong> To Do, In Progress, Done</li>
@@ -1370,7 +1395,7 @@
                                 <li><strong>Mejora continua:</strong> Optimización constante del flujo</li>
                             </ul>
                             
-                            <h6><i class="fas fa-check-circle text-success"></i> Cuándo lo usamos:</h6>
+                            <h6><i class="fas fa-check-circle" style="color: #48BB78;"></i> Cuándo lo usamos:</h6>
                             <ul class="mb-3">
                                 <li>Mantenimiento y soporte post-release</li>
                                 <li>Corrección de bugs y hotfixes</li>
@@ -1378,7 +1403,7 @@
                                 <li>Trabajo con prioridades cambiantes</li>
                             </ul>
 
-                            <div class="alert mb-0" style="background: rgba(153, 104, 46, 0.1); border-left: 3px solid #99682E;">
+                            <div class="alert mb-0" style="background: rgba(240, 147, 251, 0.08); border-left: 3px solid #F093FB;">
                                 <small><strong>En este proyecto:</strong> Usamos Kanban para el mantenimiento post-release, 
                                 gestionando bugs y mejoras continuas con un tablero visual que permite adaptación rápida.</small>
                             </div>
@@ -1404,11 +1429,11 @@
                 </p>
 
                 <!-- Sprint 1 -->
-                <div class="mb-4 p-4" style="background: linear-gradient(135deg, rgba(247, 84, 66, 0.1), rgba(249, 233, 174, 0.15)); border-radius: 10px; border-left: 5px solid #F75442;">
-                    <h4><i class="fas fa-flag-checkered" style="color: #F75442;"></i> Sprint 1 (24 agosto - 21 septiembre 2025)</h4>
+                <div class="mb-4 p-4" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.08), rgba(118, 75, 162, 0.08)); border-radius: 10px; border-left: 5px solid #667EEA;">
+                    <h4><i class="fas fa-flag-checkered" style="color: #667EEA;"></i> Sprint 1 (24 agosto - 21 septiembre 2025)</h4>
                     <div class="row mt-3">
                         <div class="col-md-6">
-                            <h6><i class="fas fa-trophy text-success"></i> Logros Principales:</h6>
+                            <h6><i class="fas fa-trophy" style="color: #48BB78;"></i> Logros Principales:</h6>
                             <ul>
                                 <li><strong>Redacción de Plataforma de Recetas:</strong> Creación de store procedures y microservicios para agregar, modificar, actualizar y eliminar recetas</li>
                                 <li><strong>Mejoras en Seguridad:</strong> Implementación de registro, inicio/cierre de sesión y generación de tokens JWT</li>
@@ -1417,11 +1442,11 @@
                             </ul>
                         </div>
                         <div class="col-md-6">
-                            <h6><i class="fas fa-star text-warning"></i> Retrospectiva:</h6>
-                            <div class="alert alert-success mb-2">
+                            <h6><i class="fas fa-star" style="color: #ED8936;"></i> Retrospectiva:</h6>
+                            <div class="alert mb-2" style="background: rgba(72, 187, 120, 0.1); border-left: 3px solid #48BB78;">
                                 <small><strong>✅ Puntos Fuertes:</strong> Entrega de funcionalidades clave, colaboración efectiva, alta calidad del código con pruebas unitarias</small>
                             </div>
-                            <div class="alert alert-warning mb-0">
+                            <div class="alert mb-0" style="background: rgba(237, 137, 54, 0.1); border-left: 3px solid #ED8936;">
                                 <small><strong>⚠️ Áreas de Mejora:</strong> Estimaciones de tiempo ajustadas, mejor gestión de dependencias entre tareas, mejorar documentación</small>
                             </div>
                         </div>
@@ -1429,11 +1454,11 @@
                 </div>
 
                 <!-- Sprint 2 -->
-                <div class="mb-4 p-4" style="background: linear-gradient(135deg, rgba(153, 104, 46, 0.1), rgba(249, 233, 174, 0.15)); border-radius: 10px; border-left: 5px solid #99682E;">
-                    <h4><i class="fas fa-flag-checkered" style="color: #99682E;"></i> Sprint 2 (22 septiembre - 19 octubre 2025)</h4>
+                <div class="mb-4 p-4" style="background: linear-gradient(135deg, rgba(240, 147, 251, 0.08), rgba(245, 87, 108, 0.08)); border-radius: 10px; border-left: 5px solid #F093FB;">
+                    <h4><i class="fas fa-flag-checkered" style="color: #F093FB;"></i> Sprint 2 (22 septiembre - 19 octubre 2025)</h4>
                     <div class="row mt-3">
                         <div class="col-md-6">
-                            <h6><i class="fas fa-trophy text-success"></i> Logros Principales:</h6>
+                            <h6><i class="fas fa-trophy" style="color: #48BB78;"></i> Logros Principales:</h6>
                             <ul>
                                 <li><strong>Fortalecimiento de Seguridad:</strong> Completado sistema de autenticación con tokens, registro y gestión de sesiones</li>
                                 <li><strong>Interfaz de Usuario Intuitiva:</strong> Diseño y desarrollo de prototipos UI amigables implementados en React</li>
@@ -1442,11 +1467,11 @@
                             </ul>
                         </div>
                         <div class="col-md-6">
-                            <h6><i class="fas fa-star text-warning"></i> Retrospectiva:</h6>
-                            <div class="alert alert-success mb-2">
+                            <h6><i class="fas fa-star" style="color: #ED8936;"></i> Retrospectiva:</h6>
+                            <div class="alert mb-2" style="background: rgba(72, 187, 120, 0.1); border-left: 3px solid #48BB78;">
                                 <small><strong>✅ Puntos Fuertes:</strong> Avances significativos en seguridad y usabilidad, cumplimiento de objetivos, feedback positivo del cliente</small>
                             </div>
-                            <div class="alert alert-warning mb-0">
+                            <div class="alert mb-0" style="background: rgba(237, 137, 54, 0.1); border-left: 3px solid #ED8936;">
                                 <small><strong>⚠️ Áreas de Mejora:</strong> Gestión del tiempo en estimación de tareas, mejoras en pruebas de integración para detección temprana de errores</small>
                             </div>
                         </div>
@@ -1860,7 +1885,7 @@
                         <strong>Recetas Del Mundo</strong> representa una solución tecnológica completa y moderna para la gestión 
                         de contenido culinario. El proyecto implementa una <strong>arquitectura empresarial limpia y escalable</strong> 
                         con las mejores prácticas de la industria.<br><br>
-                        El sistema está <strong>100% operacional en producción</strong> (<code>http://168.181.187.137</code>), 
+                        El sistema está <strong>100% operacional en producción</strong> (<code>https://recetasdelmundo.site</code>), 
                         con documentación Swagger completa, testing E2E validado y una infraestructura probada que reduce 
                         significativamente los tiempos de desarrollo y costos de mantenimiento. La plataforma puede servir 
                         como base sólida para aplicaciones web y móviles de gestión de contenido.
@@ -1870,26 +1895,26 @@
         </div>
 
         <!-- Footer -->
-        <footer class="text-center mt-5 pb-4" style="color: #99682E;">
+        <footer class="text-center mt-5 pb-4" style="color: var(--text-secondary);">
             <div class="row">
                 <div class="col-md-12">
                     <img src="imgPresentacion/user-cheems.png" alt="Logo" style="max-width: 150px; margin-bottom: 15px;">
-                    <h4 style="color: #F75442;"><i class="fas fa-utensils"></i> Recetas Del Mundo</h4>
-                    <p class="mb-3" style="color: #99682E; font-weight: 600;">Sistema Completo de Gestión Culinaria</p>
+                    <h4 style="color: var(--primary-color);"><i class="fas fa-utensils"></i> Recetas Del Mundo</h4>
+                    <p class="mb-3" style="color: var(--text-primary); font-weight: 600;">Sistema Completo de Gestión Culinaria</p>
                     <div class="mb-3">
-                        <a href="http://168.181.187.137" class="btn btn-sm me-2" style="background: #F75442; color: white; border: none;" target="_blank">
+                        <a href="https://recetasdelmundo.site" class="btn btn-sm me-2" style="background: linear-gradient(135deg, #667EEA, #764BA2); color: white; border: none;" target="_blank">
                             <i class="fas fa-globe"></i> Ver Demo
                         </a>
-                        <a href="http://168.181.187.137:8081/swagger-ui/index.html" class="btn btn-sm me-2" style="background: #99682E; color: white; border: none;" target="_blank">
+                        <a href="http://recetasdelmundo.site:8081/swagger-ui/index.html" class="btn btn-sm me-2" style="background: linear-gradient(135deg, #F093FB, #F5576C); color: white; border: none;" target="_blank">
                             <i class="fas fa-book"></i> Documentación API
                         </a>
-                        <a href="https://github.com/TioPig/Recetas-Del-Mundo" class="btn btn-sm" style="background: #F9E9AE; color: #99682E; border: none;" target="_blank">
+                        <a href="https://github.com/TioPig/Recetas-Del-Mundo" class="btn btn-sm" style="background: linear-gradient(135deg, #4299E1, #48BB78); color: white; border: none;" target="_blank">
                             <i class="fab fa-github"></i> GitHub
                         </a>
                     </div>
-                    <hr style="background-color: #99682E; opacity: 0.3;">
+                    <hr style="background-color: var(--text-muted); opacity: 0.3;">
                     <p class="mb-0">
-                        <small style="color: #99682E;">
+                        <small style="color: var(--text-secondary);">
                             Desarrollado con <i class="fas fa-heart text-danger"></i> utilizando 
                             <i class="fab fa-react" style="color: #61dafb;"></i> React.js, 
                             <i class="fas fa-leaf" style="color: #6db33f;"></i> Spring Boot y 
@@ -1897,7 +1922,7 @@
                         </small>
                     </p>
                     <p class="mt-2 mb-0">
-                        <small style="color: #99682E;">&copy; 2025 Recetas Del Mundo. Todos los derechos reservados.</small>
+                        <small style="color: var(--text-secondary);">&copy; 2025 Recetas Del Mundo. Todos los derechos reservados.</small>
                     </p>
                 </div>
             </div>
@@ -1985,6 +2010,57 @@
         const modalImg = document.getElementById('modalImage');
         const modalContent = document.getElementById('modalContent');
         const closeBtn = document.getElementById('closeModal');
+        const zoomInBtn = document.getElementById('zoomIn');
+        const zoomOutBtn = document.getElementById('zoomOut');
+        const zoomResetBtn = document.getElementById('zoomReset');
+        const zoomLevelDisplay = document.getElementById('zoomLevel');
+
+        let currentZoom = 1;
+        let originalWidth = 0;
+        let originalHeight = 0;
+
+        // Función para actualizar el zoom
+        function updateZoom(newZoom) {
+            currentZoom = Math.max(0.5, Math.min(5, newZoom)); // Limitar entre 50% y 500%
+            
+            if (originalWidth > 0) {
+                modalImg.style.width = (originalWidth * currentZoom) + 'px';
+                modalImg.style.height = 'auto';
+            }
+            
+            zoomLevelDisplay.textContent = Math.round(currentZoom * 100) + '%';
+            
+            // Cambiar cursor según el zoom
+            modalImg.style.cursor = currentZoom > 1 ? 'grab' : 'default';
+        }
+
+        // Botones de zoom
+        zoomInBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            updateZoom(currentZoom + 0.25);
+        });
+
+        zoomOutBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            updateZoom(currentZoom - 0.25);
+        });
+
+        zoomResetBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            updateZoom(1);
+        });
+
+        // Zoom con rueda del mouse
+        modalContent.addEventListener('wheel', function(e) {
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? -0.1 : 0.1;
+            updateZoom(currentZoom + delta);
+        }, { passive: false });
+
+        // Prevenir que los clics en los controles cierren el modal
+        document.getElementById('zoomControls').addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
 
         // Agregar event listener a todas las imágenes zoomables
         document.querySelectorAll('.zoomable-image').forEach(img => {
@@ -1992,15 +2068,37 @@
                 modal.style.display = 'block';
                 modalImg.src = this.src;
                 
+                // Esperar a que la imagen cargue para obtener dimensiones originales
+                modalImg.onload = function() {
+                    // Calcular dimensiones para que quepa en la pantalla inicialmente
+                    const maxWidth = window.innerWidth * 0.9;
+                    const maxHeight = (window.innerHeight - 120) * 0.9;
+                    
+                    const imgRatio = modalImg.naturalWidth / modalImg.naturalHeight;
+                    const screenRatio = maxWidth / maxHeight;
+                    
+                    if (imgRatio > screenRatio) {
+                        originalWidth = Math.min(modalImg.naturalWidth, maxWidth);
+                    } else {
+                        originalWidth = Math.min(modalImg.naturalWidth, maxHeight * imgRatio);
+                    }
+                    
+                    originalHeight = originalWidth / imgRatio;
+                    
+                    // Resetear zoom al abrir
+                    currentZoom = 1;
+                    updateZoom(1);
+                };
+                
                 // Si es SVG, agregar fondo blanco
                 if (this.src.endsWith('.svg') || this.classList.contains('diagram-image')) {
                     modalContent.style.backgroundColor = 'white';
-                    modalContent.style.padding = '60px 40px 40px 40px';
-                    modalContent.style.borderRadius = '15px';
+                    modalImg.style.backgroundColor = 'white';
+                    modalImg.style.padding = '20px';
                 } else {
                     modalContent.style.backgroundColor = 'transparent';
-                    modalContent.style.padding = '60px 20px 20px 20px';
-                    modalContent.style.borderRadius = '0';
+                    modalImg.style.backgroundColor = 'transparent';
+                    modalImg.style.padding = '0';
                 }
             });
         });
@@ -2012,9 +2110,14 @@
 
         // Cerrar modal al hacer clic fuera de la imagen
         modal.addEventListener('click', function(event) {
-            if (event.target === modal) {
+            if (event.target === modal || event.target === modalContent) {
                 modal.style.display = 'none';
             }
+        });
+
+        // Prevenir cierre al hacer clic en la imagen
+        modalImg.addEventListener('click', function(e) {
+            e.stopPropagation();
         });
 
         // Cerrar modal con tecla ESC
