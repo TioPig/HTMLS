@@ -379,51 +379,16 @@
                     la gestión digital de contenido culinario. Desarrollada con las mejores prácticas de la industria, 
                     esta plataforma ofrece un ecosistema integral para la creación, gestión y monetización de recetas gastronómicas.
                 </p>
-                <hr style="border-color: #E2E8F0; opacity: 0.3;">
-                <h5 class="text-center mb-4" style="color: var(--text-primary);"><i class="fas fa-tachometer-alt"></i> Indicadores Clave de Rendimiento (KPIs)</h5>
-                <div class="row text-center mt-4">
-                    <div class="col-md-3 col-6 mb-3">
-                        <div class="metric-box" style="background: linear-gradient(135deg, #667EEA, #764BA2); backdrop-filter: blur(10px); border: 2px solid #E2E8F0;">
-                            <i class="fas fa-code-branch" style="font-size: 2rem; margin-bottom: 10px; color: white;"></i>
-                            <div class="metric-label" style="color: white;">API Endpoints</div>
-                            <div class="metric-value" style="color: white;">90+</div>
-                            <small style="color: rgba(255,255,255,0.9); display: block; margin-top: 5px;">REST Full</small>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-6 mb-3">
-                        <div class="metric-box" style="background: linear-gradient(135deg, #F093FB, #F5576C); backdrop-filter: blur(10px); border: 2px solid #E2E8F0;">
-                            <i class="fas fa-cogs" style="font-size: 2rem; margin-bottom: 10px; color: white;"></i>
-                            <div class="metric-label" style="color: white;">Controllers MVC</div>
-                            <div class="metric-value" style="color: white;">5</div>
-                            <small style="color: rgba(255,255,255,0.9); display: block; margin-top: 5px;">Spring Boot</small>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-6 mb-3">
-                        <div class="metric-box" style="background: linear-gradient(135deg, #48BB78, #38A169); backdrop-filter: blur(10px); border: 2px solid #E2E8F0;">
-                            <i class="fas fa-database" style="font-size: 2rem; margin-bottom: 10px; color: white;"></i>
-                            <div class="metric-label" style="color: white;">Entidades DB</div>
-                            <div class="metric-value" style="color: white;">13</div>
-                            <small style="color: rgba(255,255,255,0.9); display: block; margin-top: 5px;">PostgreSQL</small>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-6 mb-3">
-                        <div class="metric-box" style="background: linear-gradient(135deg, #4299E1, #3182CE); backdrop-filter: blur(10px); border: 2px solid #E2E8F0;">
-                            <i class="fas fa-rocket" style="font-size: 2rem; margin-bottom: 10px; color: white;"></i>
-                            <div class="metric-label" style="color: white;">Reducción TTM</div>
-                            <div class="metric-value" style="color: white;">75%</div>
-                            <small style="color: rgba(255,255,255,0.9); display: block; margin-top: 5px;">Time to Market</small>
-                        </div>
-                    </div>
-                </div>
+                        <div class="text-center mb-4">
+            <img src="imgPresentacion/chef.jpg" alt="Chef" style="max-width: 100%; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); max-height: 300px; object-fit: cover;">
+        </div>
             </div>
         </div>
 
         <!-- Arquitectura del Stack -->
         <h2 class="section-title mt-5"><i class="fas fa-layer-group"></i> Stack Tecnológico</h2>
         
-        <div class="text-center mb-4">
-            <img src="imgPresentacion/chef.jpg" alt="Chef" style="max-width: 100%; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); max-height: 300px; object-fit: cover;">
-        </div>
+
 
         <div class="row">
             <!-- Frontend - React -->
@@ -2018,10 +1983,19 @@
         let currentZoom = 1;
         let originalWidth = 0;
         let originalHeight = 0;
+        
+        // Variables para drag and drop
+        let isDragging = false;
+        let startX = 0;
+        let startY = 0;
+        let translateX = 0;
+        let translateY = 0;
+        let currentTranslateX = 0;
+        let currentTranslateY = 0;
 
         // Función para actualizar el zoom
         function updateZoom(newZoom) {
-            currentZoom = Math.max(0.5, Math.min(5, newZoom)); // Limitar entre 50% y 500%
+            currentZoom = Math.max(0.5, Math.min(10, newZoom)); // Limitar entre 50% y 1000% para permitir mayor zoom
             
             if (originalWidth > 0) {
                 modalImg.style.width = (originalWidth * currentZoom) + 'px';
@@ -2032,6 +2006,14 @@
             
             // Cambiar cursor según el zoom
             modalImg.style.cursor = currentZoom > 1 ? 'grab' : 'default';
+            
+            // Aplicar transformación con translate
+            updateTransform();
+        }
+        
+        // Función para actualizar la transformación (translate)
+        function updateTransform() {
+            modalImg.style.transform = `translate(${currentTranslateX}px, ${currentTranslateY}px)`;
         }
 
         // Botones de zoom
@@ -2047,6 +2029,10 @@
 
         zoomResetBtn.addEventListener('click', function(e) {
             e.stopPropagation();
+            currentTranslateX = 0;
+            currentTranslateY = 0;
+            translateX = 0;
+            translateY = 0;
             updateZoom(1);
         });
 
@@ -2061,12 +2047,95 @@
         document.getElementById('zoomControls').addEventListener('click', function(e) {
             e.stopPropagation();
         });
+        
+        // Drag and drop para mover la imagen cuando está con zoom
+        modalImg.addEventListener('mousedown', function(e) {
+            if (currentZoom > 1) {
+                isDragging = true;
+                modalImg.style.cursor = 'grabbing';
+                startX = e.clientX - currentTranslateX;
+                startY = e.clientY - currentTranslateY;
+                e.preventDefault();
+            }
+        });
+        
+        document.addEventListener('mousemove', function(e) {
+            if (isDragging) {
+                e.preventDefault();
+                translateX = e.clientX - startX;
+                translateY = e.clientY - startY;
+                currentTranslateX = translateX;
+                currentTranslateY = translateY;
+                updateTransform();
+            }
+        });
+        
+        document.addEventListener('mouseup', function() {
+            if (isDragging) {
+                isDragging = false;
+                modalImg.style.cursor = currentZoom > 1 ? 'grab' : 'default';
+            }
+        });
+        
+        // Touch events para dispositivos móviles
+        let initialDistance = 0;
+        let initialZoom = 1;
+        
+        modalImg.addEventListener('touchstart', function(e) {
+            if (e.touches.length === 2) {
+                // Pinch zoom
+                e.preventDefault();
+                const touch1 = e.touches[0];
+                const touch2 = e.touches[1];
+                initialDistance = Math.hypot(
+                    touch2.clientX - touch1.clientX,
+                    touch2.clientY - touch1.clientY
+                );
+                initialZoom = currentZoom;
+            } else if (e.touches.length === 1 && currentZoom > 1) {
+                // Drag
+                const touch = e.touches[0];
+                startX = touch.clientX - currentTranslateX;
+                startY = touch.clientY - currentTranslateY;
+            }
+        });
+        
+        modalImg.addEventListener('touchmove', function(e) {
+            if (e.touches.length === 2) {
+                // Pinch zoom
+                e.preventDefault();
+                const touch1 = e.touches[0];
+                const touch2 = e.touches[1];
+                const distance = Math.hypot(
+                    touch2.clientX - touch1.clientX,
+                    touch2.clientY - touch1.clientY
+                );
+                const scale = distance / initialDistance;
+                updateZoom(initialZoom * scale);
+            } else if (e.touches.length === 1 && currentZoom > 1) {
+                // Drag
+                e.preventDefault();
+                const touch = e.touches[0];
+                translateX = touch.clientX - startX;
+                translateY = touch.clientY - startY;
+                currentTranslateX = translateX;
+                currentTranslateY = translateY;
+                updateTransform();
+            }
+        });
 
         // Agregar event listener a todas las imágenes zoomables
         document.querySelectorAll('.zoomable-image').forEach(img => {
             img.addEventListener('click', function() {
                 modal.style.display = 'block';
                 modalImg.src = this.src;
+                
+                // Resetear transformaciones al abrir
+                currentTranslateX = 0;
+                currentTranslateY = 0;
+                translateX = 0;
+                translateY = 0;
+                isDragging = false;
                 
                 // Esperar a que la imagen cargue para obtener dimensiones originales
                 modalImg.onload = function() {
