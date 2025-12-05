@@ -874,65 +874,56 @@
             </div>
         </div>
 
-        <!-- Timeline de Desarrollo (resumen) -->
-        <h2 class="section-title mt-5"><i class="fas fa-calendar-alt"></i> Timeline de Desarrollo</h2>
-        
-        <div class="card">
-            <div class="card-body">
-                <div class="timeline-item">
-                    <div class="timeline-icon">
-                        <i class="fas fa-flag"></i>
-                    </div>
-                    <h5>Fase 1-2: Investigación y Diseño</h5>
-                    <p>Recolección de requerimientos, entrevistas con usuarios, análisis de referentes y definición de arquitectura y modelo de datos.</p>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-icon">
-                        <i class="fas fa-database"></i>
-                    </div>
-                    <h5>Fase 3-4: Base de Datos y Backend</h5>
-                    <p>Diseño del modelo relacional en PostgreSQL y desarrollo de la API REST con Spring Boot, incluyendo seguridad JWT.</p>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-icon">
-                        <i class="fas fa-desktop"></i>
-                    </div>
-                    <h5>Fase 5-6: Frontend y Pruebas</h5>
-                    <p>Implementación de la interfaz en React, integración con la API y ejecución de pruebas unitarias, de integración y E2E.</p>
-                </div>
-
-                <div class="timeline-item" style="padding-bottom: 0;">
-                    <div class="timeline-icon">
-                        <i class="fab fa-docker"></i>
-                    </div>
-                    <h5>Fase 7-8: Despliegue y Producción</h5>
-                    <p>Containerización con Docker, configuración de nginx reverse proxy y despliegue en VPS, dejando el sistema operacional al 100%.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Ejecución de Sprints -->
-        <h2 class="section-title mt-5"><i class="fas fa-calendar-check"></i> Ejecución de Sprints - Timeline del Proyecto</h2>
+        <!-- Timeline de Desarrollo y Metodología -->
+        <h2 class="section-title mt-5"><i class="fas fa-calendar-alt"></i> Timeline de Desarrollo y Metodología Ágil</h2>
         
         <div class="card mb-4">
             <div class="card-header">
-                <i class="fas fa-history"></i> Metodología Scrum: 3 Sprints de 4 Semanas
+                <i class="fas fa-history"></i> Metodología Scrum y Kanban
             </div>
             <div class="card-body">
                 <p class="lead text-center mb-4">
-                    <strong>Duración total:</strong> 12 semanas (24 agosto - 16 noviembre 2025) con 3 sprints de 4 semanas,
-                    daily standups de 15 minutos y review + retrospectiva al final de cada sprint.
+                    <strong>Duración total:</strong> 12 semanas (24 agosto - 16 noviembre 2025) con <strong>Scrum</strong> para el desarrollo del MVP en 3 sprints de 4 semanas, 
+                    y <strong>Kanban</strong> para mantenimiento y mejoras continuas. Daily standups de 15 minutos y review + retrospectiva al final de cada sprint.
                 </p>
-                <ul class="feature-list">
-                    <li><i class="fas fa-check-circle"></i> <strong>Sprint 1:</strong> Base de datos, API REST inicial y autenticación JWT.</li>
-                    <li><i class="fas fa-check-circle"></i> <strong>Sprint 2:</strong> Interfaz React, flujos principales de usuario y refuerzo de seguridad.</li>
-                    <li><i class="fas fa-check-circle"></i> <strong>Sprint 3:</strong> Pruebas E2E, optimizaciones de rendimiento y despliegue en producción con Docker.</li>
-                </ul>
-                <div class="alert mt-4" style="background: linear-gradient(135deg, rgba(39, 174, 96, 0.1), rgba(46, 204, 113, 0.1)); border-left: 4px solid #27ae60;">
-                    <h6 class="mb-1"><i class="fas fa-check-double text-success"></i> Historias de Usuario</h6>
-                    <p class="mb-0">Se completaron <strong>25 historias de usuario</strong> agrupadas en dos épicas: plataforma de recetas y seguridad/usabilidad.</p>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="timeline-item">
+                            <div class="timeline-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <h5>Sprint 1: Base de Datos y Backend</h5>
+                            <p>Diseño del modelo relacional en PostgreSQL, desarrollo de la API REST con Spring Boot y autenticación JWT.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="timeline-item">
+                            <div class="timeline-icon">
+                                <i class="fas fa-desktop"></i>
+                            </div>
+                            <h5>Sprint 2: Frontend y Seguridad</h5>
+                            <p>Implementación de la interfaz en React, flujos principales de usuario, integración con la API y refuerzo de seguridad.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="timeline-item" style="padding-bottom: 0;">
+                            <div class="timeline-icon">
+                                <i class="fab fa-docker"></i>
+                            </div>
+                            <h5>Sprint 3: Pruebas y Despliegue</h5>
+                            <p>Pruebas E2E, optimizaciones de rendimiento, containerización con Docker y despliegue en VPS con nginx reverse proxy.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="alert mb-0" style="background: linear-gradient(135deg, rgba(39, 174, 96, 0.1), rgba(46, 204, 113, 0.1)); border-left: 4px solid #27ae60;">
+                            <h6 class="mb-2"><i class="fas fa-check-double text-success"></i> Historias de Usuario</h6>
+                            <p class="mb-0">Se completaron <strong>25 historias de usuario</strong> agrupadas en dos épicas: plataforma de recetas y seguridad/usabilidad.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
