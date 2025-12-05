@@ -470,7 +470,6 @@
                         <li><i class="fas fa-check-circle"></i> Container Orchestration</li>
                         <li><i class="fas fa-check-circle"></i> Nginx Reverse Proxy</li>
                         <li><i class="fas fa-check-circle"></i> Volúmenes Persistentes</li>
-                        <li><i class="fas fa-check-circle"></i> Contenedor Redis en puerto 6379 para caché</li>
                     </ul>
                 </div>
             </div>
@@ -633,24 +632,7 @@
             </div>
         </div>
 
-        <!-- Persistencia de Datos (resumida para la presentación) -->
-        <div class="card mb-4">
-            <div class="card-header">
-                <i class="fas fa-save"></i> Estrategias de Persistencia de Datos
-            </div>
-            <div class="card-body">
-                <ul class="feature-list">
-                    <li><i class="fas fa-check-circle"></i> <strong>PostgreSQL 15</strong> como motor relacional principal, con datos persistidos en volúmenes Docker.</li>
-                    <li><i class="fas fa-check-circle"></i> <strong>Modelo normalizado en 13 tablas</strong>, con claves foráneas y restricciones para integridad referencial.</li>
-                    <li><i class="fas fa-check-circle"></i> <strong>JPA/Hibernate</strong> para mapear entidades Java a tablas SQL y manejar transacciones.</li>
-                    <li><i class="fas fa-check-circle"></i> <strong>Scripts SQL versionados</strong> para creación, migraciones y cargas iniciales de datos.</li>
-                    <li><i class="fas fa-check-circle"></i> <strong>Redis</strong> en puerto 6379 como caché en memoria para acelerar lecturas frecuentes (recetas top, búsquedas, etc.).</li>
-                    <li><i class="fas fa-check-circle"></i> <strong>Backups periódicos</strong> de la base de datos para recuperación ante fallos.</li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="card">
+                <div class="card">
             <div class="card-header">
                 <i class="fas fa-table"></i> Esquema de Base de Datos - 13 Tablas
             </div>
@@ -712,13 +694,35 @@
             </div>
         </div>
 
-        <!-- Despliegue -->
-        <h2 class="section-title mt-5"><i class="fab fa-docker"></i> Despliegue con Docker</h2>
+        <!-- Persistencia de Datos (resumida para la presentación) -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-save"></i> Estrategias de Persistencia de Datos
+            </div>
+            <div class="card-body">
+                <ul class="feature-list">
+                    <li><i class="fas fa-check-circle"></i> <strong>PostgreSQL 15</strong> como motor relacional principal, con datos persistidos en volúmenes Docker.</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Modelo normalizado en 13 tablas</strong>, con claves foráneas y restricciones para integridad referencial.</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>JPA/Hibernate</strong> para mapear entidades Java a tablas SQL y manejar transacciones.</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Scripts SQL versionados</strong> para creación, migraciones y cargas iniciales de datos.</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Redis</strong> en puerto 6379 como caché en memoria para acelerar lecturas frecuentes (recetas top, búsquedas, etc.).</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Backups periódicos</strong> de la base de datos para recuperación ante fallos.</li>
+                </ul>
+            </div>
+        </div>
         
+
+
+
         <div class="text-center mb-4">
             <img src="imgPresentacion/cheems-waso.png" alt="Mascota Cheems" style="max-width: 150px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));">
         </div>
         
+
+        <!-- Despliegue -->
+        <h2 class="section-title mt-5"><i class="fab fa-docker"></i> Despliegue con Docker</h2>
+        
+
         <div class="card">
             <div class="card-header">
                 <i class="fas fa-rocket"></i> Containerización y Orquestación
@@ -791,21 +795,6 @@
                 <div class="text-center mt-4">
                     <img src="imgPresentacion/Meal-icon-8.png" alt="Meal Icon" style="max-width: 100px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));">
                 </div>
-            </div>
-        </div>
-
-        <!-- Seguridad (resumen para la defensa) -->
-        <h2 class="section-title mt-5"><i class="fas fa-shield-alt"></i> Seguridad del Sistema</h2>
-        
-        <div class="card mb-4">
-            <div class="card-body">
-                <ul class="feature-list">
-                    <li><i class="fas fa-check-circle"></i> Autenticación con <strong>JWT</strong> y expiración configurable, enviada en el header <code>Authorization: Bearer &lt;token&gt;</code>.</li>
-                    <li><i class="fas fa-check-circle"></i> <strong>Control de acceso basado en roles (RBAC)</strong> con perfiles USER, ADMIN y LIDER.</li>
-                    <li><i class="fas fa-check-circle"></i> <strong>BCrypt</strong> para hash de contraseñas y uso de variables de entorno para credenciales sensibles.</li>
-                    <li><i class="fas fa-check-circle"></i> <strong>CORS y validaciones de entrada</strong> para prevenir SQL Injection y XSS.</li>
-                    <li><i class="fas fa-check-circle"></i> Manejadores de errores globales en Spring Boot para respuestas HTTP consistentes.</li>
-                </ul>
             </div>
         </div>
 
